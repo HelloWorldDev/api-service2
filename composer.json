@@ -1,9 +1,9 @@
 {
-    "name": "famely/api-service",
+    "name": "being/api-service",
     "type": "library",
     "keywords": ["api", "services", "famely"],
     "description": "API services of famely application server",
-    "homepage": "http://www.famely.com",
+    "homepage": "http://www.being.com",
     "require": {
         "php": ">=5.6.0"
     },
