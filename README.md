@@ -31,10 +31,10 @@ $ composer install
 $ php vendor/bin/phpunit --configuration phpunit.xml.dist
 ```
 
-## Helper
+## App
 
 ```
-class HelperService
+class AppService
 {
     public static function limit($request, $default = 10, $max = 100, $key = 'limit'){}
 }

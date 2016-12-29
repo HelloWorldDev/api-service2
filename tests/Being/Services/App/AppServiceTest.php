@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Being\Services;
+namespace Tests\Being\Services\App;
 
 use PHPUnit_Framework_TestCase;
 
-class HelperServiceTest extends PHPUnit_Framework_TestCase
+class AppServiceTest extends PHPUnit_Framework_TestCase
 {
     public function testLimit()
     {

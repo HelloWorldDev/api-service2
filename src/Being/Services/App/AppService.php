@@ -1,8 +1,8 @@
 <?php
 
-namespace Being\Services;
+namespace Being\Services\App;
 
-class HelperService
+class AppService
 {
     /**
      * Format the limit param for preventing large data request destroy
