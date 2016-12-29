@@ -3,7 +3,7 @@
 namespace Tests\Being\Services;
 
 use PHPUnit_Framework_TestCase;
-use Being\Services\ResourceService as BeingResourceService;
+use Being\Services\ResourceService;
 
 class ResourceServiceTest extends PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class ResourceServiceTest extends PHPUnit_Framework_TestCase
         ];
 
         foreach ($tests as $url => $key) {
-            if (BeingResourceService::url2key($url) != $key) {
+            if (ResourceService::url2key($url) != $key) {
                 $this->assertTrue(false);
             } else {
                 $this->assertTrue(true);

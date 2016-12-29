@@ -3,6 +3,14 @@
 being base services include helper, live, resource and so on.
 
 
+## UnitTest
+
+```
+$ cd api-service
+$ composer install
+$ php vendor/bin/phpunit --configuration phpunit.xml.dist
+```
+
 ## Helper
 
 ```
