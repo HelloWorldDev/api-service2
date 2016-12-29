@@ -1,3 +1,4 @@
+Being API SERVICE &nbsp;&nbsp;&nbsp; [![Build Status](https://travis-ci.org/HelloWorldDev/api-service.svg?branch=master)](https://travis-ci.org/HelloWorldDev/api-service)
 # Being Api Services
 
 being base services include helper, live, resource and so on.
