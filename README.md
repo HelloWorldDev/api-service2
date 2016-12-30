@@ -18,9 +18,8 @@ Add this configuration in your composer.json
 
 and run composer command
 
-```shell
-composer require being/api-service
-
+```
+composer require "being/api-service:~1.0"
 ```
 
 ## UnitTest
@@ -28,6 +27,7 @@ composer require being/api-service
 ```
 $ cd api-service
 $ composer install
+$ composer require "laravel/framework:5.1.*"
 $ php vendor/bin/phpunit --configuration phpunit.xml.dist
 ```
 
