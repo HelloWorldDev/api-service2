@@ -4,6 +4,7 @@
     "keywords": ["api", "services", "famely"],
     "description": "API services of famely application server",
     "homepage": "http://www.being.com",
+    "license": "Apache License",
     "require": {
         "php": ">=5.6"
     },
