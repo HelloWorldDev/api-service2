@@ -1,4 +1,4 @@
-# BEING API SERVICE &nbsp;&nbsp;&nbsp; [![Build Status](https://travis-ci.org/HelloWorldDev/api-service.svg?branch=master)](https://travis-ci.org/HelloWorldDev/api-service) &nbsp;&nbsp; [![CircleCI](https://circleci.com/gh/HelloWorldDev/api-service.svg?style=svg)](https://circleci.com/gh/HelloWorldDev/api-service)
+# BEING API SERVICE &nbsp;&nbsp;&nbsp; [![CircleCI](https://circleci.com/gh/HelloWorldDev/api-service.svg?style=svg)](https://circleci.com/gh/HelloWorldDev/api-service) [![Build Status](https://travis-ci.org/HelloWorldDev/api-service.svg?branch=master)](https://travis-ci.org/HelloWorldDev/api-service)
 
 being base services include helper, live, resource and so on.
 
