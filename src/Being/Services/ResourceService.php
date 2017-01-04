@@ -2,7 +2,8 @@
 
 namespace Being\Services;
 
-class ResourceService {
+class ResourceService
+{
     /**
      * Convert a url to a key
      * This is for url of s3, qiniu, cloudfront.
