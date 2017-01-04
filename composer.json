@@ -20,5 +20,13 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
-    }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "secure-http": false
+    },
+    "repositories": [
+        {"type": "composer", "url": "http://packagist.phpcomposer.com"},
+        {"packagist": false}
+    ]
 }
