@@ -7,6 +7,7 @@ machine:
 test:
   override:
     - php vendor/bin/phpunit --configuration phpunit.xml.dist
+    - php vendor/bin/php-cs-fixer fix src && php vendor/bin/php-cs-fixer fix tests
 
 dependencies:
   pre:
