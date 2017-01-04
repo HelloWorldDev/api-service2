@@ -10,4 +10,4 @@ test:
 
 dependencies:
   pre:
-    - composer install --no-interaction --prefer-source && composer require "laravel/framework:5.1.*"
+    - composer require "laravel/framework:5.1.*"
