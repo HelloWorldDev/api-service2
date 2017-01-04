@@ -7,10 +7,6 @@ php:
 
 sudo: false
 
-install: travis_retry composer install --no-interaction --prefer-source
+install: travis_retry composer install --no-interaction --prefer-source && travis_retry composer require "laravel/framework:5.1.*"
 
-install: travis_retry composer require "laravel/framework:5.1.*"
-
-script: php vendor/bin/phpunit --configuration phpunit.xml.dist
-
-script: php vendor/bin/php-cs-fixer fix src && php vendor/bin/php-cs-fixer fix tests
+script: php vendor/bin/phpunit --configuration phpunit.xml.dist && php vendor/bin/php-cs-fixer fix src && php vendor/bin/php-cs-fixer fix tests
