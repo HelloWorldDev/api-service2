@@ -1,4 +1,17 @@
-test: composer-install test-cs-fixer test-service test-service-app test-laravel test-lumen
+test:   composer-backup     \
+        composer-install    \
+        test-cs-fixer       \
+        test-service        \
+        test-service-app    \
+        test-laravel        \
+        test-lumen          \
+        composer-revert
+
+composer-backup:
+	cp composer.json composer.json.bak
+
+composer-revert:
+	mv -f composer.json.bak composer.json
 
 composer-install:
 	composer install --no-interaction
