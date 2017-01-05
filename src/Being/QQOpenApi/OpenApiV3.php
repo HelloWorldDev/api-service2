@@ -18,9 +18,13 @@
  *               3.0.0 | nemozhang | 2011-12-12 11:11:11 | initialization
  */
 
-require_once './lib/SnsNetwork.php';
-require_once './lib/SnsSigCheck.php';
-require_once './lib/SnsStat.php';
+namespace Being\QQOpenApi;
+
+use Exception;
+
+require_once __DIR__ . '/lib/SnsNetwork.php';
+require_once __DIR__ . '/lib/SnsSigCheck.php';
+require_once __DIR__ . '/lib/SnsStat.php';
  
 /**
  * 如果您的 PHP 没有安装 cURL 扩展，请先安装 

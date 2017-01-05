@@ -12,6 +12,8 @@
  */
 
 
+namespace Being\QQOpenApi;
+
 class SnsNetwork
 {
 	/**

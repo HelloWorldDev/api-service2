@@ -10,6 +10,7 @@
  *               3.0.2 | sparkeli | 2012-03-06 15:33:04 | initialize statistic fuction which can report API's access time and number to background server
  */
 
+namespace Being\QQOpenApi;
 
 class SnsStat
 {

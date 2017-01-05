@@ -17,6 +17,10 @@
 /**
  * 生成签名类
  */
+
+namespace Being\QQOpenApi;
+
+
 class SnsSigCheck
 {
 	/**

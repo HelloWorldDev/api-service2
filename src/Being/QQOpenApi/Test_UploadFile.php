@@ -12,7 +12,7 @@
  */
 
 
-require_once 'OpenApiV3.php';
+require_once __DIR__ . '/OpenApiV3.php';
 
 // 应用基本信息
 $appid = 100657839;
@@ -31,7 +31,7 @@ $openkey = '05219DB6D7C04CA0B3F01A51D32635E3';
 $pf = 'tapp';
 
 
-$sdk = new OpenApiV3($appid, $appkey);
+$sdk = new Being\QQOpenApi\OpenApiV3($appid, $appkey);
 $sdk->setServerName($server_name);
 
 $ret = add_weibo_pic($sdk, $openid, $openkey, $pf);
