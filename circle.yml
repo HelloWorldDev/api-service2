@@ -6,8 +6,8 @@ machine:
 
 test:
   override:
-    - php vendor/bin/phpunit --configuration phpunit.xml.dist && php vendor/bin/php-cs-fixer fix src && php vendor/bin/php-cs-fixer fix tests
+    - make test
 
 dependencies:
   pre:
-    - composer require "laravel/framework:5.1.*"
+    - composer install --no-interaction

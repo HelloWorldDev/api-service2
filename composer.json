@@ -6,7 +6,8 @@
     "homepage": "http://www.being.com",
     "license": "Apache License",
     "require": {
-        "php": ">=5.6"
+        "php": ">=5.6",
+        "xiaosier/libweibo": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
