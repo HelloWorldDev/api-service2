@@ -17,8 +17,8 @@ require_once __DIR__ . '/OpenApiV3.php';
 $appid = 100657839;
 $appkey = 'b96b85196a04ff2ef08707f43979db15';
 
-// OpenAPI的服务器IP 
-// 最新的API服务器地址请参考wiki文档: http://wiki.open.qq.com/wiki/API3.0%E6%96%87%E6%A1%A3 
+// OpenAPI的服务器IP
+// 最新的API服务器地址请参考wiki文档: http://wiki.open.qq.com/wiki/API3.0%E6%96%87%E6%A1%A3
 $server_name = '119.147.19.43';
 
 
@@ -26,7 +26,7 @@ $server_name = '119.147.19.43';
 $openid = 'E098C1E975A2459E534B48FB3224CFB6';
 $openkey = '05219DB6D7C04CA0B3F01A51D32635E3';
 
-// 所要访问的平台, pf的其他取值参考wiki文档: http://wiki.open.qq.com/wiki/API3.0%E6%96%87%E6%A1%A3 
+// 所要访问的平台, pf的其他取值参考wiki文档: http://wiki.open.qq.com/wiki/API3.0%E6%96%87%E6%A1%A3
 $pf = 'qzone';
 
 
@@ -48,16 +48,14 @@ print_r($ret);
  */
 function get_user_info($sdk, $openid, $openkey, $pf)
 {
-	$params = array(
-		'openid' => $openid,
-		'openkey' => $openkey,
-		'pf' => $pf,
-	);
-	
-	$script_name = '/v3/user/get_info';
-	return $sdk->api($script_name, $params,'post');
-	
-	
+    $params = array(
+        'openid' => $openid,
+        'openkey' => $openkey,
+        'pf' => $pf,
+    );
+    
+    $script_name = '/v3/user/get_info';
+    return $sdk->api($script_name, $params, 'post');
 }
 
 // end of script
