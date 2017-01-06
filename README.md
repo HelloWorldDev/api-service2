@@ -23,8 +23,7 @@ git push origin master
 
 ```
 $ cd api-service
-$ composer require "laravel/framework:5.1.*"
-$ php vendor/bin/phpunit --configuration phpunit.xml.dist
+$ make test
 ```
 
 ## App
