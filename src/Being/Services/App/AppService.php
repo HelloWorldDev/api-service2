@@ -24,4 +24,28 @@ class AppService
 
         return $ret;
     }
+
+    /**
+     * Inspection request from iOSAppClient
+     * @return bool
+     */
+    public static function isiOSAppClient()
+    {
+        $request = app('request');
+        $appBundleId = $request->get('app_bundle_id');
+
+        return !empty($appBundleId);
+    }
+
+    /**
+     * Inspection request from AndroidAppClient
+     * @return bool
+     */
+    public static function isAndroidAppClient()
+    {
+        $request = app('request');
+        $packageName = $request->get('package_name');
+
+        return !empty($packageName);
+    }
 }
