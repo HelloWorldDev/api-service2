@@ -31,6 +31,7 @@ test-laravel:
 	composer require "laravel/framework:5.1.*"
 	composer install --no-interaction
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LaravelServiceProviderTest.php
+	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LaravelServiceProviderTest.php
 #	make uninstall-laravel
 
 test-lumen:
@@ -38,6 +39,7 @@ test-lumen:
 	composer require "laravel/lumen-framework:5.1.*"
 	composer install --no-interaction
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LumenServiceProviderTest.php
+	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LumenServiceProviderTest.php
 #	make uninstall-lumen
 
 uninstall-illuminate:
