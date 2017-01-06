@@ -7,16 +7,18 @@ being base services include helper, live, resource and so on.
 [Composer HomePage](https://packagist.org/packages/being/api-service)
 
 ```
-composer require "being/api-service:~1.0"
+$ composer require "being/api-service:~1.0"
 ```
 
 ## How to Commit
 
 ```
-php vendor/bin/php-cs-fixer fix src && php vendor/bin/php-cs-fixer fix tests
-git add .
-git commit -m "your niubility message"
-git push origin master
+$ php vendor/bin/php-cs-fixer fix src && php vendor/bin/php-cs-fixer fix tests
+// test your code by run "make test"
+// then
+$ git add .
+$ git commit -m "your niubility message"
+$ git push origin master
 ```
 
 ## UnitTest
@@ -24,22 +26,4 @@ git push origin master
 ```
 $ cd api-service
 $ make test
-```
-
-## App
-
-```
-class AppService
-{
-    public static function limit($request, $default = 10, $max = 100, $key = 'limit'){}
-}
-```
-
-## Resource
-
-```
-class ResourceService
-{
-    public static function url2key($url){}
-}
 ```
