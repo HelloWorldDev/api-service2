@@ -14,7 +14,7 @@ composer-revert:
 	mv -f composer.json.bak composer.json
 
 composer-install:
-	composer install --no-interaction
+	composer install --no-interaction --prefer-source
 
 test-cs-fixer:
 	php vendor/bin/php-cs-fixer fix src
@@ -29,7 +29,7 @@ test-service-app:
 test-laravel:
 	rm -rf vendor composer.lock
 	composer require "laravel/framework:5.1.*"
-	composer install --no-interaction
+	make composer-install
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LaravelServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LaravelServiceProviderTest.php
 #	make uninstall-laravel
@@ -37,7 +37,7 @@ test-laravel:
 test-lumen:
 	rm -rf vendor composer.lock
 	composer require "laravel/lumen-framework:5.1.*"
-	composer install --no-interaction
+	make composer-install
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LumenServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LumenServiceProviderTest.php
 #	make uninstall-lumen
