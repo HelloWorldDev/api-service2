@@ -33,6 +33,14 @@ $app->register(Being\CacheModel\ServiceProvider::class);
 Lumen Register:
 
 ```
+/*
+$app = new Laravel\Lumen\Application(
+    realpath(__DIR__.'/../')
+);
+*/
+$app = new Being\Laravel\Lumen\Application(
+    realpath(__DIR__.'/../')
+);
 $app->register(Being\CacheModel\LumenServiceProvider::class);
 ```
 
