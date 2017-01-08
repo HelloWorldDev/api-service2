@@ -252,3 +252,224 @@ public function select($query, $bindings = [], $useReadPdo = true)
 }
 调用了getPdoForSelect(), 该函数如果发现当前处于事务状态($this->transactions >= 1), 则返回写连接.
 ```
+
+
+
+### 集成angejia/pea库以缓存数据库查询
+
+集成angejia之前, 我们先完善redis的配置, 修改config/database.php中redis这个key的值, 并执行
+
+```
+composer require illuminate/redis:^5.1
+```
+
+至此, redis安装完毕.
+
+Laravel中一般使用Predis, 其配置多样及复杂, wiki地址为[https://github.com/nrk/predis](https://github.com/nrk/predis).
+
+在Laravel中创建Redis连接的代码为:
+
+```
+RedisServiceProvider类:
+public function register()
+{
+    $this->app->singleton('redis', function ($app) {
+        return new Database($app['config']['database.redis']);
+    });
+}
+Illuminate\Redis\Database类:
+public function __construct(array $servers = [])
+{
+    $cluster = Arr::pull($servers, 'cluster');
+
+    $options = (array) Arr::pull($servers, 'options');
+
+    if ($cluster) {
+        $this->clients = $this->createAggregateClient($servers, $options);
+    } else {
+        $this->clients = $this->createSingleClients($servers, $options);
+    }
+}
+
+protected function createAggregateClient(array $servers, array $options = [])
+{
+    return ['default' => new Client(array_values($servers), $options)];
+}
+
+protected function createSingleClients(array $servers, array $options = [])
+{
+    $clients = [];
+
+    foreach ($servers as $key => $server) {
+        $clients[$key] = new Client($server, $options);
+    }
+
+    return $clients;
+}
+
+public function command($method, array $parameters = [])
+{
+    return call_user_func_array([$this->clients['default'], $method], $parameters);
+}
+```
+
+从command函数中我们可以看出, 如果是非cluster模式, 那么使用的就只有default这个配置的连接.
+
+下面我们重点关注, Predis中cluster的配置, 及实现的细节.
+
+#### 方案一: 多节点, 客户端分片
+
+```
+config/database.php
+'redis' => [
+    'cluster' => true,
+    'node1' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 6379),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+    'node2' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 6380),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+],
+参考自:
+$parameters = ['tcp://10.0.0.1', 'tcp://10.0.0.2', 'tcp://10.0.0.3'];
+$client = new Predis\Client($parameters);
+```
+
+#### 方案二: 多节点, Redis服务端进行分片, 实现为RedisCluster
+
+```
+config/database.php
+'redis' => [
+    'cluster' => true,
+    'options' => ['cluster' => 'redis'],
+    'node1' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 6379),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+    'node2' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 6380),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+],
+参考自:
+$parameters = ['tcp://10.0.0.1', 'tcp://10.0.0.2', 'tcp://10.0.0.3'];
+$options    = ['cluster' => 'redis'];
+$client = new Predis\Client($parameters, $options);
+```
+
+下面再额外说明一下另外两种配置:
+
+#### Replication
+
+常见的Master-Slave模式, 一个Master, 多个Slave
+
+```
+congig/database.php
+'redis' => [
+    'cluster' => true,
+    'options' => ['replication' => true],
+    'node1' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 6379),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+        'alias' => 'master',
+    ],
+    'node2' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 6380),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+],
+参考自:
+$parameters = ['tcp://10.0.0.1?alias=master', 'tcp://10.0.0.2', 'tcp://10.0.0.3'];
+$options    = ['replication' => true];
+$client = new Predis\Client($parameters, $options);
+```
+
+#### Sentinel
+
+哨兵模式, 需要配置多个哨兵的服务器地址, 然后Predis会自动查询集群中的Master服务器和Slave服务器
+
+```
+config/database.php
+'redis' => [
+    'cluster' => true,
+    'options' => ['replication' => 'sentinel', 'service' => 'mymaster'],
+    'node1' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 5380),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+    'node2' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 5381),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+],
+参考自:
+$sentinels = ['tcp://10.0.0.1', 'tcp://10.0.0.2', 'tcp://10.0.0.3'];
+$options   = ['replication' => 'sentinel', 'service' => 'mymaster'];
+$client = new Predis\Client($sentinels, $options);
+```
+
+其中需要说明的是service字段, 其含义为master-group-name, 下面这张图很好的解释了group的概念,
+即sentinel集群能监控多个redis集群, 每个集群分别需要不同的组名.
+
+```
+sentinel monitor [master-group-name] [ip] [port] [quorum]
+```
+
+[![master-group-name含义](http://nos.netease.com/knowledge/f66a5bfe-51e3-4c75-b694-2c6e1d1b2e4b)]
+
+
+#### 集成pea
+
+安装:
+
+```
+composer require angejia/pea:dev-master
+```
+
+配置:
+
+```
+congfig/database.php
+'redis' => [
+    'cluster' => false,
+        'default' => [
+        'host'     => '127.0.0.1',
+        'port'     => 6379,
+        'database' => 0,
+    ],
+    'pea' => [
+        'host'     => '127.0.0.1',
+        'port'     => 6379,
+        'database' => 2,
+    ],
+]
+如果没有指定pea专用配置，则自动选用默认配置。
+```
+
+使用:
+
+```
+class UserModel extends \Angejia\Pea\Model
+{
+    protected $needCache = true;
+}
+```
+
