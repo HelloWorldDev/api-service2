@@ -10,7 +10,7 @@ Configuration:
 config/database.php
 'redis' => [
     'cluster' => false,
-        'default' => [
+    'default' => [
         'host'     => '127.0.0.1',
         'port'     => 6379,
         'database' => 0,
@@ -18,7 +18,7 @@ config/database.php
     'pea' => [
         'host'     => '127.0.0.1',
         'port'     => 6379,
-        'database' => 2,
+        'database' => 1,
     ],
 ],
 // when key "pea" not exists, use key "default" instead
