@@ -34,6 +34,7 @@ Lumen Register:
 
 ```
 /*
+// cause by class "Schame"
 $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
