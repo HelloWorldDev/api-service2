@@ -6,8 +6,29 @@
 
 下面是我们整理使用中的库, 以避免重复找轮子.
 
+Fame网站项目(Laravel):
 
-Fame后台项目(Laravel):
+```
+"require": {
+    "php": ">=5.5.9",
+    "laravel/framework": "5.1.*",
+    "jenssegers/agent": "^2.1",
+    "predis/predis": "~1.0",
+    "guzzlehttp/guzzle": "~6.0",
+    "qiniu/php-sdk": "^7.0",
+    "doctrine/dbal": "^2.5",
+    "endroid/qrcode": "^1.5",
+    "zgldh/qiniu-laravel-storage": "~0.3"
+},
+"require-dev": {
+    "fzaninotto/faker": "~1.4",
+    "mockery/mockery": "0.9.*",
+    "phpunit/phpunit": "~4.0",
+    "phpspec/phpspec": "~2.1"
+},
+```
+
+Fame后台项目(Lumen):
 
 ```
 "require": {
