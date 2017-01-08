@@ -32,6 +32,7 @@ test-laravel:
 	make composer-install
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LaravelServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LaravelServiceProviderTest.php
+	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/CacheModel/ModelTest.php
 #	make uninstall-laravel
 
 test-lumen:
@@ -40,6 +41,7 @@ test-lumen:
 	make composer-install
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LumenServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LumenServiceProviderTest.php
+	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/CacheModel/ModelTest.php
 #	make uninstall-lumen
 
 uninstall-illuminate:
