@@ -102,11 +102,18 @@
 
 配置多读有一点不好的地方就是, 创建连接的时候, 都是创建一个读一个写的连接, 不管你是否使用了读库或写库.
 
+
+注意事项:
+
+1. 插入记录并获取自增ID是没有问题的.
+2. 非事务中, 先插入再读取, 可能读到从库而导致读不到数据. 且使用DB::connection()可能造成事务混乱.
+3. 事务中, Laravel能保证所有的语句执行在主库上.
+
 详细说明:
 
-1. 插入记录并获取自增ID是没有问题的, 因为两个操作是在同一个connection中进行的, 其方法为processInsertGetId()
+#### 插入记录并获取自增ID是没有问题的, 因为两个操作是在同一个connection中进行的, 其方法为processInsertGetId().
 
-2. 非事务中, 先插入再读取, 可能读到从库而导致读不到数据. 使用DB::connection()可能造成事务混乱.
+#### 非事务中, 先插入再读取, 可能读到从库而导致读不到数据. 且使用DB::connection()可能造成事务混乱.
 
 强制读主库在Laravel中使用的方式是
 
@@ -214,7 +221,7 @@ public function testBasicExample()
 public function select($query, $bindings = [], $useReadPdo = true){}
 ```
 
-3. 事务中, Laravel能保证所有的语句执行在主库上
+#### 事务中, Laravel能保证所有的语句执行在主库上.
 
 ```
 主要的实现代码在ConnectionFactory类中
