@@ -447,7 +447,7 @@ composer require angejia/pea:dev-master
 配置:
 
 ```
-congfig/database.php
+config/database.php
 'redis' => [
     'cluster' => false,
         'default' => [
@@ -467,6 +467,10 @@ congfig/database.php
 使用:
 
 ```
+app.php
+$app->register(Angejia\Pea\ServiceProvider::class);
+
+UserModel.php
 class UserModel extends \Angejia\Pea\Model
 {
     protected $needCache = true;
