@@ -1,6 +1,9 @@
 ## Being Database Cache Component
 
-extends angejia/pea, use for database results cache.
+extends [angejia/pea](https://github.com/angejia/pea/wiki), use for database results cache.
+
+1. support raw SQL, the fluent query builder, and the Eloquent ORM
+2. support redis cluster
 
 ## Laravel & Lumen Support
 
