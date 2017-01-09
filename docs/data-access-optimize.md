@@ -12,10 +12,10 @@
 
 详细的方案如下:
 
-1. 配置laravel的数据库主写从读
-2. 集成angejia/pea库以缓存数据库查询
-3. 改进angejia/pea库并定制自己的缓存策略
-4. 使用es优化复杂的查询
+1. [配置laravel的数据库主写从读](#配置laravel的数据库主写从读)
+2. [集成angejia/pea库以缓存数据库查询](#集成angejia/pea库以缓存数据库查询)
+3. [改进angejia/pea库并定制自己的缓存策略](#改进angejia/pea库并定制自己的缓存策略)
+4. [使用es优化复杂的查询](#使用es优化复杂的查询)
 
 详细方案时间规划表:
 
@@ -477,3 +477,18 @@ class UserModel extends \Angejia\Pea\Model
 }
 ```
 
+
+### 改进angejia/pea库并定制自己的缓存策略
+
+目前已经集成angejia/pea的支持, 在此基础之上, 修改的地方包括:
+
+1. 增加了Lumen的Provider支持
+2. 增加的Predis的多种集群方案的支持
+
+详细请参考[集成Being/CacheModel的文章](https://github.com/HelloWorldDev/api-service/blob/master/src/Being/CacheModel/README.md).
+
+
+
+### 使用es优化复杂的查询
+
+该方案待定.
