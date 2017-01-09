@@ -13,8 +13,8 @@
 详细的方案如下:
 
 1. [配置laravel的数据库主写从读](#配置laravel的数据库主写从读)
-2. [集成angejia/pea库以缓存数据库查询](#集成angejia/pea库以缓存数据库查询)
-3. [改进angejia/pea库并定制自己的缓存策略](#改进angejia/pea库并定制自己的缓存策略)
+2. [集成pea库以缓存数据库查询](#集成pea库以缓存数据库查询)
+3. [改进pea库并定制自己的缓存策略](#改进pea库并定制自己的缓存策略)
 4. [使用es优化复杂的查询](#使用es优化复杂的查询)
 
 详细方案时间规划表:
@@ -255,7 +255,7 @@ public function select($query, $bindings = [], $useReadPdo = true)
 
 
 
-### 集成angejia/pea库以缓存数据库查询
+### 集成pea库以缓存数据库查询
 
 集成angejia之前, 我们先完善redis的配置, 修改config/database.php中redis这个key的值, 并执行
 
@@ -478,7 +478,7 @@ class UserModel extends \Angejia\Pea\Model
 ```
 
 
-### 改进angejia/pea库并定制自己的缓存策略
+### 改进pea库并定制自己的缓存策略
 
 目前已经集成angejia/pea的支持, 在此基础之上, 修改的地方包括:
 
@@ -487,7 +487,7 @@ class UserModel extends \Angejia\Pea\Model
 
 详细请参考[集成Being/CacheModel的文章](https://github.com/HelloWorldDev/api-service/blob/master/src/Being/CacheModel/README.md).
 
-
+剩下还需要优化或者定制自己的缓存策略.
 
 ### 使用es优化复杂的查询
 
