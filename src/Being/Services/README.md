@@ -25,3 +25,13 @@ class ResourceService
 }
 ```
 
+## Prof
+
+```
+class ProfService
+{
+    public static function begin(){}
+    public static function end(){}
+    public static function prof(callable $callback, $catchException = true){}
+}
+```
