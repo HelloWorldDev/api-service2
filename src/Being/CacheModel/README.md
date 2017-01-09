@@ -8,6 +8,22 @@ Configuration:
 
 ```
 config/database.php
+'redis_cache' => [
+    'cluster' => true,
+    'options' => ['cluster' => 'redis'],
+    'node1' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 6379),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+    'node2' => [
+        'host'     => env('REDIS_HOST', '127.0.0.1'),
+        'port'     => env('REDIS_PORT', 6380),
+        'database' => env('REDIS_DATABASE', 0),
+        'password' => env('REDIS_PASSWORD', null),
+    ],
+],
 'redis' => [
     'cluster' => false,
     'default' => [
@@ -21,7 +37,8 @@ config/database.php
         'database' => 1,
     ],
 ],
-// when key "pea" not exists, use key "default" instead
+// 1. when key "redis_cache" not exists, use key "redis" instead
+// 2. if use key "redis", when key "pea" not exists, use key "default" instead
 ```
 
 Laravel Register:
