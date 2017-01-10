@@ -6,7 +6,7 @@ class AppService
 {
     /**
      * Log debug message
-     * Usage: AppService::debug('error message', __FILE__, __LINE__);
+     * Usage: AppService::debug('debug message', __FILE__, __LINE__);
      * @param array|string $data
      * @param string $file
      * @param int $line
@@ -35,10 +35,10 @@ class AppService
      * @param $line
      * @return string
      */
-    protected function getLogContent($data, $file, $line)
+    protected static function getLogContent($data, $file, $line)
     {
         return sprintf('file:%s:%d message:%s', $file, $line,
-            is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE));
+            is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 
 
@@ -87,7 +87,7 @@ class AppService
         $queries['request_uid'] = $requestUid;
         $queries['request_method'] = $requestMethod;
         $queries['request_path'] = $requestPath;
-        $queryParamStr = json_encode($queries, JSON_UNESCAPED_UNICODE);
+        $queryParamStr = json_encode($queries, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         $log = sprintf('Request:%s Response:%s', $queryParamStr, $responseBody);
         \Log::debug($log);
