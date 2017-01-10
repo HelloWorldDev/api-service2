@@ -3,6 +3,7 @@ test:   composer-backup     \
         test-cs-fixer       \
         test-service        \
         test-service-app    \
+        test-api            \
         test-laravel        \
         test-lumen          \
         composer-revert
@@ -25,6 +26,9 @@ test-service:
 
 test-service-app:
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/Services/App/AppServiceTest.php
+
+test-api:
+	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/Api
 
 test-laravel:
 	rm -rf vendor composer.lock
