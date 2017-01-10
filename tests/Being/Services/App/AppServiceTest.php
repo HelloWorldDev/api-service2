@@ -14,6 +14,25 @@ class AppServiceTest extends PHPUnit_Framework_TestCase
         $this->request = new Request();
     }
 
+    public function testLog()
+    {
+        AppService::debug('hello', __FILE__, __LINE__);
+        AppService::error('nihao', __FILE__, __LINE__);
+        $this->assertTrue(true);
+    }
+
+    public function testResponse()
+    {
+        $this->assertTrue(AppService::response() instanceof \Illuminate\Http\Response);
+        $this->assertTrue(AppService::errorResponse(500) instanceof \Illuminate\Http\Response);
+    }
+
+    public function testAppClientTypeCheck()
+    {
+        $this->assertTrue(is_bool(AppService::isAndroidAppClient()));
+        $this->assertTrue(is_bool(AppService::isiOSAppClient()));
+    }
+
     public function testLimit()
     {
         $this->assertTrue(AppService::limit($this->request) === 30);
