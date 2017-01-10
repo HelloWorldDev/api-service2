@@ -2,6 +2,8 @@
 
 namespace Being\Services\App;
 
+use Illuminate\Support\Facades\Log;
+
 class AppService
 {
     /**
@@ -13,7 +15,7 @@ class AppService
      */
     public static function debug($data, $file, $line)
     {
-        \Log::debug(self::getLogContent($data, $file, $line));
+        Log::debug(self::getLogContent($data, $file, $line));
     }
 
     /**
@@ -25,7 +27,7 @@ class AppService
      */
     public static function error($data, $file, $line)
     {
-        \Log::error(self::getLogContent($data, $file, $line));
+        Log::error(self::getLogContent($data, $file, $line));
     }
 
     /**
@@ -90,7 +92,7 @@ class AppService
         $queryParamStr = json_encode($queries, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         $log = sprintf('Request:%s Response:%s', $queryParamStr, $responseBody);
-        \Log::debug($log);
+        Log::debug($log);
 
         $enableETag = intval($request->get('etag', 1));
         if ($requestMethod == 'GET'
