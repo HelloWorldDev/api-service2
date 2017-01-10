@@ -99,7 +99,7 @@ class Request
         if (!empty($logFile)) {
             $this->logFile = $logFile;
             if (is_null($this->log)) {
-                $this->log = new Logger('production');
+                $this->log = new Logger('being');
             }
 
             LogService::pushDefaultMonoLogHandler($this->log, $logFile);
