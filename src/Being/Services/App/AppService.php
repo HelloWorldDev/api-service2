@@ -5,6 +5,130 @@ namespace Being\Services\App;
 class AppService
 {
     /**
+     * Log debug message
+     * Usage: AppService::debug('error message', __FILE__, __LINE__);
+     * @param array|string $data
+     * @param string $file
+     * @param int $line
+     */
+    public static function debug($data, $file, $line)
+    {
+        \Log::debug(self::getLogContent($data, $file, $line));
+    }
+
+    /**
+     * Log error message
+     * Usage: AppService::error('error message', __FILE__, __LINE__);
+     * @param array|string $data
+     * @param string $file
+     * @param int $line
+     */
+    public static function error($data, $file, $line)
+    {
+        \Log::error(self::getLogContent($data, $file, $line));
+    }
+
+    /**
+     * Get log content
+     * @param $data
+     * @param $file
+     * @param $line
+     * @return string
+     */
+    protected function getLogContent($data, $file, $line)
+    {
+        return sprintf('file:%s:%d message:%s', $file, $line,
+            is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE));
+    }
+
+
+    /**
+     * Response Success Data
+     * @param $data
+     * @param null $common
+     * @return mixed
+     */
+    public static function response($data = ['result' => 'ok'], $common = null)
+    {
+        return self::responseCore(['data' => $data, 'common' => $common]);
+    }
+
+    /**
+     * Response Error Data
+     * @param $code
+     * @param string $message
+     * @return mixed
+     */
+    public static function errorResponse($code, $message = '')
+    {
+        return self::responseCore(['error_code' => $code, 'message' => $message]);
+    }
+
+    /**
+     * Response Client
+     * @param $response
+     * @return mixed
+     */
+    protected static function responseCore($response)
+    {
+        $request = app('request');
+        $requestMethod = $request->method();
+        $requestPath = $request->path();
+        $responseBody = json_encode($response);
+
+        $sign = $request->get('sign', $request->header('sign'));
+        $timestamp = $request->get('timestamp', $request->header('timestamp'));
+        $requestUid = property_exists($request, 'uid') ? $request->uid : 0;
+        $queries = $request->all();
+        unset($queries['password'], $queries['old_password']);
+        $queries['sign'] = $sign;
+        $queries['timestamp'] = $timestamp;
+        $queries['request_id'] = isset($_SERVER['X_REQUEST_ID']) ? $_SERVER['X_REQUEST_ID'] : '';
+        $queries['request_uid'] = $requestUid;
+        $queries['request_method'] = $requestMethod;
+        $queries['request_path'] = $requestPath;
+        $queryParamStr = json_encode($queries, JSON_UNESCAPED_UNICODE);
+
+        $log = sprintf('Request:%s Response:%s', $queryParamStr, $responseBody);
+        \Log::debug($log);
+
+        $enableETag = intval($request->get('etag', 1));
+        if ($requestMethod == 'GET'
+            && env('OPEN_ETAG', true)
+            && $enableETag == 1
+            && !isset($response['error_code'])
+        ) {
+            $eTag = $request->header('If-None-Match');
+            if (self::checkETag($eTag, $responseBody)) {
+                $headers['Etag'] = sprintf('"%s"', $eTag);
+
+                return response('', 304, $headers);
+            }
+        }
+
+        $headers['Content-Type'] = 'application/json; charset=utf-8';
+        $headers['Cache-Control'] = 'public';
+
+        return response()->json($response, 200, $headers);
+    }
+
+    /**
+     * Check whether eTag is changed
+     * @param $eTag
+     * @param $responseBody
+     * @return bool
+     */
+    protected static function checkETag($eTag, $responseBody)
+    {
+        $left = strpos($eTag, '"');
+        $right = strrpos($eTag, '"');
+        $eTag = (substr($eTag, $left + 1, $right - $left - 1));
+        $newETag = md5($responseBody);
+
+        return $eTag == $newETag;
+    }
+
+    /**
      * Format the limit param for preventing large data request destroy
      * This is for laravel framework
      * @param $request
