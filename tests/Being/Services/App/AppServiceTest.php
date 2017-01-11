@@ -3,6 +3,7 @@
 namespace Tests\Being\Services\App;
 
 use Being\Services\App\AppService;
+use Tests\Being\Laravel\Lumen\TestCase;
 
 class AppServiceTest extends TestCase
 {
