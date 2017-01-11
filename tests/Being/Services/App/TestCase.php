@@ -17,8 +17,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         if (class_exists('Laravel\Lumen\Application')) {
             $app = new \Laravel\Lumen\Application(sys_get_temp_dir());
         } elseif (class_exists('Illuminate\Foundation\Application')) {
-            $app = new \Illuminate\Foundation\Application();
-            $app->setBasePath(sys_get_temp_dir());
+            $app = new \Illuminate\Foundation\Application(sys_get_temp_dir());
         }
         $app->instance('config', new \Illuminate\Config\Repository());
         Facade::setFacadeApplication($app);

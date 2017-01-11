@@ -26,7 +26,7 @@ test-laravel:
 	rm -rf vendor composer.lock
 	composer require "laravel/framework:5.1.*"
 	make composer-install
-	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/Services/App/AppServiceTest.php
+#	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/Services/App/AppServiceTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LaravelServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LaravelServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/CacheModel/ModelTest.php
