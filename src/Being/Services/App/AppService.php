@@ -3,6 +3,7 @@
 namespace Being\Services\App;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
 
 class AppService
 {
@@ -157,8 +158,7 @@ class AppService
      */
     public static function isiOSAppClient()
     {
-        $request = app('request');
-        $appBundleId = $request->get('app_bundle_id');
+        $appBundleId = Request::get('app_bundle_id');
 
         return !empty($appBundleId);
     }
@@ -169,8 +169,7 @@ class AppService
      */
     public static function isAndroidAppClient()
     {
-        $request = app('request');
-        $packageName = $request->get('package_name');
+        $packageName = Request::get('package_name');
 
         return !empty($packageName);
     }

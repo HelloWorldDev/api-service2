@@ -3,15 +3,15 @@
 namespace Tests\Being\Services\App;
 
 use Being\Services\App\AppService;
-use PHPUnit_Framework_TestCase;
 
-class AppServiceTest extends PHPUnit_Framework_TestCase
+class AppServiceTest extends TestCase
 {
     protected $request;
 
     public function setUp()
     {
         $this->request = new Request();
+        parent::setUp();
     }
 
     public function testLog()
@@ -23,8 +23,8 @@ class AppServiceTest extends PHPUnit_Framework_TestCase
 
     public function testResponse()
     {
-        $this->assertTrue(AppService::response() instanceof \Illuminate\Http\Response);
-        $this->assertTrue(AppService::errorResponse(500) instanceof \Illuminate\Http\Response);
+        $this->assertTrue(AppService::response() instanceof \Symfony\Component\HttpFoundation\Response);
+        $this->assertTrue(AppService::errorResponse(500) instanceof \Symfony\Component\HttpFoundation\Response);
     }
 
     public function testAppClientTypeCheck()
