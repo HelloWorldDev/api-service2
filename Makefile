@@ -13,6 +13,7 @@ composer-revert:
 	mv -f composer.json.bak composer.json
 
 composer-install:
+	cp -f composer.json.bak composer.json
 	composer install --no-interaction --prefer-source
 
 test-cs-fixer:
