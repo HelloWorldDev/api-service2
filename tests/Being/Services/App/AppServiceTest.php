@@ -16,13 +16,8 @@ class AppServiceTest extends TestCase
 
     public function testLog()
     {
-        try {
-            AppService::debug('hello', __FILE__, __LINE__);
-            AppService::error('nihao', __FILE__, __LINE__);
-        } catch (\ReflectionException $e) {
-
-        }
-
+        AppService::debug('hello', __FILE__, __LINE__);
+        AppService::error('nihao', __FILE__, __LINE__);
         $this->assertTrue(true);
     }
 

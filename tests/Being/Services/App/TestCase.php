@@ -21,6 +21,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         }*/
         $app->instance('config', new \Illuminate\Config\Repository());
         $app->useStoragePath(sys_get_temp_dir());
+        $app->instance('path.storage', sys_get_temp_dir());
         Facade::setFacadeApplication($app);
         $this->app = $app;
     }
