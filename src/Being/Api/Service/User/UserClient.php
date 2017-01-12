@@ -2,41 +2,99 @@
 
 namespace Being\Api\Service\User;
 
-use Being\Api\Service\BaseClient;
-use Being\Api\Service\UserInterface;
+use Being\Api\Service\Code;
+use Being\Api\Service\HttpClient;
+use Being\Api\Service\Sender;
 
-class UserClient extends BaseClient implements UserInterface
+class UserClient implements ClientInterface
 {
-    const URI_IS_ACCOUNT_EXISTS = 'http://game-server.fameapp.us/v1/game/users/search';
-    const URI_LOGIN = 'http://game-server.fameapp.us/v1/game/users/search';
+    protected $httpClient;
 
-    public function isAccountExists($account)
+    public function __construct(Sender $httpClient)
     {
-        $response = $this->buildRequest('GET', self::URI_IS_ACCOUNT_EXISTS)
-            ->setQuery(['term' => 'liuyong9'])
-            ->send();
-
-        return $this->returnInt($response);
+        $this->httpClient = $httpClient;
     }
 
-    public function register($account, $password)
-    {
-        $response = $this->buildRequest('GET', self::URI_LOGIN)->send();
+    public function parseResponseBody($body){
+        $resp = json_decode($body, true);
+        if(isset($resp['code'])){
+            if($resp['code'] == Code::SUCCESS){
+                return [$resp['code'], $resp['data']];
+            } else {
+                return [$resp['code'], null];
+            }
+        }
 
-        return $this->returnInt($response);
+        return [Code::EmptyBody, null];
     }
 
-    public function login($account, $password)
+    public function register(User $user)
     {
-        $response = $this->buildRequest('POST', self::URI_IS_ACCOUNT_EXISTS)
-            ->setParam(['account' => $account, 'password' => $password])
-            ->send();
+        $bodyArr = [
+            'username' => $user->username,
+            'password' => $user->password,
+            'fullname' => $user->fullname,
+            'email' => $user->email,
+        ];
 
-        return $this->returnInt($response);
+        $req = HttpClient::getRequest(HttpClient::POST, '/user', [], [], $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+        return $this->parseResponseBody($body);
     }
 
-    public function updatePassword($account, $newPassword)
+    public function updateUser(User $user)
     {
+        $bodyArr = [
+            'password' => $user->password,
+            'fullname' => $user->fullname,
+            'email' => $user->email,
+        ];
+        $uri = sprintf("/user/%s", $user->uid);
+        $req = HttpClient::getRequest(HttpClient::PUT, $uri, [], [], $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+        return $this->parseResponseBody($body);
+    }
+
+    public function login(User $user)
+    {
+        if(!empty($user->username)){
+            $type = 'username';
+            $account = $user->username;
+        } else if(!empty($user->email)){
+            $type = 'email';
+            $account = $user->email;
+        } else {
+            throw new \Exception("both username and email is emtpy");
+        }
+
+        $bodyArr = [
+            'type' => $type,
+            'account' => $account,
+            'password' => $user->password,
+        ];
+
+        $uri = '/login';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+        return $this->parseResponseBody($body);
+    }
+
+    public function verify($resource, $value)
+    {
+        $validResource = ['username', 'email'];
+        if(!in_array($resource, $validResource)){
+            throw new \Exception("{$resource} is invalid resource name");
+        }
+
+        $bodyArr = [
+            'resource_name' => $resource,
+            'value' => $value,
+        ];
+
+        $uri = '/verify';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+        return $this->parseResponseBody($body);
 
     }
 }

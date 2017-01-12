@@ -10,4 +10,5 @@ class Code
     const ACCOUNT_INVALID = 100600;
     const ACCOUNT_EXISTS = 100601;
     const PASSWORD_INVALID = 100602;
+    const EmptyBody = 100603;
 }
