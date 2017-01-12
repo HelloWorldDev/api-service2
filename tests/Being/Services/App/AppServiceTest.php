@@ -3,15 +3,35 @@
 namespace Tests\Being\Services\App;
 
 use Being\Services\App\AppService;
-use PHPUnit_Framework_TestCase;
+use Tests\Being\Laravel\Lumen\TestCase;
 
-class AppServiceTest extends PHPUnit_Framework_TestCase
+class AppServiceTest extends TestCase
 {
     protected $request;
 
     public function setUp()
     {
         $this->request = new Request();
+        parent::setUp();
+    }
+
+    public function testLog()
+    {
+        AppService::debug('hello', __FILE__, __LINE__);
+        AppService::error('nihao', __FILE__, __LINE__);
+        $this->assertTrue(true);
+    }
+
+    public function testResponse()
+    {
+        $this->assertTrue(AppService::response() instanceof \Symfony\Component\HttpFoundation\Response);
+        $this->assertTrue(AppService::errorResponse(500) instanceof \Symfony\Component\HttpFoundation\Response);
+    }
+
+    public function testAppClientTypeCheck()
+    {
+        $this->assertTrue(is_bool(AppService::isAndroidAppClient()));
+        $this->assertTrue(is_bool(AppService::isiOSAppClient()));
     }
 
     public function testLimit()

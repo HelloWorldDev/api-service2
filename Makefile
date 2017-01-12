@@ -15,6 +15,7 @@ composer-revert:
 	mv -f composer.json.bak composer.json
 
 composer-install:
+	cp -f composer.json.bak composer.json
 	composer install --no-interaction --prefer-source
 
 test-cs-fixer:
@@ -34,6 +35,7 @@ test-laravel:
 	rm -rf vendor composer.lock
 	composer require "laravel/framework:5.1.*"
 	make composer-install
+#	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/Services/App/AppServiceTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LaravelServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LaravelServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/CacheModel/ModelTest.php
@@ -43,6 +45,7 @@ test-lumen:
 	rm -rf vendor composer.lock
 	composer require "laravel/lumen-framework:5.1.*"
 	make composer-install
+	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/Services/App/AppServiceTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LumenServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LumenServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/CacheModel/ModelTest.php
