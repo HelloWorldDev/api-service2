@@ -32,7 +32,7 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         ];
 
         $user = new User(123, 'jason', 'jason w', '123', 'sdf@sdf.com', 'avatar');
-        foreach($responses as $resp){
+        foreach ($responses as $resp) {
             $cli = $this->getUserCenterCli($resp);
             list($code, $data) = $cli->register($user);
             $this->assertEquals($resp[3], $code);
@@ -52,7 +52,7 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
                 ['email', 'ssdf@sdf.com'],
                 ['username', 'jason'],
             ];
-            foreach($reqs as $item){
+            foreach ($reqs as $item) {
                 $cli = $this->getUserCenterCli($resp);
                 list($code, $data) = $cli->verify($item[0], $item[1]);
                 $this->assertEquals($resp[3], $code);
@@ -61,7 +61,8 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    function getUserCenterCli($resp){
+    public function getUserCenterCli($resp)
+    {
         $httpCli = \Mockery::mock('Being\Api\Service\Sender');
         $httpCli->shouldReceive('send')->times(1)->andReturn([$resp[0], $resp[1], $resp[2]]);
 

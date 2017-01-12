@@ -8,7 +8,6 @@
 
 namespace Being\Api\Service\User;
 
-
 class User
 {
     public $uid;
@@ -18,7 +17,7 @@ class User
     public $email;
     public $avatar;
 
-    function __construct($uid, $username, $fullname, $password, $email, $avatar)
+    public function __construct($uid, $username, $fullname, $password, $email, $avatar)
     {
         $this->uid = $uid;
         $this->username = $username;

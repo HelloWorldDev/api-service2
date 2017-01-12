@@ -15,10 +15,11 @@ class UserClient implements ClientInterface
         $this->httpClient = $httpClient;
     }
 
-    public function parseResponseBody($body){
+    public function parseResponseBody($body)
+    {
         $resp = json_decode($body, true);
-        if(isset($resp['code'])){
-            if($resp['code'] == Code::SUCCESS){
+        if (isset($resp['code'])) {
+            if ($resp['code'] == Code::SUCCESS) {
                 return [$resp['code'], $resp['data']];
             } else {
                 return [$resp['code'], null];
@@ -57,10 +58,10 @@ class UserClient implements ClientInterface
 
     public function login(User $user)
     {
-        if(!empty($user->username)){
+        if (!empty($user->username)) {
             $type = 'username';
             $account = $user->username;
-        } else if(!empty($user->email)){
+        } elseif (!empty($user->email)) {
             $type = 'email';
             $account = $user->email;
         } else {
@@ -82,7 +83,7 @@ class UserClient implements ClientInterface
     public function verify($resource, $value)
     {
         $validResource = ['username', 'email'];
-        if(!in_array($resource, $validResource)){
+        if (!in_array($resource, $validResource)) {
             throw new \Exception("{$resource} is invalid resource name");
         }
 
@@ -95,6 +96,5 @@ class UserClient implements ClientInterface
         $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
         return $this->parseResponseBody($body);
-
     }
 }

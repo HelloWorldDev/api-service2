@@ -8,7 +8,6 @@
 
 namespace Being\Api\Service\User;
 
-
 interface ClientInterface
 {
     public function register(User $user);

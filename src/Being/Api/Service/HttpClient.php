@@ -24,20 +24,20 @@ class HttpClient implements Sender
     public $client;
     protected $logger;
 
-    function __construct($baseURL)
+    public function __construct($baseURL)
     {
         $this->client = new Client(['base_uri' => $baseURL]);
         $this->logger = AppService::getMonoLog();
     }
 
-    static function getRequest($method, $uri, $queries, $headers, $body)
+    public static function getRequest($method, $uri, $queries, $headers, $body)
     {
-        if(is_array($queries) && count($queries) > 0){
+        if (is_array($queries) && count($queries) > 0) {
             $uri = substr($uri, 0, strpos($uri, '?'));
             $uri .= sprintf("?%s", http_build_query($queries));
         }
 
-        if(is_array($body)){
+        if (is_array($body)) {
             $body = http_build_query($body);
         }
 
@@ -46,9 +46,9 @@ class HttpClient implements Sender
         return $req;
     }
 
-    function send(Request $request)
+    public function send(Request $request)
     {
-        try{
+        try {
             $resp = $this->client->send($request);
 
             $code = $resp->getStatusCode();
@@ -56,8 +56,7 @@ class HttpClient implements Sender
             $headers = $resp->getHeaders();
 
             return [$code, $body, $headers];
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->log(Logger::ERROR, $e->getMessage());
             return [$e->getCode(), $e->getMessage(), null];
         }
@@ -77,10 +76,10 @@ class HttpClient implements Sender
         $this->logger->log($level, $message);
     }
 
-    protected function log($level, $msg){
+    protected function log($level, $msg)
+    {
         if (!is_null($this->logger)) {
             $this->logger->log($level, $msg);
         }
     }
-
 }

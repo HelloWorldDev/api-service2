@@ -8,10 +8,9 @@
 
 namespace Being\Api\Service;
 
-
 use GuzzleHttp\Psr7\Request;
 
 interface Sender
 {
-    function send(Request $request);
+    public function send(Request $request);
 }
