@@ -173,4 +173,17 @@ class AppService
 
         return !empty($packageName);
     }
+
+    /**
+     * Get Laravel or Lumen MonoLog Instance
+     * @return null
+     */
+    public static function getMonoLog()
+    {
+        if (function_exists('app')) {
+            return app('log')->getMonolog();
+        }
+
+        return null;
+    }
 }
