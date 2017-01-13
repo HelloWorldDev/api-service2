@@ -13,7 +13,7 @@ class AppService
     public static function debug($data, $file, $line){}
     public static function error($data, $file, $line){}
     public static function response($data = ['result' => 'ok'], $common = null){}
-    public static function errorResponse($code, $message = ''){}
+    public static function responseError($code, $message = ''){}
     public static function limit($request, $default = 10, $max = 100, $key = 'limit'){}
     public static function isiOSAppClient(){}
     public static function isAndroidAppClient(){}

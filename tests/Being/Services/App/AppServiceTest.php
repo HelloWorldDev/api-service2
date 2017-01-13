@@ -25,7 +25,7 @@ class AppServiceTest extends TestCase
     public function testResponse()
     {
         $this->assertTrue(AppService::response() instanceof \Symfony\Component\HttpFoundation\Response);
-        $this->assertTrue(AppService::errorResponse(500) instanceof \Symfony\Component\HttpFoundation\Response);
+        $this->assertTrue(AppService::responseError(500) instanceof \Symfony\Component\HttpFoundation\Response);
     }
 
     public function testAppClientTypeCheck()
