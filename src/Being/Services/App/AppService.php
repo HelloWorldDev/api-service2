@@ -181,7 +181,7 @@ class AppService
     public static function getMonoLog()
     {
         if (function_exists('app')) {
-            return app('log')->getMonolog();
+            return app('log');
         }
 
         return null;
