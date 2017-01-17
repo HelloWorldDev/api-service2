@@ -5,11 +5,10 @@
     "description": "API services of famely application server",
     "homepage": "http://www.being.com",
     "license": "Apache License",
-    "minimum-stability": "dev",
     "require": {
         "php": ">=5.6",
-        "xiaosier/libweibo": "dev-master",
-        "angejia/pea": "dev-master",
+        "xiaosier/libweibo": "dev-master as 1.0.0",
+        "angejia/pea": "dev-master as 1.0.0",
         "guzzlehttp/guzzle": "~6.0",
         "monolog/monolog": "^1.22"
     },
