@@ -38,8 +38,9 @@ class UserClient implements ClientInterface
             'email' => $user->email,
         ];
 
-        $req = HttpClient::getRequest(HttpClient::POST, '/user', [], [], $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::POST, '/v1/user', [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
+
         return $this->parseResponseBody($body);
     }
 
@@ -53,9 +54,10 @@ class UserClient implements ClientInterface
             }
         }
 
-        $uri = sprintf("/user/%s", $user->uid);
+        $uri = sprintf("/v1/user/%s", $user->uid);
         $req = HttpClient::getRequest(HttpClient::PUT, $uri, [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
+
         return $this->parseResponseBody($body);
     }
 
@@ -77,9 +79,9 @@ class UserClient implements ClientInterface
             'password' => $user->password,
         ];
 
-        $uri = '/login';
-        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::POST, '/v1/login', [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
+
         return $this->parseResponseBody($body);
     }
 
@@ -93,8 +95,9 @@ class UserClient implements ClientInterface
             }
         }
 
-        $req = HttpClient::getRequest(HttpClient::POST, '/user/verify', [], [], $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::POST, '/v1/user/verify', [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
+
         return $this->parseResponseBody($body);
     }
 }
