@@ -41,6 +41,10 @@ class HttpClient implements Sender
             $body = http_build_query($body);
         }
 
+        if(!isset($headers['Content-Type'])){
+            $headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        }
+
         $req = new Request($method, $uri, $headers, $body);
 
         return $req;
@@ -73,7 +77,9 @@ class HttpClient implements Sender
             'response_code' => $response->getStatusCode(),
             'response_reason_phrase' => $response->getReasonPhrase(),
         ]);
-        $this->logger->log($level, $message);
+        if (!is_null($this->logger)) {
+            $this->logger->log($level, $message);
+        }
     }
 
     protected function log($level, $msg)
