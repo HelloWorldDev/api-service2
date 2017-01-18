@@ -70,4 +70,29 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
 
         return $cli;
     }
+
+    public function testRealService(){
+        //$this->_testRealService();
+    }
+
+    public function _testRealService(){
+        $baseUrl = 'http://localhost:8091';
+        $httpCli = new HttpClient($baseUrl);
+        $userCli = new UserClient($httpCli);
+
+        $user = new User(0, 'jason4', 'jason', '123456', 'email4@sdf.com', '');
+        list($code, $body) = $userCli->register($user);
+        $this->assertEquals($code, 0);
+        $user->uid = $body['id'];
+
+        list($code, $body) = $userCli->login($user);
+        $this->assertEquals($code, 0);
+
+        $user->email = 'new2@sdf.com';
+        list($code, $body) = $userCli->updateUser($user);
+        $this->assertEquals($body['email'], 'new2@sdf.com');
+
+        list($code, $body) = $userCli->verify('email', 'sdf@sdf.com');
+        $this->assertEquals($code, 0);
+    }
 }
