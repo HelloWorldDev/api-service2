@@ -13,5 +13,5 @@ interface ClientInterface
     public function register(User $user);
     public function updateUser(User $user);
     public function login(User $user);
-    public function verify($resource, $value);
+    public function verify(User $user);
 }

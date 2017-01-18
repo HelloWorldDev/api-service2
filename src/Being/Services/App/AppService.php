@@ -62,7 +62,7 @@ class AppService
      * @param string $message
      * @return mixed
      */
-    public static function errorResponse($code, $message = '')
+    public static function responseError($code, $message = '')
     {
         return self::responseCore(['error_code' => $code, 'message' => $message]);
     }
@@ -181,7 +181,7 @@ class AppService
     public static function getMonoLog()
     {
         if (function_exists('app')) {
-            return app('log')->getMonolog();
+            return app('log');
         }
 
         return null;
