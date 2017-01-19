@@ -38,12 +38,12 @@ class HttpClient implements Sender
             $uri = substr($uri, 0, strpos($uri, '?'));
             $uri .= sprintf("?%s", http_build_query($queries));
         }
-
+        
         if (is_array($body)) {
             $body = http_build_query($body);
         }
 
-        if(!isset($headers['Content-Type'])){
+        if (!isset($headers['Content-Type'])) {
             $headers['Content-Type'] = 'application/x-www-form-urlencoded';
         }
 

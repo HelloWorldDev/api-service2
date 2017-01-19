@@ -7,7 +7,6 @@ use Being\Api\Service\HttpClient;
 use Being\Api\Service\User\User;
 use Being\Api\Service\User\UserClient;
 use PHPUnit_Framework_TestCase;
-use Being\Services\ResourceService;
 
 class UserCenterTest extends PHPUnit_Framework_TestCase
 {
@@ -69,11 +68,13 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         return $cli;
     }
 
-    public function testRealService(){
+    public function testRealService()
+    {
         //$this->_testRealService();
     }
 
-    public function _testRealService(){
+    public function _testRealService()
+    {
         $baseUrl = 'http://localhost:8091';
         $httpCli = new HttpClient($baseUrl);
         $userCli = new UserClient($httpCli, '1', '987654321nihao');

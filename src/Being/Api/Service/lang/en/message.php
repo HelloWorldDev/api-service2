@@ -1,0 +1,25 @@
+<?php
+
+return [
+  10400 => 'invalid param',
+  10401 => 'network error',
+  10402 => 'system busy',
+  10500 => 'system busy',
+  10501 => 'system busy',
+  10600 => 'username exists',
+  10601 => 'username length 5-16',
+  10602 => 'username format error',
+  10603 => 'email exists',
+  10604 => 'email length error',
+  10605 => 'email invalid',
+  10606 => 'fullname exists',
+  10607 => 'fullname length error',
+  10608 => 'fullname format error',
+  10609 => 'password length 6-18',
+  10610 => 'password format error',
+  10611 => 'username not exists',
+  10612 => 'email not exists',
+  10613 => 'password error',
+  10614 => 'user not exists',
+  0 => '',
+];
