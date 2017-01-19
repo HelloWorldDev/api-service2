@@ -7,7 +7,6 @@ use Being\Api\Service\HttpClient;
 use Being\Api\Service\User\User;
 use Being\Api\Service\User\UserClient;
 use PHPUnit_Framework_TestCase;
-use Being\Services\ResourceService;
 
 class UserCenterTest extends PHPUnit_Framework_TestCase
 {
@@ -15,13 +14,13 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
     {
         $okBody = json_encode([
             'code' => Code::SUCCESS,
-            'msg' => "",
+            'message' => "",
             'data' => ['id' => 1]
         ]);
 
         $badBody = json_encode([
             'code' => Code::REQUEST_TIMEOUT,
-            'msg' => "bad response",
+            'message' => "bad response",
             'data' => null
         ]);
 
@@ -36,17 +35,14 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
             $cli = $this->getUserCenterCli($resp);
             list($code, $data) = $cli->register($user);
             $this->assertEquals($resp[3], $code);
-            $this->assertEquals($resp[4], is_null($data));
 
             $cli = $this->getUserCenterCli($resp);
             list($code, $data) = $cli->login($user);
             $this->assertEquals($resp[3], $code);
-            $this->assertEquals($resp[4], is_null($data));
 
             $cli = $this->getUserCenterCli($resp);
             list($code, $data) = $cli->updateUser($user);
             $this->assertEquals($resp[3], $code);
-            $this->assertEquals($resp[4], is_null($data));
 
             $reqs = [
                 ['email', 'ssdf@sdf.com'],
@@ -54,9 +50,8 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
             ];
             foreach ($reqs as $item) {
                 $cli = $this->getUserCenterCli($resp);
-                list($code, $data) = $cli->verify($item[0], $item[1]);
+                list($code, $data) = $cli->verify($user);
                 $this->assertEquals($resp[3], $code);
-                $this->assertEquals($resp[4], is_null($data));
             }
         }
     }
