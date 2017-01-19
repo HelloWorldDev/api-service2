@@ -96,13 +96,7 @@ class UserClient implements ClientInterface
             }
         }
 
-        $bodyArr = [
-            'resource_name' => $resource,
-            'value' => $value,
-        ];
-
-        $uri = 'v1/user/verify';
-        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::POST, '/v1/user/verify', [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
