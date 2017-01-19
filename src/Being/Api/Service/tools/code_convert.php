@@ -33,11 +33,11 @@ preg_match_all('/Code([a-zA-Z]+)\s*=\s*(\d+)/', $content, $m);
 
 $goCodes = [];
 foreach ($m[2] as $i => $code) {
-    $goCodes[0][] = convert2snack($m[1][$i]);
+    $goCodes[0][] = camel2snack($m[1][$i]);
     $goCodes[1][] = $code;
 }
 
-$phpCodeFile = __DIR__ . '/Code.php';
+$phpCodeFile = __DIR__ . '/../Code.php';
 $contentPHP = file_get_contents($phpCodeFile);
 preg_match_all('/const\s+([a-zA-Z_]+)\s*=\s*(\d+)/', $contentPHP, $m);
 
@@ -57,19 +57,7 @@ foreach ($goCodes[0] as $i => $name) {
     }
 }
 
-$constStr = '';
-foreach($goCodes[0] as $i => $name) {
-    $constStr .= "\tconst $name = {$goCodes[1][$i]};\n";
-}
-
-
-$contentOut = preg_replace('/\{.+?\}/s', "{\n$constStr}", $contentPHP);
-
-file_put_contents($phpCodeFile, $contentOut);
-
-
-
-function convert2snack($word)
+function camel2snack($word)
 {
     $words = [];
     for ($i = 0, $l = strlen($word); $i < $l; $i++) {
@@ -77,6 +65,20 @@ function convert2snack($word)
             $words[] = '_';
         }
         $words[] = strtoupper($word[$i]);
+    }
+
+    return implode('', $words);
+}
+
+function snack2camel($word)
+{
+    $words = [$word[0]];
+    for ($i = 1, $l = strlen($word); $i < $l; $i++) {
+        if ($word[$i] == '_') {
+            $words[] = $word[++$i];
+        }else{
+            $words[] = strtolower($word[$i]);
+        }
     }
 
     return implode('', $words);
