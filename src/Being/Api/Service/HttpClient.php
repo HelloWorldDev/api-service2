@@ -23,9 +23,6 @@ class HttpClient implements Sender
     const PUT = 'PUT';
     const DELETE = 'DELETE';
 
-    const AppID = 1;
-    const AppSecret = '987654321nihao';
-
     public $client;
     protected $logger;
 
@@ -41,15 +38,7 @@ class HttpClient implements Sender
             $uri = substr($uri, 0, strpos($uri, '?'));
             $uri .= sprintf("?%s", http_build_query($queries));
         }
-
-        if (!isset($body['app_id'])) {
-            $body['app_id'] = self::AppID;
-        }
-
-        if (!isset($body['app_secret'])) {
-            $body['app_secret'] = self::AppSecret;
-        }
-
+        
         if (is_array($body)) {
             $body = http_build_query($body);
         }

@@ -25,12 +25,13 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         ]);
 
         $responses = [
-            // http code, body, header, expect Code, is Data null
+            // http_code, body, header, expect Code, is Data null
             [200, $okBody, [], Code::SUCCESS, false],
             [400, $badBody, [], Code::REQUEST_TIMEOUT, true],
         ];
 
         $user = new User(123, 'jason', 'jason w', '123', 'sdf@sdf.com', 'avatar');
+        $msg = 'bad response';
         foreach ($responses as $resp) {
             $cli = $this->getUserCenterCli($resp);
             list($code, $data) = $cli->register($user);
@@ -45,11 +46,12 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
             $this->assertEquals($resp[3], $code);
 
             $reqs = [
-                ['email', 'ssdf@sdf.com'],
-                ['username', 'jason'],
+                [null, 'ssdf@sdf.com'],
+                ['username', null],
             ];
             foreach ($reqs as $item) {
                 $cli = $this->getUserCenterCli($resp);
+                $user = new User(null, $item[0], null, null, $item[1], null);
                 list($code, $data) = $cli->verify($user);
                 $this->assertEquals($resp[3], $code);
             }
@@ -61,7 +63,7 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         $httpCli = \Mockery::mock('Being\Api\Service\Sender');
         $httpCli->shouldReceive('send')->times(1)->andReturn([$resp[0], $resp[1], $resp[2]]);
 
-        $cli = new UserClient($httpCli);
+        $cli = new UserClient($httpCli, '1', '987654321nihao');
 
         return $cli;
     }
@@ -75,7 +77,7 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
     {
         $baseUrl = 'http://localhost:8091';
         $httpCli = new HttpClient($baseUrl);
-        $userCli = new UserClient($httpCli);
+        $userCli = new UserClient($httpCli, '1', '987654321nihao');
 
         $user = new User(0, 'jason4', 'jason', '123456', 'email4@sdf.com', '');
         list($code, $body) = $userCli->register($user);
