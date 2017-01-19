@@ -7,6 +7,7 @@ use Being\Services\App\LanguagePackageService;
 $file = __DIR__ . '/lang.csv';
 list($errors, $languageData) = LanguagePackageService::parseCSVFile($file);
 
+
 foreach ($languageData as $data) {
     if ($data['device'] == LanguagePackageService::SERVER) {
         $language = $data['language'];
@@ -26,7 +27,7 @@ foreach ($languageData as $data) {
             }
         }
         if (is_array($keyMap)) {
-            $langData = array_merge($langData, $keyMap);
+            $langData = $keyMap + $langData;
         }
         $varContent = var_export($langData, true);
         $varContent = str_replace(['array (', "),\n", "\n)"], ['[', "],\n", "\n]"], $varContent);
