@@ -22,7 +22,7 @@ class UserClient implements ClientInterface
             if ($resp['code'] == Code::SUCCESS) {
                 return [$resp['code'], $resp['data']];
             } else {
-                return [$resp['code'], null];
+                return [$resp['code'], $resp['message']];
             }
         }
 
@@ -38,7 +38,7 @@ class UserClient implements ClientInterface
             'email' => $user->email,
         ];
 
-        $req = HttpClient::getRequest(HttpClient::POST, '/v1/user', [], [], $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::POST, 'v1/user', [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
@@ -79,7 +79,8 @@ class UserClient implements ClientInterface
             'password' => $user->password,
         ];
 
-        $req = HttpClient::getRequest(HttpClient::POST, '/v1/login', [], [], $bodyArr);
+        $uri = 'v1/login';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
@@ -95,7 +96,13 @@ class UserClient implements ClientInterface
             }
         }
 
-        $req = HttpClient::getRequest(HttpClient::POST, '/v1/user/verify', [], [], $bodyArr);
+        $bodyArr = [
+            'resource_name' => $resource,
+            'value' => $value,
+        ];
+
+        $uri = 'v1/user/verify';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
