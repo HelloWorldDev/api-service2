@@ -1,14 +1,27 @@
-# BEING API SERVICE &nbsp;&nbsp;&nbsp; [![CircleCI](https://circleci.com/gh/HelloWorldDev/api-service.svg?style=svg)](https://circleci.com/gh/HelloWorldDev/api-service) [![Build Status](https://travis-ci.org/HelloWorldDev/api-service.svg?branch=master)](https://travis-ci.org/HelloWorldDev/api-service)
+# [BEING API SERVICE](https://packagist.org/packages/being/api-service) &nbsp;&nbsp;&nbsp; [![CircleCI](https://circleci.com/gh/HelloWorldDev/api-service.svg?style=svg)](https://circleci.com/gh/HelloWorldDev/api-service) [![Build Status](https://travis-ci.org/HelloWorldDev/api-service.svg?branch=master)](https://travis-ci.org/HelloWorldDev/api-service)
 
 being base services include helper, live, resource and so on.
 
-## How to Install
+## How to use
 
-[Composer HomePage](https://packagist.org/packages/being/api-service)
+Add this configuration in your composer.json
+
+```
+"minimum-stability": "dev",
+"repositories": [
+    {"type": "composer", "url": "http://packagist.phpcomposer.com"},
+    {"type": "vcs","url": "https://github.com/HelloWorldDev/api-service"},
+    {"packagist": false}
+]
+```
+
+and run composer command
+
 
 ```
 $ composer require "being/api-service:~1.0"
 ```
+
 
 ## How to Commit
 
