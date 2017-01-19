@@ -66,7 +66,7 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         $httpCli = \Mockery::mock('Being\Api\Service\Sender');
         $httpCli->shouldReceive('send')->times(1)->andReturn([$resp[0], $resp[1], $resp[2]]);
 
-        $cli = new UserClient($httpCli);
+        $cli = new UserClient($httpCli, '1', '987654321nihao');
 
         return $cli;
     }
