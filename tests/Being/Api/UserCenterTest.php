@@ -71,11 +71,13 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         return $cli;
     }
 
-    public function testRealService(){
+    public function testRealService()
+    {
         //$this->_testRealService();
     }
 
-    public function _testRealService(){
+    public function _testRealService()
+    {
         $baseUrl = 'http://localhost:8091';
         $httpCli = new HttpClient($baseUrl);
         $userCli = new UserClient($httpCli);

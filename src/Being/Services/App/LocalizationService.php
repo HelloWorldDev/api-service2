@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 
 class LocalizationService
 {
-
     protected static $langMap = [
         'zh-tw' => ['zh-hant', 'zh-tw', 'zh-hk', 'zh_hk', 'zh_tw'],
         'zh-cn' => ['zh-cn', 'zh-hans', 'hans', 'zh_cn'],

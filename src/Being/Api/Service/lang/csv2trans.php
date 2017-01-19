@@ -7,11 +7,11 @@ use Being\Services\App\LanguagePackageService;
 $file = __DIR__ . '/lang.csv';
 list($errors, $languageData) = LanguagePackageService::parseCSVFile($file);
 
-foreach($languageData as $data){
+foreach ($languageData as $data) {
     if ($data['device'] == LanguagePackageService::SERVER) {
         $language = $data['language'];
         $dir = __DIR__ . '/' . $language;
-        if(!file_exists($dir)){
+        if (!file_exists($dir)) {
             mkdir($dir);
         }
         $file = $dir . '/message.php';
@@ -25,7 +25,7 @@ foreach($languageData as $data){
                 $keyMap[intval(substr($k, 5))] = $v;
             }
         }
-        if(is_array($keyMap)){
+        if (is_array($keyMap)) {
             $langData = array_merge($langData, $keyMap);
         }
         $varContent = var_export($langData, true);
