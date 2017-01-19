@@ -10,6 +10,8 @@ namespace Being\Api\Service;
 
 use Being\Services\App\AppService;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
@@ -41,6 +43,10 @@ class HttpClient implements Sender
             $body = http_build_query($body);
         }
 
+        if(!isset($headers['Content-Type'])){
+            $headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        }
+
         $req = new Request($method, $uri, $headers, $body);
 
         return $req;
@@ -52,13 +58,16 @@ class HttpClient implements Sender
             $resp = $this->client->send($request);
 
             $code = $resp->getStatusCode();
-            $body = $resp->getBody();
+            $body = $resp->getBody()->__toString();
             $headers = $resp->getHeaders();
-
             return [$code, $body, $headers];
-        } catch (\Exception $e) {
+
+        } catch (BadResponseException $e) {
             $this->log(Logger::ERROR, $e->getMessage());
-            return [$e->getCode(), $e->getMessage(), null];
+            $body = $e->getResponse()->getBody()->__toString();
+            $code = $e->getResponse()->getStatusCode();
+            $headers = $e->getResponse()->getHeaders();
+            return [$code, $body, $headers];
         }
     }
 
@@ -73,7 +82,9 @@ class HttpClient implements Sender
             'response_code' => $response->getStatusCode(),
             'response_reason_phrase' => $response->getReasonPhrase(),
         ]);
-        $this->logger->log($level, $message);
+        if (!is_null($this->logger)) {
+            $this->logger->log($level, $message);
+        }
     }
 
     protected function log($level, $msg)
