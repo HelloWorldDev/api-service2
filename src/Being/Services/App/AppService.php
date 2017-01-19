@@ -2,6 +2,8 @@
 
 namespace Being\Services\App;
 
+use App\Services\App\LocalizationService;
+use Being\Api\Service\Message;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 
@@ -62,8 +64,12 @@ class AppService
      * @param string $message
      * @return mixed
      */
-    public static function responseError($code, $message = '')
+    public static function responseError($code, $message = null)
     {
+        if (is_null($message)) {
+            $message = Message::getMessage($code, LocalizationService::getLang());
+        }
+
         return self::responseCore(['error_code' => $code, 'message' => $message]);
     }
 
