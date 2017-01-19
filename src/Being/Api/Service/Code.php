@@ -8,6 +8,7 @@ class Code
     const SUCCESS = 0;
     // 内部错误 400-499
     const INVALID_PARAM = 10400;
+    const REQUEST_TIMEOUT = 10401;
     // 外部错误 500-599
     const SYSTEM_ERROR = 10500;
     const EMPTY_BODY = 10501;
