@@ -78,7 +78,7 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
     public function _testRealService(){
         $baseUrl = 'http://localhost:8091';
         $httpCli = new HttpClient($baseUrl);
-        $userCli = new UserClient($httpCli);
+        $userCli = new UserClient($httpCli, '1', '987654321nihao');
 
         $user = new User(0, 'jason4', 'jason', '123456', 'email4@sdf.com', '');
         list($code, $body) = $userCli->register($user);

@@ -9,10 +9,14 @@ use Being\Api\Service\Sender;
 class UserClient implements ClientInterface
 {
     protected $httpClient;
+    public $appID;
+    public $appSecret;
 
-    public function __construct(Sender $httpClient)
+    public function __construct(Sender $httpClient, $appID, $appSecret)
     {
         $this->httpClient = $httpClient;
+        $this->appID = $appID;
+        $this->appSecret = $appSecret;
     }
 
     public function parseResponseBody($body)
@@ -29,6 +33,20 @@ class UserClient implements ClientInterface
         return [Code::EMPTY_BODY, null];
     }
 
+    protected function getSecretData(){
+        return [
+            'app_id' => $this->appID,
+            'app_secret' => $this->appSecret,
+        ];
+    }
+
+    protected function getSecretHeader(){
+        return [
+            'App-ID' => $this->appID,
+            'App-Secret' => $this->appSecret,
+        ];
+    }
+
     public function register(User $user)
     {
         $bodyArr = [
@@ -38,7 +56,9 @@ class UserClient implements ClientInterface
             'email' => $user->email,
         ];
 
-        $req = HttpClient::getRequest(HttpClient::POST, 'v1/user', [], [], $bodyArr);
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $req = HttpClient::getRequest(HttpClient::POST, 'v1/user', [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
@@ -54,8 +74,10 @@ class UserClient implements ClientInterface
             }
         }
 
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
         $uri = sprintf("/v1/user/%s", $user->uid);
-        $req = HttpClient::getRequest(HttpClient::PUT, $uri, [], [], $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::PUT, $uri, [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
@@ -79,8 +101,10 @@ class UserClient implements ClientInterface
             'password' => $user->password,
         ];
 
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
         $uri = 'v1/login';
-        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
@@ -96,13 +120,10 @@ class UserClient implements ClientInterface
             }
         }
 
-        $bodyArr = [
-            'resource_name' => $resource,
-            'value' => $value,
-        ];
-
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
         $uri = 'v1/user/verify';
-        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
