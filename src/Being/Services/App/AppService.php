@@ -2,7 +2,6 @@
 
 namespace Being\Services\App;
 
-use App\Services\App\LocalizationService;
 use Being\Api\Service\Message;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;

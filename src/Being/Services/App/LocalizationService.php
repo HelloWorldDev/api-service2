@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App;
+namespace Being\Services\App;
 
 use Illuminate\Support\Str;
 
