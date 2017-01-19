@@ -2,6 +2,7 @@
 
 namespace Tests\Being\Services\App;
 
+use Being\Api\Service\Code;
 use Being\Services\App\AppService;
 use Tests\Being\Laravel\Lumen\TestCase;
 
@@ -26,6 +27,11 @@ class AppServiceTest extends TestCase
     {
         $this->assertTrue(AppService::response() instanceof \Symfony\Component\HttpFoundation\Response);
         $this->assertTrue(AppService::responseError(500) instanceof \Symfony\Component\HttpFoundation\Response);
+        $_GET['lang'] = 'zh-cn';
+        $resp = AppService::responseError(Code::INVALID_PARAM);
+        $this->assertTrue($resp instanceof \Symfony\Component\HttpFoundation\Response);
+        $respArr = json_decode($resp->getContent(), true);
+        $this->assertTrue(isset($respArr['message']) && $respArr['message'] == '参数不合法');
     }
 
     public function testAppClientTypeCheck()
