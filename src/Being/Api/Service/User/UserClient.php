@@ -25,7 +25,7 @@ class UserClient implements ClientInterface
         if (isset($resp['code'])) {
             if ($resp['code'] == Code::SUCCESS) {
                 return [$resp['code'], $resp['data']];
-            } else {
+            } elseif (isset($resp['message'])){
                 return [$resp['code'], $resp['message']];
             }
         }

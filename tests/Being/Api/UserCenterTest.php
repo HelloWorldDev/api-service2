@@ -49,12 +49,13 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
             $this->assertEquals($resp[4], is_null($data));
 
             $reqs = [
-                ['email', 'ssdf@sdf.com'],
-                ['username', 'jason'],
+                [null, 'ssdf@sdf.com'],
+                ['username', null],
             ];
             foreach ($reqs as $item) {
                 $cli = $this->getUserCenterCli($resp);
-                list($code, $data) = $cli->verify($item[0], $item[1]);
+                $user = new User(null, $item[0], null, null, $item[1], null);
+                list($code, $data) = $cli->verify($user);
                 $this->assertEquals($resp[3], $code);
                 $this->assertEquals($resp[4], is_null($data));
             }
