@@ -9,10 +9,14 @@ use Being\Api\Service\Sender;
 class UserClient implements ClientInterface
 {
     protected $httpClient;
+    public $appID;
+    public $appSecret;
 
-    public function __construct(Sender $httpClient)
+    public function __construct(Sender $httpClient, $appID, $appSecret)
     {
         $this->httpClient = $httpClient;
+        $this->appID = $appID;
+        $this->appSecret = $appSecret;
     }
 
     public function parseResponseBody($body)
@@ -21,12 +25,26 @@ class UserClient implements ClientInterface
         if (isset($resp['code'])) {
             if ($resp['code'] == Code::SUCCESS) {
                 return [$resp['code'], $resp['data']];
-            } else {
-                return [$resp['code'], null];
+            } elseif (isset($resp['message'])){
+                return [$resp['code'], $resp['message']];
             }
         }
 
-        return [Code::EmptyBody, null];
+        return [Code::EMPTY_BODY, null];
+    }
+
+    protected function getSecretData(){
+        return [
+            'app_id' => $this->appID,
+            'app_secret' => $this->appSecret,
+        ];
+    }
+
+    protected function getSecretHeader(){
+        return [
+            'App-ID' => $this->appID,
+            'App-Secret' => $this->appSecret,
+        ];
     }
 
     public function register(User $user)
@@ -38,21 +56,30 @@ class UserClient implements ClientInterface
             'email' => $user->email,
         ];
 
-        $req = HttpClient::getRequest(HttpClient::POST, '/user', [], [], $bodyArr);
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $req = HttpClient::getRequest(HttpClient::POST, 'v1/user', [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
+
         return $this->parseResponseBody($body);
     }
 
     public function updateUser(User $user)
     {
-        $bodyArr = [
-            'password' => $user->password,
-            'fullname' => $user->fullname,
-            'email' => $user->email,
-        ];
-        $uri = sprintf("/user/%s", $user->uid);
-        $req = HttpClient::getRequest(HttpClient::PUT, $uri, [], [], $bodyArr);
+        $bodyArr = [];
+        foreach (['password', 'fullname', 'email'] as $key) {
+            $val = $user->$key;
+            if (!is_null($val)) {
+                $bodyArr[$key] = $val;
+            }
+        }
+
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $uri = sprintf("/v1/user/%s", $user->uid);
+        $req = HttpClient::getRequest(HttpClient::PUT, $uri, [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
+
         return $this->parseResponseBody($body);
     }
 
@@ -65,7 +92,7 @@ class UserClient implements ClientInterface
             $type = 'email';
             $account = $user->email;
         } else {
-            throw new \Exception("both username and email is emtpy");
+            throw new \Exception("both username and email is empty");
         }
 
         $bodyArr = [
@@ -74,27 +101,31 @@ class UserClient implements ClientInterface
             'password' => $user->password,
         ];
 
-        $uri = '/login';
-        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $uri = 'v1/login';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
+
         return $this->parseResponseBody($body);
     }
 
-    public function verify($resource, $value)
+    public function verify(User $user)
     {
-        $validResource = ['username', 'email'];
-        if (!in_array($resource, $validResource)) {
-            throw new \Exception("{$resource} is invalid resource name");
+        $bodyArr = [];
+        foreach (['username', 'password', 'fullname', 'email'] as $key) {
+            $val = $user->$key;
+            if (!is_null($val)) {
+                $bodyArr[$key] = $val;
+            }
         }
 
-        $bodyArr = [
-            'resource_name' => $resource,
-            'value' => $value,
-        ];
-
-        $uri = '/verify';
-        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], [], $bodyArr);
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $uri = 'v1/user/verify';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
+
         return $this->parseResponseBody($body);
     }
 }
