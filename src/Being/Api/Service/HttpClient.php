@@ -60,8 +60,8 @@ class HttpClient implements Sender
             $code = $resp->getStatusCode();
             $body = $resp->getBody()->__toString();
             $headers = $resp->getHeaders();
+            $this->logResponse(Logger::DEBUG, $request, $resp);
             return [$code, $body, $headers];
-
         } catch (BadResponseException $e) {
             $this->log(Logger::ERROR, $e->getMessage());
             $body = $e->getResponse()->getBody()->__toString();
@@ -74,10 +74,10 @@ class HttpClient implements Sender
     protected function logResponse($level, Request $request, ResponseInterface $response)
     {
         $message = json_encode([
-            'request_uri' => $request->getUri(),
+            'request_uri' => $request->getUri()->__toString(),
             'request_method' => $request->getMethod(),
             'request_header' => $request->getHeaders(),
-            'request_body' => $request->getBody(),
+            'request_body' => $request->getBody()->__toString(),
             'response_body' => $response->getBody()->__toString(),
             'response_code' => $response->getStatusCode(),
             'response_reason_phrase' => $response->getReasonPhrase(),
