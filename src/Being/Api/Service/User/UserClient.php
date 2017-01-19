@@ -26,7 +26,7 @@ class UserClient implements ClientInterface
             }
         }
 
-        return [Code::EmptyBody, null];
+        return [Code::EMPTY_BODY, null];
     }
 
     public function register(User $user)
