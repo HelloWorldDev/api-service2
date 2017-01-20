@@ -24,7 +24,7 @@ class AuthWechat extends Auth
         $avatar = isset($wechatData['headimgurl']) ? $wechatData['headimgurl'] : '';
         $nickname = isset($wechatData['nickname']) ? $wechatData['nickname'] : '';
 
-        return ['unionid' => $unionid, 'avatar' => $avatar, 'nickname' => $nickname];
+        return ['unionid' => $unionid, 'code' => $code, 'avatar' => $avatar, 'nickname' => $nickname];
     }
 
     public static function secret()

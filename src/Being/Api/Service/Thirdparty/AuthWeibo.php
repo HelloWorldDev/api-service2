@@ -16,6 +16,6 @@ class AuthWeibo extends Auth
         $nickname = empty($userInfo['name']) ? '' : $userInfo['name'];
         $avatar = empty($userInfo['avatar_large']) ? '' : $userInfo['avatar_large'];
 
-        return ['nickname' => $nickname, 'avatar' => $avatar];
+        return ['unionid' => $unionid, 'code' => $code, 'nickname' => $nickname, 'avatar' => $avatar];
     }
 }
