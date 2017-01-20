@@ -1,21 +1,21 @@
 简体中文|zh-hans|values-zh-rCN|zh-cn,繁体中文|zh-hant|values-zh-rTW|zh-tw,英语|en|values|en,泰语|th|values-th|th,日语|ja|values-ja|ja,俄语|ru|values-ru|ru,,备注说明说明,SERVER
-参数不合法,,invalid param,,,,,CodeInvalidParam,code.10400
-网络错误,,network error,,,,,CodeRequestTimeout,code.10401
-服务器繁忙,,system busy,,,,,CodeErrorCodeNotExists,code.10402
-服务器繁忙,,system busy,,,,,CodeSystemError,code.10500
-服务器繁忙,,system busy,,,,,CodeEmptyBody,code.10501
-用户名已存在,,username exists,,,,,CodeUsernameExists,code.10600
-用户名长度6-18,,username length 5-16,,,,,CodeUsernameLength,code.10601
-用户只能是字母数字下划线,,username format error,,,,,CodeUsernameFormat,code.10602
-邮箱已存在,,email exists,,,,,CodeEmailExists,code.10603
-邮箱长度不超过100,,email length error,,,,,CodeEmailLength,code.10604
-邮箱不合法,,email invalid,,,,,CodeEmailFormat,code.10605
-昵称已存在,,fullname exists,,,,,CodeFullnameExists,code.10606
-昵称长度不合法,,fullname length error,,,,,CodeFullnameLength,code.10607
-昵称不合法,,fullname format error,,,,,CodeFullnameFormat,code.10608
-密码长度6-18,,password length 6-18,,,,,CodePasswordLength,code.10609
-密码格式不合法,,password format error,,,,,CodePasswordFormat,code.10610
-用户名不存在,,username not exists,,,,,CodeUsernameNotExists,code.10611
-邮箱不存在,,email not exists,,,,,CodeEmailNotExists,code.10612
-密码错误,,password error,,,,,CodePasswordNotMatch,code.10613
-用户不存在,,user not exists,,,,,CodeUserNotExists,code.10614
+参数不合法,參數不合法,Invalid parameter,การคำนวณผิดพลาด,,,,CodeInvalidParam,code.10400
+"网络超时,请重试",網路逾時，請再試一次,"Network timeout, please try again","เครือข่ายหมดเวลา,โปรดลองอีกครั้ง",,,,CodeRequestTimeout,code.10401
+"网络超时,请重试",網路逾時，請再試一次,"Network timeout, please try again","เครือข่ายหมดเวลา,โปรดลองอีกครั้ง",,,,CodeErrorCodeNotExists,code.10402
+"网络超时,请重试",網路逾時，請再試一次,"Network timeout, please try again","เครือข่ายหมดเวลา,โปรดลองอีกครั้ง",,,,CodeSystemError,code.10500
+"网络超时,请重试",網路逾時，請再試一次,"Network timeout, please try again","เครือข่ายหมดเวลา,โปรดลองอีกครั้ง",,,,CodeEmptyBody,code.10501
+用户名已被注册,此用戶名已被註冊,Username not available,ลงทะเบียนบัญชีผู้ใช้สำเร็จ,,,,CodeUsernameExists,code.10600
+用户名5-16个字符且只允许字母数字下划线,使用者帳號請輸入5-16碼英數字，勿使用特殊符號,"Username must be 5-16 characters and only letters, numbers and underscore is allowed",ชื่อบัญชีผู้ใช้ต้องมีความยาว 5-16 ตัวอักษรและอนุญาตให้ใช้เป็นตัวอักษร ตัวเลข และขีดล่างเท่านั้น,,,,CodeUsernameLength,code.10601
+用户名5-16个字符且只允许字母数字下划线,使用者帳號請輸入5-16碼英數字，勿使用特殊符號,"Username must be 5-16 characters and only letters, numbers and underscore is allowed",ชื่อบัญชีผู้ใช้ต้องมีความยาว 5-16 ตัวอักษรและอนุญาตให้ใช้เป็นตัวอักษร ตัวเลข และขีดล่างเท่านั้น,,,,CodeUsernameFormat,code.10602
+邮箱已被注册,此E-mail已被註冊,Email being used,ลงทะเบียนอีเมล์สำเร็จ,,,,CodeEmailExists,code.10603
+邮箱格式不正确,E-mail格式不正確,Incorrect email format,รูปแบบอีเมล์ไม่ถูกต้อง,,,,CodeEmailLength,code.10604
+邮箱格式不正确,E-mail格式不正確,Incorrect email format,รูปแบบอีเมล์ไม่ถูกต้อง,,,,CodeEmailFormat,code.10605
+昵称已被使用,暱稱已被使用,Nick name has been used,ชื่อนี้มีผู้ใช้แล้ว,,,,CodeFullnameExists,code.10606
+昵称4-20个字符，请勿使用特殊字符,暱稱請輸入4-20碼英數字或中文，請勿使用特殊符號,Nick name must be 4-20 characters and special characters are not allowed,ชื่อเล่นต้องมี 4-20 ตัวอักษร และไม่อนุญาตให้ใช้สัญลักษณ์พิเศษ,,,,CodeFullnameLength,code.10607
+昵称4-20个字符，请勿使用特殊字符,暱稱請輸入4-20碼英數字或中文，請勿使用特殊符號,Nick name must be 4-20 characters and special characters are not allowed,ชื่อเล่นต้องมี 4-20 ตัวอักษร และไม่อนุญาตให้ใช้สัญลักษณ์พิเศษ,,,,CodeFullnameFormat,code.10608
+密码6-18长度,密碼請輸入6-18個字元,Password must be between 6-18 characters,ความยาวรหัสผ่าน 6-18 ตัว,,,,CodePasswordLength,code.10609
+密码6-18长度,密碼請輸入6-18個字元,Password must be between 6-18 characters,ความยาวรหัสผ่าน 6-18 ตัว,,,,CodePasswordFormat,code.10610
+用户不存在,用戶名稱不存在,User not found,ไม่พบบัญชีผู้ใช้,,,,CodeUsernameNotExists,code.10611
+邮箱不存在,E-mail不存在,Email not found,ไม่พบอีเมล์,,,,CodeEmailNotExists,code.10612
+账号或密码错误,賬號或密碼錯誤,Incorrect account or password,เลขที่บัญชีหรือรหัสผ่านไม่ถูกต้อง,,,,CodePasswordNotMatch,code.10613
+用户不存在,用戶名稱不存在,User not found,ไม่พบบัญชีผู้ใช้,,,,CodeUserNotExists,code.10614
