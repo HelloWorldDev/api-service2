@@ -5,6 +5,7 @@ namespace Being\Api\Service\User;
 use Being\Api\Service\Code;
 use Being\Api\Service\HttpClient;
 use Being\Api\Service\Sender;
+use ThirdpartyAuth;
 
 class UserClient implements ClientInterface
 {
@@ -129,11 +130,11 @@ class UserClient implements ClientInterface
         return $this->parseResponseBody($body);
     }
 
-    public function find3User(ThirdpartyUser $tu)
+    public function find3user(ThirdpartyAuth $ta)
     {
         $bodyArr = [
-            'unionid' => $tu->unionid,
-            'type' => $tu->type,
+            'unionid' => $ta->unionid,
+            'type' => $ta->type,
         ];
         $header = $this->getSecretHeader();
         $bodyArr += $this->getSecretData();
@@ -144,14 +145,14 @@ class UserClient implements ClientInterface
         return $this->parseResponseBody($body);
     }
 
-    public function register3user(ThirdpartyUser $tu, $username, $fullname)
+    public function register3user(ThirdpartyAuth $ta, $username, $fullname)
     {
         $bodyArr = [
             'username' => $username,
             'fullname' => $fullname,
-            'tpname' => $tu->tpname,
-            'unionid' => $tu->unionid,
-            'type' => $tu->type,
+            'tpname' => $ta->tpname,
+            'unionid' => $ta->unionid,
+            'type' => $ta->type,
         ];
         $header = $this->getSecretHeader();
         $bodyArr += $this->getSecretData();
