@@ -14,4 +14,6 @@ interface ClientInterface
     public function updateUser(User $user);
     public function login(User $user);
     public function verify(User $user);
+    public function find3User(ThirdpartyUser $tu);
+    public function register3user(ThirdpartyUser $tu, $username, $fullname);
 }

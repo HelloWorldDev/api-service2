@@ -128,4 +128,37 @@ class UserClient implements ClientInterface
 
         return $this->parseResponseBody($body);
     }
+
+    public function find3User(ThirdpartyUser $tu)
+    {
+        $bodyArr = [
+            'unionid' => $tu->unionid,
+            'type' => $tu->type,
+        ];
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $uri = 'v1/thirdparty/user';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+
+        return $this->parseResponseBody($body);
+    }
+
+    public function register3user(ThirdpartyUser $tu, $username, $fullname)
+    {
+        $bodyArr = [
+            'username' => $username,
+            'fullname' => $fullname,
+            'tpname' => $tu->tpname,
+            'unionid' => $tu->unionid,
+            'type' => $tu->type,
+        ];
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $uri = 'v1/thirdparty/signup';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+
+        return $this->parseResponseBody($body);
+    }
 }
