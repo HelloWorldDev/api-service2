@@ -8,11 +8,11 @@ abstract class Auth
 {
     abstract public function login($unionid, $code);
 
-    public static function AuthFactory($type)
+    public static function AuthFactory($type, $httpClient)
     {
         switch ($type) {
             case ThirdpartyAuth::TYPE_WETHAT:
-                return new AuthWechat();
+                return new AuthWechat($httpClient);
             case ThirdpartyAuth::TYPE_FACEBOOK:
                 return new AuthFacebook();
             case ThirdpartyAuth::TYPE_WEIBO:

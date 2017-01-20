@@ -145,11 +145,11 @@ class UserClient implements ClientInterface
         return $this->parseResponseBody($body);
     }
 
-    public function register3user(ThirdpartyAuth $ta, $username, $fullname)
+    public function register3user(ThirdpartyAuth $ta, User $user)
     {
         $bodyArr = [
-            'username' => $username,
-            'fullname' => $fullname,
+            'username' => $user->username,
+            'fullname' => $user->fullname,
             'tpname' => $ta->tpname,
             'unionid' => $ta->unionid,
             'type' => $ta->type,
