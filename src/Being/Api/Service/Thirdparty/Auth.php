@@ -8,7 +8,7 @@ abstract class Auth
 {
     abstract public function login($unionid, $code);
 
-    public static function AuthFactory($type, $httpClient)
+    public static function factory($type, $httpClient)
     {
         switch ($type) {
             case ThirdpartyAuth::TYPE_WETHAT:

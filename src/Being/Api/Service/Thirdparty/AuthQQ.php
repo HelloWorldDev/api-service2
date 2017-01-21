@@ -4,7 +4,6 @@ namespace Being\Api\Service\Thirdparty;
 
 use Being\QQOpenApi\QQClient;
 use Being\Services\App\AppService;
-use Log;
 
 class AuthQQ extends Auth
 {
@@ -24,7 +23,7 @@ class AuthQQ extends Auth
         $client = new QQClient($keyPair['app_id'], $keyPair['app_key']);
         $client->setServerName($config['server_name']);
         $userInfo = $client->getUserInfo($unionid, $code, $keyPair['pf']);
-        Log::debug(sprintf('%s:%d qq response:%s', __FILE__, __LINE__, json_encode($userInfo)));
+        AppService::debug('qq response:'.json_encode($userInfo), __FILE__, __LINE__);
         $nickname = empty($userInfo['nickname']) ? '' : $userInfo['nickname'];
         $avatar = empty($userInfo['figureurl']) ? '' : $userInfo['figureurl'];
         return ['unionid' => $unionid, 'code' => $code, 'avatar' => $avatar, 'nickname' => $nickname];

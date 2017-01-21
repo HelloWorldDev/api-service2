@@ -5,6 +5,8 @@ namespace Being\Api\Service\User;
 use Being\Api\Service\Code;
 use Being\Api\Service\HttpClient;
 use Being\Api\Service\Sender;
+use Being\Api\Service\Thirdparty\Auth;
+use Being\Services\App\AppService;
 use ThirdpartyAuth;
 
 class UserClient implements ClientInterface
@@ -161,5 +163,39 @@ class UserClient implements ClientInterface
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
+    }
+
+    public function login3user($unionid, $code, $type)
+    {
+        // 验证第三方登录信息
+        $thirdparty = Auth::factory($type, $this->httpClient);
+        if (is_null($thirdparty)) {
+            AppService::error('unknow third party type:' . $type, __FILE__, __LINE__);
+            return [Code::INVALID_PARAM, 'params error'];
+        }
+        $thirdInfo = $thirdparty->login($unionid, $code);
+        if (is_null($thirdInfo)) {
+            AppService::error('third party check fail', __FILE__, __LINE__);
+            return [Code::SYSTEM_ERROR, 'params error'];
+        }
+
+        // 查看之前是否已注册
+        $ta = new ThirdpartyAuth(null, $type, $thirdInfo['unionid'], '');
+        list($code, $data) = $this->find3user($ta);
+        if ($code == Code::SUCCESS || $code == '非用户不存在的错误') {
+            return [$code, $data];
+        }
+
+        // 用户不存在，进行注册
+        $username = uniqid('u' . $type);
+        $tpname = isset($thirdInfo['nickname']) ? $thirdInfo['nickname'] : '';
+        $avatar = isset($thirdInfo['avatar']) ? $thirdInfo['avatar'] : '';
+        $ta->tpname = $tpname;
+        $user = new User(null, $username, '', '', '', $avatar);
+        list($code, $data) = $this->register3user($ta, $user);
+        if ($code == Code::SUCCESS) {
+            $user->uid = $data['uid'];
+            return [$code, $user];
+        }
     }
 }

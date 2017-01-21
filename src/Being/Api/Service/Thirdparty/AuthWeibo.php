@@ -2,8 +2,8 @@
 
 namespace Being\Api\Service\Thirdparty;
 
+use Being\Services\App\AppService;
 use Being\WeiboOpenApi\WeiboClient;
-use Log;
 
 class AuthWeibo extends Auth
 {
@@ -12,7 +12,7 @@ class AuthWeibo extends Auth
         $client = app(WeiboClient::class);
         $client->setAccessToken($code);
         $userInfo = $client->show_user_by_id($unionid);
-        Log::debug(sprintf('%s:%d weibo response:%s', __FILE__, __LINE__, json_encode($userInfo)));
+        AppService::debug('weibo response:' . json_encode($userInfo), __FILE__, __LINE__);
         $nickname = empty($userInfo['name']) ? '' : $userInfo['name'];
         $avatar = empty($userInfo['avatar_large']) ? '' : $userInfo['avatar_large'];
 
