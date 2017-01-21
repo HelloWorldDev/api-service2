@@ -182,20 +182,27 @@ class UserClient implements ClientInterface
         // 查看之前是否已注册
         $ta = new ThirdpartyAuth(null, $type, $thirdInfo['unionid'], '');
         list($code, $data) = $this->find3user($ta);
-        if ($code == Code::SUCCESS || $code == '非用户不存在的错误') {
+        if ($code == Code::SUCCESS || $code != Code::USER_NOT_EXISTS) {
             return [$code, $data];
         }
 
         // 用户不存在，进行注册
-        $username = uniqid('u' . $type);
+        $username = $this->randUserName('u' . $type);//生成以u+type为前缀的15位长度用户名
         $tpname = isset($thirdInfo['nickname']) ? $thirdInfo['nickname'] : '';
-        $avatar = isset($thirdInfo['avatar']) ? $thirdInfo['avatar'] : '';
         $ta->tpname = $tpname;
-        $user = new User(null, $username, '', '', '', $avatar);
+        $user = new User(null, $username, '', '', '', '');
         list($code, $data) = $this->register3user($ta, $user);
-        if ($code == Code::SUCCESS) {
-            $user->uid = $data['uid'];
-            return [$code, $user];
+        if ($code != Code::SUCCESS) {
+            return [$code, $data];
         }
+
+        $data['nickname'] = $tpname;
+        $data['avatar'] = isset($thirdInfo['avatar']) ? $thirdInfo['avatar'] : '';
+        return [$code, $data];
+    }
+
+    private function randUserName($prefix)
+    {
+        return $prefix . substr(md5(uniqid()), 0, 9) . rand(1000, 9999);
     }
 }

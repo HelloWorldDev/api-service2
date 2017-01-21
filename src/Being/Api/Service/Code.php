@@ -13,5 +13,6 @@ class Code
     const SYSTEM_ERROR = 10500;
     const EMPTY_BODY = 10501;
     // GO端业务错误 600-799
+    const USER_NOT_EXISTS = 10614;
     // 非GO端业务错误 800-999
 }
