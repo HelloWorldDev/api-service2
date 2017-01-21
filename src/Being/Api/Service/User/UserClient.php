@@ -187,7 +187,7 @@ class UserClient implements ClientInterface
         }
 
         // 用户不存在，进行注册
-        $username = $this->randUserName('u' . $type);//生成以u+type为前缀的15位长度用户名
+        $username = $this->randUserName($type);
         $tpname = isset($thirdInfo['nickname']) ? $thirdInfo['nickname'] : '';
         $ta->tpname = $tpname;
         $user = new User(null, $username, '', '', '', '');
@@ -201,8 +201,9 @@ class UserClient implements ClientInterface
         return [$code, $data];
     }
 
-    private function randUserName($prefix)
+    private function randUserName($type)
     {
-        return $prefix . substr(md5(uniqid()), 0, 9) . rand(1000, 9999);
+        //生成以u+type为前缀的15位长度用户名
+        return 'u' . $type . substr(md5(uniqid()), 0, 9) . rand(1000, 9999);
     }
 }
