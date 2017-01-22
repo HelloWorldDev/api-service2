@@ -41,8 +41,10 @@ class AppService
      */
     protected static function getLogContent($data, $file, $line)
     {
-        return sprintf('file:%s:%d message:%s', $file, $line,
-            is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        return sprintf('file:%s:%d request_id:%s message:%s', $file, $line,
+            isset($_SERVER['X_REQUEST_ID']) ? $_SERVER['X_REQUEST_ID'] : '',
+            is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        );
     }
 
 
@@ -75,9 +77,10 @@ class AppService
     /**
      * Response Client
      * @param $response
+     * @param int $status
      * @return mixed
      */
-    protected static function responseCore($response)
+    public static function responseCore($response, $status = 200)
     {
         $request = app('request');
         $requestMethod = $request->method();
@@ -117,7 +120,7 @@ class AppService
         $headers['Content-Type'] = 'application/json; charset=utf-8';
         $headers['Cache-Control'] = 'public';
 
-        return response()->json($response, 200, $headers);
+        return response()->json($response, $status, $headers);
     }
 
     /**
