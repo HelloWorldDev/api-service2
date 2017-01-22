@@ -6,8 +6,8 @@ use Being\Api\Service\Code;
 use Being\Api\Service\HttpClient;
 use Being\Api\Service\Sender;
 use Being\Api\Service\Thirdparty\Auth;
+use Being\Api\Service\Thirdparty\ThirdpartyAuth;
 use Being\Services\App\AppService;
-use ThirdpartyAuth;
 
 class UserClient implements ClientInterface
 {

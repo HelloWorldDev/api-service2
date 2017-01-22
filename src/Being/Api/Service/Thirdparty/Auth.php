@@ -2,8 +2,6 @@
 
 namespace Being\Api\Service\Thirdparty;
 
-use ThirdpartyAuth;
-
 abstract class Auth
 {
     abstract public function login($unionid, $code);

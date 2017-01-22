@@ -8,7 +8,7 @@
 
 namespace Being\Api\Service\User;
 
-use ThirdpartyAuth;
+use Being\Api\Service\Thirdparty\ThirdpartyAuth;
 
 interface ClientInterface
 {

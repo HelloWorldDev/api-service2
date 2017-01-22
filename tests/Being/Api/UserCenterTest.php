@@ -4,11 +4,12 @@ namespace Tests\Being\Api;
 
 use Being\Api\Service\Code;
 use Being\Api\Service\HttpClient;
+use Being\Api\Service\Thirdparty\ThirdpartyAuth;
 use Being\Api\Service\User\User;
 use Being\Api\Service\User\UserClient;
 use PHPUnit_Framework_TestCase;
 use Being\Services\ResourceService;
-use ThirdpartyAuth;
+
 
 class UserCenterTest extends PHPUnit_Framework_TestCase
 {

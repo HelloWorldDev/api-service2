@@ -1,11 +1,7 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: lalala
- * Date: 2017/1/20
- * Time: 下午3:36
- */
+namespace Being\Api\Service\Thirdparty;
+
 class ThirdpartyAuth
 {
     public $uid;
