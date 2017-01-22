@@ -143,7 +143,7 @@ class UserClient implements ClientInterface
         $header = $this->getSecretHeader();
         $bodyArr += $this->getSecretData();
         $uri = 'v1/thirdparty/user';
-        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::GET, $uri, [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
