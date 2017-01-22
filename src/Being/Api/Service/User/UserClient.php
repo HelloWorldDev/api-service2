@@ -136,14 +136,9 @@ class UserClient implements ClientInterface
 
     public function find3user(ThirdpartyAuth $ta)
     {
-        $bodyArr = [
-            'unionid' => $ta->unionid,
-            'type' => $ta->type,
-        ];
         $header = $this->getSecretHeader();
-        $bodyArr += $this->getSecretData();
-        $uri = 'v1/thirdparty/user';
-        $req = HttpClient::getRequest(HttpClient::GET, $uri, [], $header, $bodyArr);
+        $uri = 'v1/thirdparty/user?unionid=' . $ta->unionid . '&type=' . $ta->type;
+        $req = HttpClient::getRequest(HttpClient::GET, $uri, [], $header, []);
         list($code, $body, $header) = $this->httpClient->send($req);
 
         return $this->parseResponseBody($body);
