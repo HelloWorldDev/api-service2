@@ -7,11 +7,15 @@ use Being\Api\Service\Sender;
 
 class AuthWechat extends Auth
 {
-    protected $httpClient;
+    private $httpClient;
+    private $appId;
+    private $secret;
 
-    function __construct(Sender $httpClient)
+    public function __construct(Sender $httpClient, $appId, $secret)
     {
         $this->httpClient = $httpClient;
+        $this->appId = $appId;
+        $this->secret = $secret;
     }
 
     public function login($unionid, $code)
@@ -27,26 +31,16 @@ class AuthWechat extends Auth
         return ['unionid' => $unionid, 'code' => $code, 'avatar' => $avatar, 'nickname' => $nickname];
     }
 
-    public static function secret()
-    {
-        return env('WECHAT_MOBILE_APP_SECRET');
-    }
-
-    public static function appId()
-    {
-        return env('WECHAT_MOBILE_APP_ID');
-    }
-
     private function fetchAccessTokenData($code)
     {
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token';
         $query = [
-            'appid' => self::appId(),
-            'secret' => self::secret(),
+            'appid' => $this->appId,
+            'secret' => $this->secret,
             'code' => $code,
             'grant_type' => 'authorization_code',
         ];
-        $url = sprintf($url, self::appId(), self::secret(), $code);
+        $url = sprintf($url, $this->appId, $this->secret, $code);
         $req = HttpClient::getRequest(HttpClient::GET, $url, $query, [], null);
         list($code, $body, $header) = $this->httpClient->send($req);
         $data = json_decode($body, true);

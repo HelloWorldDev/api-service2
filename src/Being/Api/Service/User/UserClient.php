@@ -28,7 +28,7 @@ class UserClient implements ClientInterface
         if (isset($resp['code'])) {
             if ($resp['code'] == Code::SUCCESS) {
                 return [$resp['code'], $resp['data']];
-            } elseif (isset($resp['message'])){
+            } elseif (isset($resp['message'])) {
                 return [$resp['code'], $resp['message']];
             }
         }
@@ -36,14 +36,16 @@ class UserClient implements ClientInterface
         return [Code::EMPTY_BODY, null];
     }
 
-    protected function getSecretData(){
+    protected function getSecretData()
+    {
         return [
             'app_id' => $this->appID,
             'app_secret' => $this->appSecret,
         ];
     }
 
-    protected function getSecretHeader(){
+    protected function getSecretHeader()
+    {
         return [
             'App-ID' => $this->appID,
             'App-Secret' => $this->appSecret,
@@ -165,10 +167,10 @@ class UserClient implements ClientInterface
         return $this->parseResponseBody($body);
     }
 
-    public function login3user($unionid, $code, $type)
+    public function login3user($unionid, $code, $type, $appId = '', $secret = '')
     {
         // 验证第三方登录信息
-        $thirdparty = Auth::factory($type, $this->httpClient);
+        $thirdparty = Auth::factory($type, $this->httpClient, $appId, $secret);
         if (is_null($thirdparty)) {
             AppService::error('unknow third party type:' . $type, __FILE__, __LINE__);
             return [Code::INVALID_PARAM, 'params error'];
@@ -190,7 +192,7 @@ class UserClient implements ClientInterface
         $username = $this->randUserName($type);
         $tpname = isset($thirdInfo['nickname']) ? $thirdInfo['nickname'] : '';
         $ta->tpname = $tpname;
-        $user = new User(null, $username, '', '', '', '');
+        $user = new User(0, $username, '', '', '', '');
         list($code, $data) = $this->register3user($ta, $user);
         if ($code != Code::SUCCESS) {
             return [$code, $data];
