@@ -25,7 +25,7 @@ class UserClient implements ClientInterface
         if (isset($resp['code'])) {
             if ($resp['code'] == Code::SUCCESS) {
                 return [$resp['code'], $resp['data']];
-            } elseif (isset($resp['message'])){
+            } elseif (isset($resp['message'])) {
                 return [$resp['code'], $resp['message']];
             }
         }
@@ -33,14 +33,16 @@ class UserClient implements ClientInterface
         return [Code::EMPTY_BODY, null];
     }
 
-    protected function getSecretData(){
+    protected function getSecretData()
+    {
         return [
             'app_id' => $this->appID,
             'app_secret' => $this->appSecret,
         ];
     }
 
-    protected function getSecretHeader(){
+    protected function getSecretHeader()
+    {
         return [
             'App-ID' => $this->appID,
             'App-Secret' => $this->appSecret,
