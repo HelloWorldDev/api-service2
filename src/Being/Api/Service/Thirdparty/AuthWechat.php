@@ -11,11 +11,16 @@ class AuthWechat extends Auth
     private $appId;
     private $secret;
 
-    public function __construct(Sender $httpClient, $appId, $secret)
+    public function __construct(Sender $httpClient)
     {
         $this->httpClient = $httpClient;
-        $this->appId = $appId;
-        $this->secret = $secret;
+    }
+
+    public function setConfig($config)
+    {
+        $this->appId = $config['wechat']['app_id'];
+        $this->secret = $config['wechat']['secret'];
+        return $this;
     }
 
     public function login($unionid, $code)

@@ -7,6 +7,11 @@ use Being\WeiboOpenApi\WeiboClient;
 
 class AuthWeibo extends Auth
 {
+    public function setConfig($config)
+    {
+        return $this;
+    }
+
     public function login($unionid, $code)
     {
         $client = app(WeiboClient::class);

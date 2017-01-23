@@ -7,25 +7,28 @@ use Being\Services\App\AppService;
 
 class AuthQQ extends Auth
 {
-    public function login($unionid, $code)
-    {
-        $config = config('qq_open_api');
-        $keyPair = null;
-        if (AppService::isiOSAppClient()) {
-            $keyPair = $config['ios'];
-        } elseif (AppService::isAndroidAppClient()) {
-            $keyPair = $config['android'];
-        }
-        if (is_null($keyPair)) {
-            return null;
-        }
+    private $serverName;
+    private $appId;
+    private $appKey;
+    private $pf;
 
-        $client = new QQClient($keyPair['app_id'], $keyPair['app_key']);
-        $client->setServerName($config['server_name']);
-        $userInfo = $client->getUserInfo($unionid, $code, $keyPair['pf']);
+    public function setConfig($config)
+    {
+        $this->serverName = $config['qq']['server_name'];
+        $this->appId = $config['qq']['app_id'];
+        $this->appKey = $config['qq']['app_key'];
+        $this->pf = $config['qq']['pf'];
+        return $this;
+    }
+
+    public function login($unionId, $code)
+    {
+        $client = new QQClient($this->appId, $this->appKey);
+        $client->setServerName($this->serverName);
+        $userInfo = $client->getUserInfo($unionId, $code, $this->pf);
         AppService::debug('qq response:'.json_encode($userInfo), __FILE__, __LINE__);
         $nickname = empty($userInfo['nickname']) ? '' : $userInfo['nickname'];
         $avatar = empty($userInfo['figureurl']) ? '' : $userInfo['figureurl'];
-        return ['unionid' => $unionid, 'code' => $code, 'avatar' => $avatar, 'nickname' => $nickname];
+        return ['unionid' => $unionId, 'code' => $code, 'avatar' => $avatar, 'nickname' => $nickname];
     }
 }

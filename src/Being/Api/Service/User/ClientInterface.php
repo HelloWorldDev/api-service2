@@ -18,5 +18,5 @@ interface ClientInterface
     public function verify(User $user);
     public function find3user(ThirdpartyAuth $ta);
     public function register3user(ThirdpartyAuth $ta, User $user);
-    public function login3user($unionid, $code, $type);
+    public function login3user($unionid, $code, $type, $config);
 }

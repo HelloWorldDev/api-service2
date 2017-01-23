@@ -162,15 +162,15 @@ class UserClient implements ClientInterface
         return $this->parseResponseBody($body);
     }
 
-    public function login3user($unionid, $code, $type, $appId = '', $secret = '')
+    public function login3user($unionid, $code, $type, $config)
     {
         // 验证第三方登录信息
-        $thirdparty = Auth::factory($type, $this->httpClient, $appId, $secret);
+        $thirdparty = Auth::factory($type, $this->httpClient);
         if (is_null($thirdparty)) {
             AppService::error('unknow third party type:' . $type, __FILE__, __LINE__);
             return [Code::INVALID_PARAM, 'params error'];
         }
-        $thirdInfo = $thirdparty->login($unionid, $code);
+        $thirdInfo = $thirdparty->setConfig($config)->login($unionid, $code);
         if (is_null($thirdInfo)) {
             AppService::error('third party check fail', __FILE__, __LINE__);
             return [Code::SYSTEM_ERROR, 'params error'];
