@@ -76,7 +76,7 @@ function snack2camel($word)
     for ($i = 1, $l = strlen($word); $i < $l; $i++) {
         if ($word[$i] == '_') {
             $words[] = $word[++$i];
-        }else{
+        } else {
             $words[] = strtolower($word[$i]);
         }
     }

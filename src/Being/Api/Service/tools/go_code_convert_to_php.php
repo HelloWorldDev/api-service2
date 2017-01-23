@@ -3,7 +3,7 @@
 require __DIR__ . '/code_convert.php';
 
 $constStr = '';
-foreach($phpCodes[0] as $i => $name) {
+foreach ($phpCodes[0] as $i => $name) {
     $constStr .= "\tconst $name = {$phpCodes[1][$i]};\n";
 }
 
