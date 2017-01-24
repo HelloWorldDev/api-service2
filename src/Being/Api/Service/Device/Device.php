@@ -4,6 +4,10 @@ namespace Being\Api\Service\Device;
 
 class Device
 {
+    protected $device_type;
+    protected $device_id;
+    protected $push_token;
+    protected $uid;
     protected $country;
     protected $sim_operator;
     protected $app_version;
@@ -16,14 +20,12 @@ class Device
     protected $package_name;
     protected $os_name;
     protected $lang;
-    protected $platform_app_id; // client post app_id
+    protected $platform_app_id;
     protected $appstore_id;
     protected $app_build_version;
-    protected $device_id; // client post nbid;
     protected $app_bundle_id;
     protected $size;
     protected $network_operator_name;
-    protected $access_token;
     protected $device;
     protected $version;
 
