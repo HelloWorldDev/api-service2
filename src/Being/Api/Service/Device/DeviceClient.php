@@ -12,7 +12,6 @@ class DeviceClient extends BaseClient implements DeviceInterface
     {
         $bodyArr = $device->toArray();
         $header = $this->getSecretHeader();
-        $bodyArr += $this->getSecretData();
         $req = HttpClient::getRequest(HttpClient::POST, 'v1/device', [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
         list($code) = $this->parseResponseBody($body);
@@ -24,8 +23,7 @@ class DeviceClient extends BaseClient implements DeviceInterface
     {
         $bodyArr = ['uid' => $uid];
         $header = $this->getSecretHeader();
-        $bodyArr += $this->getSecretData();
-        $req = HttpClient::getRequest(HttpClient::GET, 'v1/devices', [], $header, $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::GET, 'v1/devices', $bodyArr, $header, null);
         list($code, $body, $header) = $this->httpClient->send($req);
         list($code, $devicesArr) = $this->parseResponseBody($body);
 
