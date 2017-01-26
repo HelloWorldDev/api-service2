@@ -194,4 +194,46 @@ class AppService
 
         return null;
     }
+
+    /**
+     * Get country code from common params
+     * @return string
+     */
+    public static function getCountryCode()
+    {
+        $countryCode = Request::get('network_country_iso');
+        if (empty($countryCode)) {
+            $countryCode = Request::get('country', '');
+        }
+
+        return strtoupper($countryCode);
+    }
+
+    /**
+     * Get app_bundle_id from common params
+     * @return string
+     */
+    public static function getAppBundleId()
+    {
+        $appBundleId = Request::get('app_bundle_id');
+        if (is_null($appBundleId)) {
+            $appBundleId = Request::get('package_name');
+        }
+
+        return $appBundleId;
+    }
+
+    /**
+     * Compare app version
+     * if ( AppService::compareAppVersion('1.0.0') == 0 ) {
+     * }
+     * @param $version
+     * @return int -1: 小于$version; 0: 等于version; 1: 大于$version
+     */
+    public static function compareAppVersion($version)
+    {
+        $appVersion = Request::get('app_version');
+
+        return version_compare($appVersion, $version);
+    }
 }
