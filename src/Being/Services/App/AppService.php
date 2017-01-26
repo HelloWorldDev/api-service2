@@ -216,8 +216,8 @@ class AppService
     public static function getAppBundleId()
     {
         $appBundleId = Request::get('app_bundle_id');
-        if (is_null($appBundleId)) {
-            $appBundleId = Request::get('package_name');
+        if (empty($appBundleId)) {
+            $appBundleId = Request::get('package_name', '');
         }
 
         return $appBundleId;
