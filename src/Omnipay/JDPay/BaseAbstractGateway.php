@@ -3,7 +3,6 @@
 namespace Omnipay\JDPay;
 
 use Omnipay\Common\AbstractGateway;
-use Omnipay\Common\Exception\InvalidRequestException;
 
 /**
  * Class BaseAbstractGateway
@@ -19,57 +18,14 @@ use Omnipay\Common\Exception\InvalidRequestException;
 
 abstract class BaseAbstractGateway extends AbstractGateway
 {
-    protected function getVersion()
-    {
-        return '';
-    }
-
-    protected function getTradeType()
-    {
-        return '';
-    }
-
-    public function setDesKey($desKey)
-    {
-        $this->setParameter('des_key', $desKey);
-    }
-
-    public function getDesKey()
-    {
-        return $this->getParameter('des_key');
-    }
-
-    public function getPublicKeyPath()
-    {
-        return $this->getParameter('public_key_path');
-    }
-
-    public function setPublicKeyPath($keyPath)
-    {
-        if (!is_file($keyPath)) {
-            throw new InvalidRequestException("The public_key_path($keyPath) is not exists");
-        }
-        $this->setParameter('public_key_path', $keyPath);
-    }
-
-    public function getPrivateKeyPath()
-    {
-        return $this->getParameter('private_key_path');
-    }
-
-    public function setPrivateKeyPath($keyPath)
-    {
-        if (!is_file($keyPath)) {
-            throw new InvalidRequestException("The private_key_path($keyPath) is not exists");
-        }
-        $this->setParameter('private_key_path', $keyPath);
-    }
+    abstract public function getVersion();
+    abstract public function getTradeType();
 
     /**
      * @param array $parameters
      * @return \Omnipay\JDPay\Message\PurchaseRequest
      */
-    public function purchase(array $parameters = array ())
+    public function purchase(array $parameters = array())
     {
         $parameters['trade_type'] = $this->getTradeType();
         $parameters['version'] = $this->getVersion();
@@ -78,29 +34,21 @@ abstract class BaseAbstractGateway extends AbstractGateway
 
     public function completePurchase(array $parameters = array ())
     {
-        $parameters['trade_type'] = $this->getTradeType();
-        $parameters['version'] = $this->getVersion();
-        return $this->createRequest('\Omnipay\JDPay\Message\CompletePurchaseRequest', $parameters);
+        return null;
     }
 
     public function notify($parameters = array ())
     {
-        $parameters['trade_type'] = $this->getTradeType();
-        $parameters['version'] = $this->getVersion();
-        return $this->createRequest('\Omnipay\JDPay\Message\NotifyRequest', $parameters);
+        return null;
     }
 
     public function query($parameters = array ())
     {
-        $parameters['trade_type'] = $this->getTradeType();
-        $parameters['version'] = $this->getVersion();
-        return $this->createRequest('\Omnipay\JDPay\Message\QueryRequest', $parameters);
+        return null;
     }
 
     public function refund(array $parameters = array ())
     {
-        $parameters['trade_type'] = $this->getTradeType();
-        $parameters['version'] = $this->getVersion();
-        return $this->createRequest('\Omnipay\JDPay\Message\RefundRequest', $parameters);
+        return null;
     }
 }

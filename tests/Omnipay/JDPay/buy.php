@@ -1,34 +1,36 @@
 <?php
-use Omnipay\JDPay\Helpers\ConfigUtil;
 use Omnipay\JDPay\MobileGateway;
 
 require __DIR__ . '/common.php';
 
 $gateway = new MobileGateway();
-$purchase = $gateway->purchase([
-    'merchant' => ConfigUtil::get_val_by_key('merchantNum'),
+$parameters = [
+    'desKey' => $config['desKey'],
+    'merchant' => '22294531',
     'device' => '111',
-    'tradeNum' => time(),
+    'tradeNum' => '1487052227',
+    'tradeTime' => '20170214060347',
     'tradeName' => '商品1111',
-    'tradeDesc' => '商品描述',
-    'tradeTime' => date('YmdHis'),
-    'amount' => 1,
+    'tradeDesc' => '交易描述',
+    'amount' => '1',
     'currency' => 'CNY',
-    'note' => '',
-    'callbackUrl' => ConfigUtil::get_val_by_key('callbackUrl'),
-    'notifyUrl' => ConfigUtil::get_val_by_key('notifyUrl'),
+    'note' => '备注',
+    'callbackUrl' => 'http://119.254.97.86:9100/com/jdjr/pay/demo/action/CallBack.php',
+    'notifyUrl' => 'http://119.254.97.86:9100/com/jdjr/pay/demo/action/AsynNotify.php',
     'ip' => '',
-    'specCardNo' => '',
-    'specId' => '',
-    'specName' => '',
     'userType' => '',
     'userId' => '',
     'expireTime' => '',
-    'orderType' => 1, // 虚拟
     'industryCategoryCode' => '',
-]);
+    'orderType' => '1',
+    'specCardNo' => '',
+    'specId' => '',
+    'specName' => '',
+];
+$purchase = $gateway->purchase($parameters);
 $payUrl = $purchase->getEndpoint();
 $data = $purchase->getData();
+// echo '<pre>';print_r($parameters);print_r($data);exit();
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +43,7 @@ $data = $purchase->getData();
     <title>"京东支付"H5版demo</title>
 </head>
 <body onload="autosubmit()">
-<form action="<?=$payUrl?>"  method="post" id="batchForm" >
+<form action="<?=$payUrl?>"  method="post" id="batchForm" style="visibility: hidden" >
     <input type="text" name="version" value="<?=$data['version']?>"/><br/>
     <input type="text" name="merchant" value="<?=$data['merchant']?>"/><br/>
     <input type="text" name="device" value="<?=$data['device']?>"/><br/>

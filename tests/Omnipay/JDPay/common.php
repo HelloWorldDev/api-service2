@@ -1,12 +1,14 @@
 <?php
 
-use Omnipay\JDPay\Helpers\ConfigUtil;
-use Omnipay\JDPay\Helpers\RSAHelper;
+require __DIR__ . '/../../../vendor/autoload.php';
+$config = require __DIR__ . '/config/config.php';
+
+use Omnipay\JDPay\Utils\RSAUtils;
 
 error_reporting(0);
-ConfigUtil::setConfigFile(__DIR__ . '/config/config.ini');
-RSAHelper::setPrivateKey(__DIR__ . '/config/seller_rsa_private_key.pem');
-RSAHelper::setPublicKey(__DIR__ . '/config/wy_rsa_public_key.pem');
+
+RSAUtils::setPrivateKey(__DIR__ . '/config/seller_rsa_private_key.pem');
+RSAUtils::setPublicKey(__DIR__ . '/config/wy_rsa_public_key.pem');
 
 function jdpay_log($data)
 {

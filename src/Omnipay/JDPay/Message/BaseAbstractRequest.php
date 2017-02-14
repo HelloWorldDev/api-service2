@@ -4,59 +4,40 @@ namespace Omnipay\JDPay\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\AbstractRequest;
+use Omnipay\JDPay\Utils\RSAUtils;
 
 abstract class BaseAbstractRequest extends AbstractRequest
 {
-    protected $endpoint;
-
-    public function post($url, $data)
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 28);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type:application/json;charset=utf-8',
-                'Content-Length:' . strlen($data)
-        ));
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        return $result;
-    }
-
-    public function getEndpoint()
-    {
-        return $this->endpoint;
-    }
-
-    public function getCurrency()
-    {
-        return 'CNY';
-    }
-
-    public function getIp()
-    {
-        return $this->httpRequest->getClientIp();
-    }
-
     public function getVersion()
     {
         return $this->getParameter('version');
     }
 
+    public function setVersion($version)
+    {
+        $this->setParameter('version', $version);
+    }
+
+    public function getTradeType()
+    {
+        return $this->getParameter('trade_type');
+    }
+
+    public function setTradeType($tradeType)
+    {
+        $this->setParameter('trade_type', $tradeType);
+    }
+    
+    public function getDesKey()
+    {
+        $desKey = $this->getParameter('des_key');
+
+        return base64_decode($desKey);
+    }
+
     public function setDesKey($desKey)
     {
         $this->setParameter('des_key', $desKey);
-    }
-
-    public function getDesKey()
-    {
-        return $this->getParameter('des_key');
     }
 
     public function getPublicKeyPath()
@@ -85,8 +66,14 @@ abstract class BaseAbstractRequest extends AbstractRequest
         $this->setParameter('private_key_path', $keyPath);
     }
 
-    public function getTradeType()
+    public function setKeysPath()
     {
-        return $this->getParameter('trade_type');
+        if ($file = $this->getPrivateKeyPath()) {
+            RSAUtils::setPrivateKey($file);
+        }
+
+        if ($file = $this->getPublicKeyPath()) {
+            RSAUtils::setPublicKey($file);
+        }
     }
 }
