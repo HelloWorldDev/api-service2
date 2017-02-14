@@ -68,56 +68,35 @@ class XMLUtil{
 		return $reqXmlStr;
 	}
 	
-	public static function decryptResXml($resultData,&$resData){
+	public static function decryptResXml($resultData, $desKey, &$resData){
 		$resultXml = simplexml_load_string($resultData);
 		$resultObj = json_decode(json_encode($resultXml),TRUE);
 		$encryptStr = $resultObj["encrypt"];
 		$encryptStr=base64_decode($encryptStr);
-		$desKey = ConfigUtil::get_val_by_key("desKey");
 		$keys = base64_decode($desKey);
 		$reqBody = TDESUtil::decrypt4HexStr($keys, $encryptStr);
-		//echo "请求返回encrypt Des解密后:".$reqBody."\n";
-		
 		$bodyXml = simplexml_load_string($reqBody);
 		$resData = json_decode(json_encode($bodyXml),TRUE);
-		
 		$inputSign = $resData["sign"];
-// 		$bodyDom = XMLUtil::arrtoxml($bodyObj,0,0);
-// 		$rootDom = $bodyDom->getElementsByTagName("jdpay");
-// 		$signNodelist = $rootDom[0]->getElementsByTagName("sign");
-// 		$rootDom[0]->removeChild($signNodelist[0]);
-		
-// 		$reqBodyStr = XMLUtil::xmlToString($bodyDom);
 
 		$startIndex = strpos($reqBody,"<sign>");
 		$endIndex = strpos($reqBody,"</sign>");
-		$xml;
-		
+		$xml = '';
 		if($startIndex!=false && $endIndex!=false){
 			$xmls = substr($reqBody, 0,$startIndex);
 			$xmle = substr($reqBody,$endIndex+7,strlen($reqBody));
 			$xml=$xmls.$xmle;
 		}
-		
-		//echo "本地摘要原串:".$xml."\n";
+
 		$sha256SourceSignString = hash("sha256", $xml);
-		//echo "本地摘要:".$sha256SourceSignString."\n";
-		
 		$decryptStr = RSAUtils::decryptByPublicKey($inputSign);
-		//echo "解密后摘要:".$decryptStr."<br/>";
-		$flag;
-		if($decryptStr==$sha256SourceSignString){
-			//echo "验签成功<br/>";
-			$flag=true;
-		}else{
-			//echo "验签失败<br/>";
-			$flag=false;
-		}
+		$flag = $decryptStr == $sha256SourceSignString;
 		$resData["version"]=$resultObj["version"];
 		$resData["merchant"]=$resultObj["merchant"];
 		$resData["result"]=$resultObj["result"];
-		//echo var_dump($resData);
-		return $flag;
+
+		//return $flag;
+		return $resData['status'] == 2;
 	}
 }
 ?>

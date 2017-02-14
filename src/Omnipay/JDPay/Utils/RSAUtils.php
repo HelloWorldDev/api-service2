@@ -30,7 +30,7 @@ class RSAUtils
     {
         $pu_key = openssl_pkey_get_public(file_get_contents(self::$publicKey));//这个函数可用来判断公钥是否是可用的，可用返回资源id Resource id
         $decrypted = "";
-        //$data = base64_decode($data);
+        $data = base64_decode($data);
         openssl_public_decrypt($data, $decrypted, $pu_key);//公钥解密
 
         return $decrypted;
