@@ -273,4 +273,50 @@ class AppService
 
         return ['token' => $token, 'secret' => $secret];
     }
+
+    /**
+     * 验证用户token
+     * @param $accessToken
+     * @param $sign
+     * @param $timestamp
+     * @param $appSecret
+     * @param string $prefix
+     * @return array
+     */
+    public static function verifySignData($accessToken, $sign, $timestamp, $appSecret, $prefix = '')
+    {
+        $uid = null;
+
+        if ($accessToken) {
+            $tokensKey = sprintf('sign:data:%s:tokens', $prefix);
+            $usersKey = sprintf('sign:data:%s:users', $prefix);
+            if ($tokenData = Redis::hget($tokensKey, $accessToken)) {
+                $tokenData = json_decode($tokenData);
+                $uid = $tokenData->uid;
+
+                if ($currentToken = Redis::hget($usersKey, $uid)) {
+                    if ($currentToken != $accessToken) {
+                        Redis::hdel($tokensKey, $currentToken);
+                        Redis::hdel($usersKey, $uid);
+                        return [false, null, ['message' => 'access token expire.'], 402];
+                    }
+                } else {
+                    return [false, null, ['message' => 'user token not exists.'], 401];
+                }
+
+                $accessSecret = $tokenData->secret;
+                $checkSign = md5($timestamp . $appSecret . $accessSecret);
+            } else {
+                return [false, null, ['message' => 'invalid access token.'], 401];
+            }
+        } else {
+            $checkSign = md5($timestamp . $appSecret);
+        }
+
+        if ($checkSign != $sign) {
+            return [false, null, ['message' => 'forbidden'], 401];
+        }
+
+        return [true, $uid, null, 200];
+    }
 }
