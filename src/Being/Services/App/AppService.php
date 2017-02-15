@@ -3,6 +3,8 @@
 namespace Being\Services\App;
 
 use Being\Api\Service\Message;
+use Closure;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redis;
@@ -318,5 +320,25 @@ class AppService
         }
 
         return [true, $uid, null, 200];
+    }
+
+    /**
+     * 缓存数据
+     * @param $key
+     * @param Closure $callback
+     * @param array $params
+     * @param int $ttl
+     * @return mixed
+     */
+    public static function tryCache($key, Closure $callback, array $params = [], $ttl = 60)
+    {
+        if (Cache::has($key)) {
+            $result = Cache::get($key);
+        } else {
+            $result = $callback($params);
+            Cache::put($key, $result, $ttl);
+        }
+
+        return $result;
     }
 }
