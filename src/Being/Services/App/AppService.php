@@ -3,8 +3,11 @@
 namespace Being\Services\App;
 
 use Being\Api\Service\Message;
+use Closure;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Redis;
 
 class AppService
 {
@@ -235,5 +238,107 @@ class AppService
         $appVersion = Request::get('app_version');
 
         return version_compare($appVersion, $version);
+    }
+
+    /**
+     * 更新用户token
+     * @param integer $uid 用户id
+     * @param bool $new  是否更新token
+     * @param string $prefix 前缀
+     * @return array
+     */
+    public static function getSignData($uid, $new = false, $prefix = 'being')
+    {
+        $tokensKey = sprintf('sign:data:%s:tokens', $prefix);
+        $usersKey = sprintf('sign:data:%s:users', $prefix);
+
+        $oldToken = null;
+        if (!$new) {
+            if ($oldToken = Redis::hget($usersKey, $uid)) {
+                if ($tokenEncodeData = Redis::hget($tokensKey, $oldToken)) {
+                    if ($tokenData = json_decode($tokenEncodeData, true)) {
+                        return ['token' => $oldToken, 'secret' => $tokenData['secret']];
+                    }
+                }
+            }
+        }
+
+        if ($oldToken || ($oldToken = Redis::hget($usersKey, $uid))) {
+            Redis::hdel($tokensKey, $oldToken);
+        }
+
+        $token = md5($uid . microtime() . rand(1000, 9999) . '@nb');
+        $secret = md5($token . time());
+        $tokenData = ['uid' => $uid, 'secret' => $secret];
+        Redis::hset($usersKey, $uid, $token);
+        Redis::hset($tokensKey, $token, json_encode($tokenData));
+
+        return ['token' => $token, 'secret' => $secret];
+    }
+
+    /**
+     * 验证用户token
+     * @param $accessToken
+     * @param $sign
+     * @param $timestamp
+     * @param $appSecret
+     * @param string $prefix
+     * @return array
+     */
+    public static function verifySignData($accessToken, $sign, $timestamp, $appSecret, $prefix = 'being')
+    {
+        $uid = null;
+
+        if ($accessToken) {
+            $tokensKey = sprintf('sign:data:%s:tokens', $prefix);
+            $usersKey = sprintf('sign:data:%s:users', $prefix);
+            if ($tokenData = Redis::hget($tokensKey, $accessToken)) {
+                $tokenData = json_decode($tokenData);
+                $uid = $tokenData->uid;
+
+                if ($currentToken = Redis::hget($usersKey, $uid)) {
+                    if ($currentToken != $accessToken) {
+                        Redis::hdel($tokensKey, $currentToken);
+                        Redis::hdel($usersKey, $uid);
+                        return [false, null, ['message' => 'access token expire.'], 402];
+                    }
+                } else {
+                    return [false, null, ['message' => 'user token not exists.'], 401];
+                }
+
+                $accessSecret = $tokenData->secret;
+                $checkSign = md5($timestamp . $appSecret . $accessSecret);
+            } else {
+                return [false, null, ['message' => 'invalid access token.'], 401];
+            }
+        } else {
+            $checkSign = md5($timestamp . $appSecret);
+        }
+
+        if ($checkSign != $sign) {
+            return [false, null, ['message' => 'forbidden'], 401];
+        }
+
+        return [true, $uid, null, 200];
+    }
+
+    /**
+     * 缓存数据
+     * @param $key
+     * @param Closure $callback
+     * @param array $params
+     * @param int $ttl
+     * @return mixed
+     */
+    public static function tryCache($key, Closure $callback, array $params = [], $ttl = 60)
+    {
+        if (Cache::has($key)) {
+            $result = Cache::get($key);
+        } else {
+            $result = $callback($params);
+            Cache::put($key, $result, $ttl);
+        }
+
+        return $result;
     }
 }
