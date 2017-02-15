@@ -5,6 +5,7 @@ namespace Being\Services\App;
 use Being\Api\Service\Message;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Redis;
 
 class AppService
 {
@@ -235,5 +236,41 @@ class AppService
         $appVersion = Request::get('app_version');
 
         return version_compare($appVersion, $version);
+    }
+
+    /**
+     * 更新用户token
+     * @param integer $uid 用户id
+     * @param bool $new  是否更新token
+     * @param string $prefix 前缀
+     * @return array
+     */
+    public static function getSignData($uid, $new = false, $prefix = '')
+    {
+        $tokensKey = sprintf('sign:data:%s:tokens', $prefix);
+        $usersKey = sprintf('sign:data:%s:users', $prefix);
+
+        $oldToken = null;
+        if (!$new) {
+            if ($oldToken = Redis::hget($usersKey, $uid)) {
+                if ($tokenEncodeData = Redis::hget($tokensKey, $oldToken)) {
+                    if ($tokenData = json_decode($tokenEncodeData, true)) {
+                        return ['token' => $oldToken, 'secret' => $tokenData['secret']];
+                    }
+                }
+            }
+        }
+
+        if ($oldToken || ($oldToken = Redis::hget($usersKey, $uid))) {
+            Redis::hdel($tokensKey, $oldToken);
+        }
+
+        $token = md5($uid . microtime() . rand(1000, 9999) . '@nb');
+        $secret = md5($token . time());
+        $tokenData = ['uid' => $uid, 'secret' => $secret];
+        Redis::hset($usersKey, $uid, $token);
+        Redis::hset($tokensKey, $token, json_encode($tokenData));
+
+        return ['token' => $token, 'secret' => $secret];
     }
 }
