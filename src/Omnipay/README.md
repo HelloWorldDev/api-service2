@@ -9,32 +9,41 @@ Clone from [https://github.com/branchzero/omnipay-jdpay](https://github.com/bran
 ## Usage
 
 ```
-ConfigUtil::setConfigFile(__DIR__ . '/config/config.ini');
-RSAHelper::setPrivateKey(__DIR__ . '/config/seller_rsa_private_key.pem');
-RSAHelper::setPublicKey(__DIR__ . '/config/wy_rsa_public_key.pem');
+// 输出提交页面
 $gateway = new MobileGateway();
-$purchase = $gateway->purchase([
-    'merchant' => ConfigUtil::get_val_by_key('merchantNum'),
+$parameters = [
+    'desKey' => 'xxx',
+    'public_key_path' => 'xxx',
+    'private_key_path' => 'xxx',
+    'merchant' => 'xxx',
     'device' => '111',
-    'tradeNum' => time(),
+    'tradeNum' => 'nihao' . time(),
+    'tradeTime' => date('YmdHis'),// '20170214060347',
     'tradeName' => '商品1111',
-    'tradeDesc' => '商品描述',
-    'tradeTime' => date('YmdHis'),
-    'amount' => 1,
+    'tradeDesc' => '交易描述',
+    'amount' => '1',
     'currency' => 'CNY',
-    'note' => '',
-    'callbackUrl' => ConfigUtil::get_val_by_key('callbackUrl'),
-    'notifyUrl' => ConfigUtil::get_val_by_key('notifyUrl'),
+    'note' => '备注',
+    'callbackUrl' => 'your url',
+    'notifyUrl' => 'your url',
     'ip' => '',
-    'specCardNo' => '',
-    'specId' => '',
-    'specName' => '',
     'userType' => '',
     'userId' => '',
     'expireTime' => '',
-    'orderType' => 1, // 虚拟
     'industryCategoryCode' => '',
-]);
-$payUrl = $purchase->getEndpoint();
-$data = $purchase->getData();
+    'orderType' => '1',
+    'specCardNo' => '',
+    'specId' => '',
+    'specName' => '',
+];
+
+$purchase = $gateway->purchase($parameters);
+
+echo $purchase->getSubmitHtml();
+
+// 验证回调
+VerifyUtils::verifyPurchaseCallback($_GET)
+
+// 验证异步通知
+VerifyUtils::verifyPurchaseNotify(file_get_contents('php://input'), 'your desKey', $data);
 ```
