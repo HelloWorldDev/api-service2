@@ -247,7 +247,7 @@ class AppService
      * @param string $prefix 前缀
      * @return array
      */
-    public static function getSignData($uid, $new = false, $prefix = '')
+    public static function getSignData($uid, $new = false, $prefix = 'being')
     {
         $tokensKey = sprintf('sign:data:%s:tokens', $prefix);
         $usersKey = sprintf('sign:data:%s:users', $prefix);
@@ -285,7 +285,7 @@ class AppService
      * @param string $prefix
      * @return array
      */
-    public static function verifySignData($accessToken, $sign, $timestamp, $appSecret, $prefix = '')
+    public static function verifySignData($accessToken, $sign, $timestamp, $appSecret, $prefix = 'being')
     {
         $uid = null;
 
