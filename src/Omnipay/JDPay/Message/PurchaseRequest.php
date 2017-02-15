@@ -99,7 +99,7 @@ class PurchaseRequest extends BaseAbstractRequest
     <meta http-equiv="expires" content="0"/>
     <meta http-equiv="pragma" content="no-cache"/>
     <meta http-equiv="cache-control" content="no-cache"/>
-    <title>Trade Submit</title>
+    <title>京东支付</title>
 </head>
 <body onload="autosubmit()">
 <form action="{$payUrl}"  method="post" id="batchForm" style="visibility: hidden" >
