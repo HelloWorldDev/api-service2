@@ -14,6 +14,8 @@ class TDESUtil {
 	 * @return 返回3DES加密后的16进制表示的字符串
 	 */
 	public static function encrypt2HexStr($keys, $sourceData) {
+		// Fix sourceData is not string
+		$sourceData = (string)$sourceData;
 		$source = array ();
 		
 		// 元数据
@@ -62,6 +64,8 @@ class TDESUtil {
 	 *
 	 */
 	public static function decrypt4HexStr($keys, $data) {
+		// Fix data is not string
+		$data = (string)$data;
 		$hexSourceData = array ();
 		
 		$hexSourceData = ByteUtils::hexStrToBytes ($data);
