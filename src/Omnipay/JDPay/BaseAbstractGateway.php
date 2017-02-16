@@ -21,6 +21,14 @@ abstract class BaseAbstractGateway extends AbstractGateway
     abstract public function getVersion();
     abstract public function getTradeType();
 
+    // Fix integer parameter DES failed
+    protected function wrapperParameters($parameters)
+    {
+        return array_map(function ($v) {
+            return (string)$v;
+        }, $parameters);
+    }
+
     /**
      * @param array $parameters
      * @return \Omnipay\JDPay\Message\PurchaseRequest
@@ -29,7 +37,7 @@ abstract class BaseAbstractGateway extends AbstractGateway
     {
         $parameters['trade_type'] = $this->getTradeType();
         $parameters['version'] = $this->getVersion();
-        return $this->createRequest('\Omnipay\JDPay\Message\PurchaseRequest', $parameters);
+        return $this->createRequest('\Omnipay\JDPay\Message\PurchaseRequest', $this->wrapperParameters($parameters));
     }
 
     public function completePurchase(array $parameters = array ())
