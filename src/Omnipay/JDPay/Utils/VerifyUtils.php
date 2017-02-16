@@ -4,10 +4,15 @@ namespace Omnipay\JDPay\Utils;
 
 abstract class VerifyUtils
 {
-    public static function verifyPurchaseCallback($param)
+    public static function verifyPurchaseCallback($param, $desKey, &$returnData)
     {
         $sign = $param['sign'];
         unset($param['sign']);
+
+        $returnData = $param;
+        foreach ($returnData as &$v) {
+            $v = TDESUtil::decrypt4HexStr($desKey, $v);
+        }
 
         $strSourceData = SignUtil::signString($param, []);
         $decryptStr = RSAUtils::decryptByPublicKey($sign);
