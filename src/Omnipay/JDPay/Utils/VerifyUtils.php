@@ -6,6 +6,8 @@ abstract class VerifyUtils
 {
     public static function verifyPurchaseCallback($param, $desKey, &$returnData)
     {
+        $desKey = base64_decode($desKey);
+        
         $sign = $param['sign'];
         unset($param['sign']);
 
