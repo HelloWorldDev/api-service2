@@ -8,30 +8,17 @@
 
 namespace Being\Api\Service\User;
 
-/**
- * Class User
- * @package Being\Api\Service\User
- * @property $uid
- * @property $username
- * @property $fullname
- * @property $password
- * @property $email
- * @property $avatar
- * @property $mobile
- * @property $gender
- * @property $age
- */
 class User
 {
-    protected $uid;
-    protected $username;
-    protected $fullname;
-    protected $password;
-    protected $email;
-    protected $avatar;
-    protected $mobile;
-    protected $gender;
-    protected $age;
+    public $uid;
+    public $username;
+    public $fullname;
+    public $password;
+    public $email;
+    public $avatar;
+    public $mobile;
+    public $gender;
+    public $age;
 
     const UPDATE_ATTRIBUTES = ['fullname', 'password', 'email', 'avatar', 'mobile', 'gender', 'age'];
 
@@ -63,15 +50,5 @@ class User
         }
 
         return $o;
-    }
-
-    public function __get($name)
-    {
-        return $this->$name;
-    }
-
-    public function __set($name, $value)
-    {
-        $this->$name = $value;
     }
 }
