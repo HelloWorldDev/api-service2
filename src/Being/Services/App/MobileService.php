@@ -98,7 +98,7 @@ class MobileService
         $smsApiKey = config('app.sms_api_key');
         $smsApiUrl = config('app.sms_api_url');
 
-        $mobile = self::formatPhoneNumber($mobile, $countryCode);
+        $mobile = self::formatMobile($mobile, $countryCode);
 
         $data = [
             'apikey' => $smsApiKey,
@@ -129,13 +129,13 @@ class MobileService
     /**
      * @param $mobile
      * @param $message
-     * @param null $countryCode
-     * @param int $second
+     * @param $countryCode
+     * @param $second
      * @return bool
      */
-    public static function sendSmsMessageOnce($mobile, $countryCode, $message, $second = 60)
+    public static function sendSmsMessageOnce($mobile, $countryCode, $message, $second)
     {
-        $mobile = self::formatPhoneNumber($mobile, $countryCode);
+        $mobile = self::formatMobile($mobile, $countryCode);
         $cacheKey = 'being:send:sms:' . $mobile;
         if (Redis::get($cacheKey)) {
             return true;
