@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 
 class MobileService
@@ -34,15 +35,70 @@ class MobileService
     }
 
     /**
-     * Send Sms Message
+     * Format Phone Number
      * @param $mobile
+     * @param $countryCode
+     * @return string
+     */
+    public static function formatMobile($mobile, $countryCode)
+    {
+        if (strlen($countryCode) > 0) {
+            $countryCode = strtoupper($countryCode);
+            try {
+                $phoneUtil = PhoneNumberUtil::getInstance();
+                $numberPrototype = $phoneUtil->parse($mobile, $countryCode);
+                $formatNum = $phoneUtil->format($numberPrototype, PhoneNumberFormat::E164);
+
+                return $formatNum;
+            } catch (\Exception $e) {
+                AppService::debug(sprintf('format phone number %s country code %s failed', $mobile, $countryCode),
+                    __FILE__, __LINE__);
+            }
+        }
+
+        return $mobile;
+    }
+
+    /**
+     * Parse Mobile
+     * @param $mobile
+     * @param $countryCode
+     * @return array ['mobile' => $mobile, 'country' => $countryCode, 'code' => '']
+     */
+    public static function parseMobile($mobile, $countryCode)
+    {
+        if (strlen($countryCode) > 0) {
+            $countryCode = strtoupper($countryCode);
+            try {
+                $phoneUtil = PhoneNumberUtil::getInstance();
+                $phoneNumber = $phoneUtil->parse($mobile, $countryCode);
+
+                return [
+                    'mobile' => $phoneNumber->getNationalNumber(),
+                    'country' => $countryCode,
+                    'code' => $phoneNumber->getCountryCode(),
+                ];
+            } catch (\Exception $e) {
+                AppService::debug(sprintf('format phone number %s country code %s failed', $mobile, $countryCode),
+                    __FILE__, __LINE__);
+            }
+        }
+
+        return ['mobile' => $mobile, 'country' => $countryCode, 'code' => ''];
+    }
+
+    /**
+     * @param $mobile
+     * @param $countryCode
      * @param $message
      * @return bool
      */
-    public static function sendSmsMessage($mobile, $message)
+    public static function sendSmsMessage($mobile, $countryCode, $message)
     {
         $smsApiKey = config('app.sms_api_key');
         $smsApiUrl = config('app.sms_api_url');
+
+        $mobile = self::formatPhoneNumber($mobile, $countryCode);
 
         $data = [
             'apikey' => $smsApiKey,
@@ -73,11 +129,13 @@ class MobileService
     /**
      * @param $mobile
      * @param $message
+     * @param null $countryCode
      * @param int $second
      * @return bool
      */
-    public static function sendSmsMessageOnce($mobile, $message, $second = 60)
+    public static function sendSmsMessageOnce($mobile, $countryCode, $message, $second = 60)
     {
+        $mobile = self::formatPhoneNumber($mobile, $countryCode);
         $cacheKey = 'being:send:sms:' . $mobile;
         if (Redis::get($cacheKey)) {
             return true;
@@ -86,6 +144,6 @@ class MobileService
         $second = max(1, $second - 2);
         Redis::setex($cacheKey, $second, '1');
 
-        return self::sendSmsMessage($mobile, $message);
+        return self::sendSmsMessage($mobile, $countryCode, $message);
     }
 }
