@@ -88,4 +88,20 @@ class UserClient extends BaseClient implements ClientInterface
 
         return $this->parseResponseBody($body);
     }
+
+    public function updatePassword($id, $oldPassword, $newPassword)
+    {
+        $bodyArr = [
+            'id' => $id,
+            'old_password' => $oldPassword,
+            'password' => $newPassword,
+        ];
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $uri = 'v1/user/password';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+
+        return $this->parseResponseBody($body);
+    }
 }

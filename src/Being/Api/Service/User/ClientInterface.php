@@ -14,4 +14,5 @@ interface ClientInterface
     public function updateUser(User $user);
     public function login(User $user);
     public function verify(User $user);
+    public function updatePassword($id, $oldPassword, $newPassword);
 }
