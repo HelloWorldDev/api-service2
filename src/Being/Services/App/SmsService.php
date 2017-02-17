@@ -4,6 +4,7 @@ namespace Being\Services\App;
 
 use Exception;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Redis;
 
 class SmsService
 {
@@ -42,5 +43,22 @@ class SmsService
         }
 
         return false;
+    }
+
+    /**
+     * @param $mobile
+     * @param $message
+     * @param int $second
+     * @return bool
+     */
+    public static function sendOnceInSecond($mobile, $message, $second = 60)
+    {
+        $cacheKey = 'being:send:sms:' . $mobile;
+        if (Redis::get($cacheKey)) {
+            return true;
+        }
+        Redis::setex($cacheKey, $second, '1');
+
+        return self::send($mobile, $message);
     }
 }
