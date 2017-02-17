@@ -5,16 +5,41 @@ namespace Being\Services\App;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Validator;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberUtil;
 
-class SmsService
+class MobileService
 {
+    /**
+     * Extend Mobile Validator
+     * @param $input
+     */
+    public static function extendMobileValidator($input)
+    {
+        Validator::extend('mobile', function ($attribute, $value, $parameters) use ($input) {
+            if (!isset($input['code'], $input['country'], $input['mobile'])) {
+                return false;
+            }
+            $phoneUtil = PhoneNumberUtil::getInstance();
+            try {
+                $swissNumberStr = $input['code'] . ' ' . $input['mobile'];
+                $swissNumberProto = $phoneUtil->parse($swissNumberStr, strtoupper($input['country']));
+
+                return $phoneUtil->isValidNumber($swissNumberProto);
+            } catch (NumberParseException $e) {
+                return false;
+            }
+        });
+    }
+
     /**
      * Send Sms Message
      * @param $mobile
      * @param $message
      * @return bool
      */
-    public static function send($mobile, $message)
+    public static function sendSmsMessage($mobile, $message)
     {
         $smsApiKey = config('app.sms_api_key');
         $smsApiUrl = config('app.sms_api_url');
@@ -51,7 +76,7 @@ class SmsService
      * @param int $second
      * @return bool
      */
-    public static function sendOnceInSecond($mobile, $message, $second = 60)
+    public static function sendSmsMessageOnce($mobile, $message, $second = 60)
     {
         $cacheKey = 'being:send:sms:' . $mobile;
         if (Redis::get($cacheKey)) {
@@ -59,6 +84,6 @@ class SmsService
         }
         Redis::setex($cacheKey, $second, '1');
 
-        return self::send($mobile, $message);
+        return self::sendSmsMessage($mobile, $message);
     }
 }
