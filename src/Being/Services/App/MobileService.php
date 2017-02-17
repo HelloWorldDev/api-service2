@@ -82,6 +82,8 @@ class MobileService
         if (Redis::get($cacheKey)) {
             return true;
         }
+        // 2 second for api request time
+        $second = max(1, $second - 2);
         Redis::setex($cacheKey, $second, '1');
 
         return self::sendSmsMessage($mobile, $message);
