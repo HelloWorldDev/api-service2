@@ -27,7 +27,7 @@ class UserClient extends BaseClient implements ClientInterface
     public function updateUser(User $user)
     {
         $bodyArr = [];
-        foreach (['password', 'fullname', 'email'] as $key) {
+        foreach (User::UPDATE_ATTRIBUTES as $key) {
             $val = $user->$key;
             if (!is_null($val)) {
                 $bodyArr[$key] = $val;
