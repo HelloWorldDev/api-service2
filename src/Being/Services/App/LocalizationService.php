@@ -3,6 +3,7 @@
 namespace Being\Services\App;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Request;
 
 class LocalizationService
 {
@@ -17,7 +18,7 @@ class LocalizationService
 
     public static function getLang()
     {
-        $lang = app('request')->get('lang');
+        $lang = Request::get('lang');
         if (empty($lang)) {
             $lang = 'en';
         }
