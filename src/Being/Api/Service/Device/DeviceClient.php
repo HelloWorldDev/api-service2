@@ -37,5 +37,4 @@ class DeviceClient extends BaseClient implements DeviceInterface
 
         return $devices;
     }
-
 }

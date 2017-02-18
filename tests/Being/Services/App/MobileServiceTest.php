@@ -14,7 +14,7 @@ class MobileServiceTest extends TestCase
             '13510041047' => MobileService::formatMobile('13510041047', ''),
         ];
 
-        foreach($tests as $key => $val) {
+        foreach ($tests as $key => $val) {
             $this->assertTrue($key == $val);
         }
     }
