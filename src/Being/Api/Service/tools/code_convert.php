@@ -4,27 +4,34 @@
 
 $content = <<<EOF
 const (
-	CodeSuccess = 0
-	CodeInvalidParam = 10400
-	CodeRequestTimeout = 10401
-	CodeErrorCodeNotExists = 10402
-	CodeSystemError = 10500
-	CodeEmptyBody = 10501
-	CodeUsernameExists = 10600
-	CodeUsernameLength = 10601
-	CodeUsernameFormat = 10602
-	CodeEmailExists = 10603
-	CodeEmailLength = 10604
-	CodeEmailFormat = 10605
-	CodeFullnameExists = 10606
-	CodeFullnameLength = 10607
-	CodeFullnameFormat = 10608
-	CodePasswordLength = 10609
-	CodePasswordFormat = 10610
-	CodeUsernameNotExists = 10611
-	CodeEmailNotExists = 10612
-	CodePasswordNotMatch = 10613
-	CodeUserNotExists = 10614
+    CodeSuccess = 0
+    CodeInvalidParam = 10400
+    CodeRequestTimeout = 10401
+    CodeErrorCodeNotExists = 10402
+    CodeAuthForbidden = 10403
+    CodeSystemError = 10500
+    CodeEmptyBody = 10501
+    CodeUsernameExists = 10600
+    CodeUsernameLength = 10601
+    CodeUsernameFormat = 10602
+    CodeEmailExists = 10603
+    CodeEmailLength = 10604
+    CodeEmailFormat = 10605
+    CodeFullnameExists = 10606
+    CodeFullnameLength = 10607
+    CodeFullnameFormat = 10608
+    CodePasswordLength = 10609
+    CodePasswordFormat = 10610
+    CodeUsernameNotExists = 10611
+    CodeEmailNotExists = 10612
+    CodePasswordNotMatch = 10613
+    CodeUserNotExists = 10614
+    CodeUnknownThirdParty = 10615
+    CodeUsernamePasswordNotMatch = 10616
+    CodeEmailPasswordNotMatch = 10617
+    CodeMobilePasswordNotMatch = 10618
+    CodeVerifyCodeNotMatch   = 10619
+    CodeRechargeFailed    = 10620
 )
 EOF;
 
