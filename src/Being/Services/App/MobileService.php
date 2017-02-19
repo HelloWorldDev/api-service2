@@ -67,21 +67,19 @@ class MobileService
      */
     public static function parseMobile($mobile, $countryCode)
     {
-        if (strlen($countryCode) > 0) {
-            $countryCode = strtoupper($countryCode);
-            try {
-                $phoneUtil = PhoneNumberUtil::getInstance();
-                $phoneNumber = $phoneUtil->parse($mobile, $countryCode);
+        $countryCode = strtoupper($countryCode);
+        try {
+            $phoneUtil = PhoneNumberUtil::getInstance();
+            $phoneNumber = $phoneUtil->parse($mobile, $countryCode);
 
-                return [
-                    'mobile' => $phoneNumber->getNationalNumber(),
-                    'country' => $countryCode,
-                    'code' => $phoneNumber->getCountryCode(),
-                ];
-            } catch (\Exception $e) {
-                AppService::debug(sprintf('format phone number %s country code %s failed', $mobile, $countryCode),
-                    __FILE__, __LINE__);
-            }
+            return [
+                'mobile' => $phoneNumber->getNationalNumber(),
+                'country' => $countryCode,
+                'code' => $phoneNumber->getCountryCode(),
+            ];
+        } catch (\Exception $e) {
+            AppService::debug(sprintf('format phone number %s country code %s failed', $mobile, $countryCode),
+                __FILE__, __LINE__);
         }
 
         return ['mobile' => $mobile, 'country' => $countryCode, 'code' => ''];

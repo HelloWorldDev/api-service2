@@ -27,5 +27,12 @@ class MobileServiceTest extends TestCase
             && $ret['country'] == 'CN'
             && $ret['code'] == 86
         );
+
+        $ret = MobileService::parseMobile('+8613510041047', '');
+        $this->assertTrue(
+            $ret['mobile'] == '13510041047'
+            && $ret['country'] == ''
+            && $ret['code'] == 86
+        );
     }
 }
