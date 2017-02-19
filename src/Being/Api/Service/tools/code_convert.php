@@ -32,6 +32,7 @@ const (
     CodeMobilePasswordNotMatch = 10618
     CodeVerifyCodeNotMatch   = 10619
     CodeRechargeFailed    = 10620
+    CodeUserMoneyNotEnough = 10621
 )
 EOF;
 
