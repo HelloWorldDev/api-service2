@@ -44,7 +44,7 @@ class User
 
     public static function create(array $attributes)
     {
-        $o = new static(0, '', '', '', '', '');
+        $o = new static(0, null, null, null, null, null);
         foreach ($attributes as $k => $v) {
             $o->$k = $v;
         }
