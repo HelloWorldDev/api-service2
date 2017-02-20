@@ -28,10 +28,10 @@ class BaiduMessage extends Message
     public function send()
     {
         if (is_null($this->apiKey)) {
-            throw new \Exception('call GcmMessage::setApiKey to set ApiKey');
+            throw new \Exception('call BaiduMessage::setApiKey to set ApiKey');
         }
         if (is_null($this->apiSecret)) {
-            throw new \Exception('call GcmMessage::setApiSecret to set ApiSecret');
+            throw new \Exception('call BaiduMessage::setApiSecret to set ApiSecret');
         }
 
         $method = 'POST';
