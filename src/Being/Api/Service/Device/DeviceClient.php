@@ -37,4 +37,23 @@ class DeviceClient extends BaseClient implements DeviceInterface
 
         return $devices;
     }
+
+    public function pushTokens($uidList)
+    {
+        $bodyArr = ['uid_list' => implode(',', $uidList)];
+        $header = $this->getSecretHeader();
+        $req = HttpClient::getRequest(HttpClient::GET, 'v1/devices', $bodyArr, $header, null);
+        list($code, $body, $header) = $this->httpClient->send($req);
+        list($code, $devicesArr) = $this->parseResponseBody($body);
+
+        $devices = null;
+        if ($code == Code::SUCCESS && count($devicesArr) > 0) {
+            $devices = [];
+            foreach ($devicesArr as $deviceArr) {
+                $devices[] = Device::create($deviceArr);
+            }
+        }
+
+        return $devices;
+    }
 }
