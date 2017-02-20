@@ -10,9 +10,35 @@ use Being\Services\App\Jobs\Push;
 
 class PushService
 {
-    public static function push($uidList, $title)
+    /**
+     * Usage:
+     * 1. create a file config/push.php
+     * <?php
+     * return [
+     *      'apns' => [
+     *          'certificate_file' => '',
+     *          'env' => 0, // 0-prod 1-sandbox
+     *      ],
+     *      baidu => [
+     *          'api_key' => '',
+     *          'api_secret' => '',
+     *      ]
+     * ];
+     * 2. update bootstrap/app.php
+     * add code
+     * $app->configure('push');
+     * after
+     * $app->configure('app');
+     * 3.
+     * @param $uidList
+     * @param $title
+     * @param null $pushConfig
+     */
+    public static function push($uidList, $title, $pushConfig = null)
     {
-        $pushConfig = config('push');
+        if (is_null($pushConfig)) {
+            $pushConfig = config('push');
+        }
 
         $messages = null;
         $devices = app(DeviceClient::class)->pushTokens($uidList);
