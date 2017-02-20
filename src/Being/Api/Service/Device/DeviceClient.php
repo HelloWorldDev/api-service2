@@ -40,6 +40,7 @@ class DeviceClient extends BaseClient implements DeviceInterface
 
     public function pushTokens($uidList)
     {
+        $uidList = array_slice($uidList, 0, 100);
         $bodyArr = ['uid_list' => implode(',', $uidList)];
         $header = $this->getSecretHeader();
         $req = HttpClient::getRequest(HttpClient::GET, 'v1/devices', $bodyArr, $header, null);
