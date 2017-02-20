@@ -29,7 +29,7 @@ class PushService
      * $app->configure('push');
      * after
      * $app->configure('app');
-     * 3.
+     * 3. php artisan queue:work --queue=queue --tries=1 --sleep=3 --daemon
      * @param $uidList
      * @param $title
      * @param null $pushConfig
@@ -44,12 +44,17 @@ class PushService
         $devices = app(DeviceClient::class)->pushTokens($uidList);
         if (count($devices) > 0) {
             foreach ($devices as $device) {
+                $pushToken = $device->push_token;
                 if ($device->device_type == Device::TYPE_IOS) {
-                    $messages[] = (new ApnsMessage($device->push_token, $title))
+                    $messages[] = (new ApnsMessage($pushToken, $title))
                         ->setCertificateFile($pushConfig['apns']['certificate_file'])
                         ->setEnv($pushConfig['apns']['env']);
                 } elseif ($device->device_type == Device::TYPE_ANDROID) {
-                    $messages[] = (new Message\BaiduMessage($device->push_token, $title))
+                    $pos = strpos($pushToken, ',');
+                    if ($pos !== false) {
+                        $pushToken = substr($pushToken, $pos + 1);
+                    }
+                    $messages[] = (new Message\BaiduMessage($pushToken, $title))
                         ->setApiKey($pushConfig['baidu']['api_key'])
                         ->setApiSecret($pushConfig['baidu']['api_secret']);
                 }
