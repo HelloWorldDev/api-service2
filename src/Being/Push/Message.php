@@ -2,12 +2,8 @@
 
 namespace Being\Push;
 
-use Illuminate\Queue\SerializesModels;
-
 abstract class Message
 {
-    use SerializesModels;
-
     const ENVIRONMENT_SANDBOX = 1;
     const ENVIRONMENT_PRODUCTION = 0;
 
