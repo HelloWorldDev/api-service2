@@ -55,4 +55,9 @@ class Device
 
         return $data;
     }
+
+    public function __get($name)
+    {
+        return $this->$name;
+    }
 }
