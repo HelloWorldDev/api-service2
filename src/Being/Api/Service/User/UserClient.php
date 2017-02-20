@@ -73,7 +73,7 @@ class UserClient extends BaseClient implements ClientInterface
     public function verify(User $user)
     {
         $bodyArr = [];
-        foreach (['username', 'password', 'fullname', 'email'] as $key) {
+        foreach (['username', 'password', 'fullname', 'email', 'mobile'] as $key) {
             $val = $user->$key;
             if (!is_null($val)) {
                 $bodyArr[$key] = $val;
