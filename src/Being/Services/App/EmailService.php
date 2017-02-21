@@ -22,4 +22,35 @@ class EmailService
         $job = new SendMail($email, $subject, $view, $data, $config);
         return app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($job) ? true : false;
     }
+
+    /**
+     * @param $email
+     * @return string
+     */
+    public static function hiddenEmail($email)
+    {
+        if (!empty($email)) {
+            $j = 0;
+            for ($i = 0, $l = strlen($email); $i < $l; $i++) {
+                if ($email[$i] == '@') {
+                    $j = $i;
+                    break;
+                }
+                if ($i >= 3) {
+                    $email[$i] = '*';
+                }
+            }
+            if ($j <= 3) {
+                if ($j == 1) {
+                    $email[0] = '*';
+                } else {
+                    while (--$j > 0) {
+                        $email[$j] = '*';
+                    }
+                }
+            }
+        }
+
+        return $email;
+    }
 }
