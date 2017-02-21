@@ -62,7 +62,16 @@ class FindService
 
         $code = Redis::get(self::getFindByMobileVerifyCodeCacheKey($mobile));
 
-        return $code == $verifyCode;
+        if ($code != $verifyCode) {
+            $errorTimes = Redis::incr(self::getFindByMobileErrorTimesCacheKey($mobile));
+            if ($errorTimes > 3 && !empty($code)) {
+                Redis::del(self::getFindByMobileVerifyCodeCacheKey($mobile));
+            }
+
+            return false;
+        } else {
+            return true;
+        }
     }
 
     protected static function getFindByEmailLockCacheKey($email)
@@ -121,6 +130,15 @@ class FindService
 
         $code = Redis::get(self::getFindByEmailVerifyCodeCacheKey($email));
 
-        return $code == $verifyCode;
+        if ($code != $verifyCode) {
+            $errorTimes = Redis::incr(self::getFindByEmailErrorTimesCacheKey($email));
+            if ($errorTimes > 3 && !empty($code)) {
+                Redis::del(self::getFindByEmailVerifyCodeCacheKey($email));
+            }
+
+            return false;
+        } else {
+            return true;
+        }
     }
 }
