@@ -80,7 +80,7 @@ class BindService
             return Code::VERIFY_CODE_NOT_MATCH;
         }
 
-        $apiUser = User::create(['uid' => $uid, 'mobile' => $mobile]);
+        $apiUser = User::create(['uid' => $uid, 'mobile' => $formatMobile]);
         list($code, $data) = app(UserClient::class)->updateUser($apiUser);
         if ($code != Code::SUCCESS) {
             return $code;
