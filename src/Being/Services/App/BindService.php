@@ -29,9 +29,10 @@ class BindService
      * @param $mobile
      * @param $country
      * @param $message
+     * @param $verifyCode
      * @return int
      */
-    public static function sendBindMobileMessage($mobile, $country, $message)
+    public static function sendBindMobileMessage($mobile, $country, $message, $verifyCode)
     {
         $formatMobile = MobileService::formatMobile($mobile, $country);
         if (Redis::get(self::getBindMobileLockCacheKey($formatMobile))) {
@@ -51,7 +52,7 @@ class BindService
             return Code::SYSTEM_ERROR;
         }
 
-        Redis::setex(self::getBindMobileVerifyCodeCacheKey($formatMobile), 600, $code);
+        Redis::setex(self::getBindMobileVerifyCodeCacheKey($formatMobile), 600, $verifyCode);
 
         return Code::SUCCESS;
     }
