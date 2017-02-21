@@ -44,9 +44,11 @@ class User
 
     public static function create(array $attributes)
     {
-        $o = new static(0, null, null, null, null, null);
+        $o = new static(null, null, null, null, null, null);
         foreach ($attributes as $k => $v) {
-            $o->$k = $v;
+            if (property_exists(User::class, $k)) {
+                $o->$k = $v;
+            }
         }
 
         return $o;
