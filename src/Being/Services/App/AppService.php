@@ -80,8 +80,6 @@ class AppService
                 if ($message == $key) {
                     $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
                 }
-            } else {
-                $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
             }
         }
 
