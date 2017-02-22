@@ -10,6 +10,7 @@
         "guzzlehttp/guzzle": "^6.2",
         "monolog/monolog": "^1.22",
         "duccio/apns-php": "^1.0",
+        "omnipay/common": "~2.0",
         "giggsey/libphonenumber-for-php": "~7.0"
     },
     "require-dev": {
@@ -20,6 +21,7 @@
     "autoload": {
         "psr-4": {
             "Being\\": "src/Being",
+            "Omnipay\\": "src/Omnipay",
             "Angejia\\Pea\\": "src/Pea/src"
         },
         "files": ["src/Libweibo/saetv2.ex.class.php"]

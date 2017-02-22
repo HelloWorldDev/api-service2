@@ -1,0 +1,8 @@
+<?php
+
+return [
+    'merchant' => '22294531',
+    'desKey' => 'ta4E/aspLA3lgFGKmNDNRYU92RkZ4w2t',
+    'callbackUrl' => 'http://0.0.0.0:9100/callback.php',
+    'notifyUrl' => 'http://0.0.0.0:9100/notify.php',
+];
