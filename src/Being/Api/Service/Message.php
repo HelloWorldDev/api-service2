@@ -15,7 +15,7 @@ class Message
         if (isset($langData[$code])) {
             return $langData[$code];
         } else {
-            return $langData[Code::ERROR_CODE_NOT_EXISTS];
+            return null;
         }
     }
 }

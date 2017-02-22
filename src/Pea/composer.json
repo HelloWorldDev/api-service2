@@ -1,0 +1,29 @@
+{
+    "name": "angejia/pea",
+    "description": "Eloquent Cache Layer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "吕海涛",
+            "email": "git@lvht.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Angejia\\Pea\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Angejia\\Pea\\": "test"
+        }
+    },
+    "require": {
+        "illuminate/database": "^5.1",
+        "illuminate/redis": "^5.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0",
+        "mockery/mockery": "^0.9.4"
+    }
+}

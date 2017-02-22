@@ -4,6 +4,10 @@ namespace Being\Api\Service\Device;
 
 class Device
 {
+    const TYPE_UNKNOWN = 0;
+    const TYPE_IOS = 1;
+    const TYPE_ANDROID = 2;
+
     protected $device_type;
     protected $device_id;
     protected $push_token;
@@ -50,5 +54,10 @@ class Device
         }
 
         return $data;
+    }
+
+    public function __get($name)
+    {
+        return $this->$name;
     }
 }

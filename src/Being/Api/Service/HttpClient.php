@@ -35,7 +35,10 @@ class HttpClient implements Sender
     public static function getRequest($method, $uri, $queries, $headers, $body)
     {
         if (is_array($queries) && count($queries) > 0) {
-            $uri = substr($uri, 0, strpos($uri, '?'));
+            $pos = strpos($uri, '?');
+            if ($pos !== false) {
+                $uri = substr($uri, 0, $pos);
+            }
             $uri .= sprintf("?%s", http_build_query($queries));
         }
         

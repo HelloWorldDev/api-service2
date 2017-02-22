@@ -2,6 +2,7 @@
 
 namespace Being\Services\App;
 
+use Being\Api\Service\Code;
 use Being\Api\Service\Message;
 use Closure;
 use Illuminate\Support\Facades\Cache;
@@ -71,7 +72,17 @@ class AppService
     public static function responseError($code, $message = null)
     {
         if (is_null($message)) {
-            $message = Message::getMessage($code, LocalizationService::getLang());
+            $lang = LocalizationService::getLang();
+            $message = Message::getMessage($code, $lang);
+            if (is_null($message)) {
+                $key = 'message.error_code.' . $code;
+                $message = self::trans($key, [], '', $lang);
+                if ($message == $key) {
+                    $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
+                }
+            } else {
+                $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
+            }
         }
 
         return self::responseCore(['error_code' => $code, 'message' => $message]);
@@ -340,5 +351,22 @@ class AppService
         }
 
         return $result;
+    }
+
+    /**
+     * Multi language support by laravel
+     * @param null $id
+     * @param array $parameters
+     * @param string $domain
+     * @param null $locale
+     * @return null|string
+     */
+    public static function trans($id = null, $parameters = [], $domain = 'messages', $locale = null)
+    {
+        if (function_exists('trans')) {
+            return trans($id, $parameters, $domain, $locale);
+        } else {
+            return $id;
+        }
     }
 }
