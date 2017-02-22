@@ -2,6 +2,7 @@
 参数不合法,參數不合法,Invalid parameter,การคำนวณผิดพลาด,,,,CodeInvalidParam,code.10400
 "网络超时,请重试",網路逾時，請再試一次,"Network timeout, please try again","เครือข่ายหมดเวลา,โปรดลองอีกครั้ง",,,,CodeRequestTimeout,code.10401
 "网络超时,请重试",網路逾時，請再試一次,"Network timeout, please try again","เครือข่ายหมดเวลา,โปรดลองอีกครั้ง",,,,CodeErrorCodeNotExists,code.10402
+参数不合法,參數不合法,Invalid parameter,การคำนวณผิดพลาด,,,,,code.10403
 "网络超时,请重试",網路逾時，請再試一次,"Network timeout, please try again","เครือข่ายหมดเวลา,โปรดลองอีกครั้ง",,,,CodeSystemError,code.10500
 "网络超时,请重试",網路逾時，請再試一次,"Network timeout, please try again","เครือข่ายหมดเวลา,โปรดลองอีกครั้ง",,,,CodeEmptyBody,code.10501
 用户名已被注册,此用戶名已被註冊,Username not available,ลงทะเบียนบัญชีผู้ใช้สำเร็จ,,,,CodeUsernameExists,code.10600
@@ -19,3 +20,12 @@
 邮箱不存在,E-mail不存在,Email not found,ไม่พบอีเมล์,,,,CodeEmailNotExists,code.10612
 账号或密码错误,賬號或密碼錯誤,Incorrect account or password,เลขที่บัญชีหรือรหัสผ่านไม่ถูกต้อง,,,,CodePasswordNotMatch,code.10613
 用户不存在,用戶名稱不存在,User not found,ไม่พบบัญชีผู้ใช้,,,,CodeUserNotExists,code.10614
+参数不合法,參數不合法,Invalid parameter,การคำนวณผิดพลาด,,,,CodeUnknownThirdParty,code.10615
+账号或密码错误,賬號或密碼錯誤,Incorrect account or password,เลขที่บัญชีหรือรหัสผ่านไม่ถูกต้อง,,,,CodeUsernamePasswordNotMatch,code.10616
+账号或密码错误,賬號或密碼錯誤,Incorrect account or password,เลขที่บัญชีหรือรหัสผ่านไม่ถูกต้อง,,,,CodeEmailPasswordNotMatch,code.10617
+账号或密码错误,賬號或密碼錯誤,Incorrect account or password,เลขที่บัญชีหรือรหัสผ่านไม่ถูกต้อง,,,,CodeMobilePasswordNotMatch,code.10618
+验证码不正确,驗證碼輸入錯誤,Incorrect verification code,รหัสยืนยันไม่ถูกต้อง,,,,CodeVerifyCodeNotMatch,code.10619
+保存交易信息失败,保存交易資訊失敗,Fail to save transaction record,การจัดเก็บข้อความติดต่อสื่อสารล้มเหลว,,,,CodeRechargeFailed,code.10620
+"余额不足,请充值",,"Insufficient money, please reload",,,,,CodeUserMoneyNotEnough,code.10621
+手机号已存在,,Mobile already exists,,,,,CodeMobileExists,code.10622
+手机号格式错误,,Mobile invalid,,,,,CodeMobileFormat,code.10623
