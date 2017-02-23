@@ -95,7 +95,7 @@ class XMLUtil{
 		$resData["merchant"]=$resultObj["merchant"];
 		$resData["result"]=$resultObj["result"];
 
-		return $flag;
+		return $flag && $resData['status'] == 2;
 	}
 }
 ?>

@@ -11,17 +11,17 @@ abstract class VerifyUtils
         $sign = $param['sign'];
         unset($param['sign']);
 
-        $returnData = $param;
-        foreach ($returnData as &$v) {
+        foreach ($param as &$v) {
             $v = TDESUtil::decrypt4HexStr($desKey, $v);
         }
+        $returnData = $param;
 
         $strSourceData = SignUtil::signString($param, []);
         $decryptStr = RSAUtils::decryptByPublicKey($sign);
         $sha256SourceSignString = hash('sha256', $strSourceData);
         $ret = $decryptStr == '' || $decryptStr == $sha256SourceSignString;
 
-        return $ret;
+        return $ret && $returnData['status'] == 0;
     }
 
     public static function verifyPurchaseNotify($notifyXmlData, $desKey, &$returnData)
