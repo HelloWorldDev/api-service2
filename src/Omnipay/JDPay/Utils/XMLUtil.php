@@ -67,7 +67,7 @@ class XMLUtil{
 		//echo htmlspecialchars($reqXmlStr)."<br/>";
 		return $reqXmlStr;
 	}
-	
+
 	public static function decryptResXml($resultData, $desKey, &$resData){
 		$resultXml = simplexml_load_string($resultData);
 		$resultObj = json_decode(json_encode($resultXml),TRUE);
@@ -90,13 +90,12 @@ class XMLUtil{
 
 		$sha256SourceSignString = hash("sha256", $xml);
 		$decryptStr = RSAUtils::decryptByPublicKey($inputSign);
-		$flag = $decryptStr == $sha256SourceSignString;
+		$flag = !empty($decryptStr) && $decryptStr == $sha256SourceSignString;
 		$resData["version"]=$resultObj["version"];
 		$resData["merchant"]=$resultObj["merchant"];
 		$resData["result"]=$resultObj["result"];
 
-		//return $flag;
-		return $resData['status'] == 2;
+		return $flag;
 	}
 }
 ?>
