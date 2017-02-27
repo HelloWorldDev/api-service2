@@ -13,6 +13,19 @@ use Illuminate\Support\Facades\Redis;
 class AppService
 {
     /**
+     * Set log guarded params
+     * "*" for all
+     * @var array
+     */
+    protected static $responseLogGuardedParams = ['password', 'old_password'];
+
+    /**
+     * Common param of response data
+     * @var callable
+     */
+    protected static $responseCommonParamCallback;
+
+    /**
      * Log debug message
      * Usage: AppService::debug('debug message', __FILE__, __LINE__);
      * @param array|string $data
@@ -51,6 +64,21 @@ class AppService
         );
     }
 
+    /**
+     * @param string $responseLogGuardedParams
+     */
+    public static function setResponseLogGuardedParams($responseLogGuardedParams = '*')
+    {
+        self::$responseLogGuardedParams = $responseLogGuardedParams;
+    }
+
+    /**
+     * @param callable $responseCommonParamCallback
+     */
+    public static function setResponseCommonParamCallback(callable $responseCommonParamCallback)
+    {
+        self::$responseCommonParamCallback = $responseCommonParamCallback;
+    }
 
     /**
      * Response Success Data
@@ -60,6 +88,10 @@ class AppService
      */
     public static function response($data = ['result' => 'ok'], $common = null)
     {
+        if (is_null($common) && !is_null(self::$responseCommonParamCallback)) {
+            $common = call_user_func(self::$responseCommonParamCallback);
+        }
+
         return self::responseCore(['data' => $data, 'common' => $common]);
     }
 
@@ -102,8 +134,18 @@ class AppService
         $sign = $request->get('sign', $request->header('sign'));
         $timestamp = $request->get('timestamp', $request->header('timestamp'));
         $requestUid = property_exists($request, 'uid') ? $request->uid : 0;
-        $queries = $request->all();
-        unset($queries['password'], $queries['old_password']);
+
+        if (self::$responseLogGuardedParams == '*') {
+            $queries = [];
+        } else {
+            $queries = $request->all();
+            if (is_array(self::$responseLogGuardedParams)) {
+                foreach (self::$responseLogGuardedParams as $key) {
+                    unset($queries[$key]);
+                }
+            }
+        }
+
         $queries['sign'] = $sign;
         $queries['timestamp'] = $timestamp;
         $queries['request_id'] = isset($_SERVER['X_REQUEST_ID']) ? $_SERVER['X_REQUEST_ID'] : '';
