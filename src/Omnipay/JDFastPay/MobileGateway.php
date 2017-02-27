@@ -2,15 +2,11 @@
 
 namespace Omnipay\JDFastPay;
 
-use Config;
 use DES;
-use MotoPayService;
 use Omnipay\Common\AbstractGateway;
 
 include __DIR__ . '/express-php/des.php';
-include __DIR__ . '/express-php/service.php';
 require_once __DIR__ . '/express-php/xml.php';
-require_once __DIR__ . '/express-php/config.php';
 require_once __DIR__ . '/express-php/md5.php';
 
 /**
@@ -27,6 +23,13 @@ require_once __DIR__ . '/express-php/md5.php';
  */
 class MobileGateway extends AbstractGateway
 {
+    protected $config;
+
+    public function setConfig($config)
+    {
+        $this->config = Config::create($config);
+    }
+
     public function getName()
     {
         return 'JDFastPay_Mobile';
@@ -63,26 +66,24 @@ class MobileGateway extends AbstractGateway
         $trade_currency = $data['trade_currency']; // 货币类型 CNY
 
         $data_xml = v_data_xml_create($card_bank, $card_type, $card_no, $card_exp, $card_cvv2, $card_name, $card_idtype, $card_idno, $card_phone, $trade_type, $trade_id, $trade_amount, $trade_currency);
-        $service = new MotoPayService();
-        //发起交易至快捷支付
-        $resp = $service->trade($data_xml);
-        //解析响应结果
+        $service = new PayService();
+        $resp = $service->trade($data_xml, $this->config);
+
         return $this->operatePrePurchase($resp);
     }
 
     protected function operatePrePurchase($resp)
     {
-        $config = new Config();
         $temResp = base64_decode(substr($resp, 5));
         $xml = simplexml_load_string($temResp);
         //验证签名, version.merchant.terminal.data
         $text = $xml->VERSION . $xml->MERCHANT . $xml->TERMINAL . $xml->DATA;
 
-        if (!md5_verify($text, $config->md5, $xml->SIGN)) {
+        if (!md5_verify($text, $this->config->md5, $xml->SIGN)) {
             return null;
         }
 
-        $des = new DES($config->des);
+        $des = new DES($this->config->des);
         $decodedXML = $des->decrypt($xml->DATA);
         $dataXml = simplexml_load_string($decodedXML);
         /*
@@ -141,25 +142,23 @@ class MobileGateway extends AbstractGateway
             $trade_type, $trade_id, $trade_amount,
             $trade_currency, $trade_date, $trade_time,
             $trade_notice, $trade_note, $trade_code);
-        $service = new MotoPayService();
-        //发起交易至快捷支付
-        $resp = $service->trade($data_xml);
-        //解析响应结果
+        $service = new PayService();
+        $resp = $service->trade($data_xml, $this->config);
+
         return $this->operateCommitPurchase($resp);
     }
 
     protected function operateCommitPurchase($resp)
     {
-        $config = new Config();
         $temResp = base64_decode(substr($resp, 5));
         $xml = simplexml_load_string($temResp);
         //验证签名, version.merchant.terminal.data
         $text = $xml->VERSION . $xml->MERCHANT . $xml->TERMINAL . $xml->DATA;
-        if (!md5_verify($text, $config->md5, $xml->SIGN)) {
+        if (!md5_verify($text, $this->config->md5, $xml->SIGN)) {
             return null;
         }
         //des密钥要网银在线后台设置
-        $des = new DES($config->des);
+        $des = new DES($this->config->des);
         $decodedXML = $des->decrypt($xml->DATA);
         $dataXml = simplexml_load_string($decodedXML);
 
