@@ -2,14 +2,16 @@
 
 namespace Being\Api\Service\User;
 
+use Being\Api\Service\BaseClient;
 use Being\Api\Service\Code;
 use Being\Api\Service\HttpClient;
+
 use Being\Api\Service\Sender;
 use Being\Api\Service\Thirdparty\Auth;
 use Being\Api\Service\Thirdparty\ThirdpartyAuth;
 use Being\Services\App\AppService;
 
-class UserClient implements ClientInterface
+class UserClient extends BaseClient implements ClientInterface
 {
     protected $httpClient;
     public $appID;
@@ -72,7 +74,7 @@ class UserClient implements ClientInterface
     public function updateUser(User $user)
     {
         $bodyArr = [];
-        foreach (['password', 'fullname', 'email'] as $key) {
+        foreach (User::UPDATE_ATTRIBUTES as $key) {
             $val = $user->$key;
             if (!is_null($val)) {
                 $bodyArr[$key] = $val;
@@ -118,7 +120,7 @@ class UserClient implements ClientInterface
     public function verify(User $user)
     {
         $bodyArr = [];
-        foreach (['username', 'password', 'fullname', 'email'] as $key) {
+        foreach (['username', 'password', 'fullname', 'email', 'mobile'] as $key) {
             $val = $user->$key;
             if (!is_null($val)) {
                 $bodyArr[$key] = $val;
@@ -156,6 +158,50 @@ class UserClient implements ClientInterface
         $header = $this->getSecretHeader();
         $bodyArr += $this->getSecretData();
         $uri = 'v1/thirdparty/signup';
+        $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+
+        return $this->parseResponseBody($body);
+    }
+
+    public function find(User $user)
+    {
+        $bodyArr = [];
+        foreach (['uid', 'username', 'email', 'mobile'] as $key) {
+            $val = $user->$key;
+            if (!is_null($val)) {
+                $bodyArr[$key] = $val;
+                break;
+            }
+        }
+
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $uri = 'v1/user/find';
+        $req = HttpClient::getRequest(HttpClient::GET, $uri, $bodyArr, $header, null);
+        list($code, $body, $header) = $this->httpClient->send($req);
+        list($code, $data) = $this->parseResponseBody($body);
+
+        if ($code != Code::SUCCESS) {
+            return [$code, null];
+        }
+
+        $data['uid'] = $data['id'];
+        unset($data['id']);
+
+        return [$code, User::create($data)];
+    }
+
+    public function updatePassword($id, $oldPassword, $newPassword)
+    {
+        $bodyArr = [
+            'id' => $id,
+            'old_password' => $oldPassword,
+            'password' => $newPassword,
+        ];
+        $header = $this->getSecretHeader();
+        $bodyArr += $this->getSecretData();
+        $uri = 'v1/user/password';
         $req = HttpClient::getRequest(HttpClient::POST, $uri, [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
 

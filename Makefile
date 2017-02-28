@@ -42,6 +42,7 @@ test-lumen:
 	composer require "laravel/lumen-framework:5.1.*"
 	make composer-install
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/Services/App/AppServiceTest.php
+	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/Services/App/MobileServiceTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/WeiboOpenApi/LumenServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/QQOpenApi/LumenServiceProviderTest.php
 	php vendor/bin/phpunit  --bootstrap vendor/autoload.php tests/Being/CacheModel/ModelTest.php

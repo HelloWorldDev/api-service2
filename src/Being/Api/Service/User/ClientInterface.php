@@ -19,4 +19,6 @@ interface ClientInterface
     public function find3user(ThirdpartyAuth $ta);
     public function register3user(ThirdpartyAuth $ta, User $user);
     public function login3user($unionid, $code, $type, $config);
+    public function find(User $user);
+    public function updatePassword($id, $oldPassword, $newPassword);
 }

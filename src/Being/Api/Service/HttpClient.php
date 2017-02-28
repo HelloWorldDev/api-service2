@@ -35,15 +35,18 @@ class HttpClient implements Sender
     public static function getRequest($method, $uri, $queries, $headers, $body)
     {
         if (is_array($queries) && count($queries) > 0) {
-            $uri = substr($uri, 0, strpos($uri, '?'));
+            $pos = strpos($uri, '?');
+            if ($pos !== false) {
+                $uri = substr($uri, 0, $pos);
+            }
             $uri .= sprintf("?%s", http_build_query($queries));
         }
-
+        
         if (is_array($body)) {
             $body = http_build_query($body);
         }
 
-        if(!isset($headers['Content-Type'])){
+        if (!isset($headers['Content-Type'])) {
             $headers['Content-Type'] = 'application/x-www-form-urlencoded';
         }
 
@@ -60,8 +63,8 @@ class HttpClient implements Sender
             $code = $resp->getStatusCode();
             $body = $resp->getBody()->__toString();
             $headers = $resp->getHeaders();
+            $this->logResponse(Logger::DEBUG, $request, $resp);
             return [$code, $body, $headers];
-
         } catch (BadResponseException $e) {
             $this->log(Logger::ERROR, $e->getMessage());
             $body = $e->getResponse()->getBody()->__toString();
@@ -74,10 +77,10 @@ class HttpClient implements Sender
     protected function logResponse($level, Request $request, ResponseInterface $response)
     {
         $message = json_encode([
-            'request_uri' => $request->getUri(),
+            'request_uri' => $request->getUri()->__toString(),
             'request_method' => $request->getMethod(),
             'request_header' => $request->getHeaders(),
-            'request_body' => $request->getBody(),
+            'request_body' => $request->getBody()->__toString(),
             'response_body' => $response->getBody()->__toString(),
             'response_code' => $response->getStatusCode(),
             'response_reason_phrase' => $response->getReasonPhrase(),
