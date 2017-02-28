@@ -9,7 +9,7 @@
         "php": ">=5.6",
         "guzzlehttp/guzzle": "^6.2",
         "monolog/monolog": "^1.22",
-        "duccio/apns-php": "^1.0",
+        "sly/notification-pusher": "2.*",
         "omnipay/common": "~2.0",
         "giggsey/libphonenumber-for-php": "~7.0"
     },
