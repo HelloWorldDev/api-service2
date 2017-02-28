@@ -4,9 +4,11 @@ namespace Tests\Being\Api;
 
 use Being\Api\Service\Code;
 use Being\Api\Service\HttpClient;
+use Being\Api\Service\Thirdparty\ThirdpartyAuth;
 use Being\Api\Service\User\User;
 use Being\Api\Service\User\UserClient;
 use PHPUnit_Framework_TestCase;
+
 
 class UserCenterTest extends PHPUnit_Framework_TestCase
 {
@@ -92,6 +94,20 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($body['email'], 'new2@sdf.com');
 
         list($code, $body) = $userCli->verify('email', 'sdf@sdf.com');
+        $this->assertEquals($code, 0);
+
+        //第三方登录用户-查找
+        $ta1 = new ThirdpartyAuth($user->uid, 1, '123456', 'zhweibo');
+        list($code, $body) = $userCli->find3user($ta1);
+        $this->assertEquals($code, 0);
+
+        //第三方登录用户-注册
+        $type = ThirdpartyAuth::TYPE_WETHAT;
+        $username = 'u' . $type . substr(md5(uniqid()), 0, 9) . rand(1000, 9999);
+        $unionid = uniqid();
+        $newTa = new ThirdpartyAuth(0, 1, $unionid, 'third_party_name');
+        $newUser = new User(0, $username, '', '', '', '');
+        list($code, $body) = $userCli->register3user($newTa, $newUser);
         $this->assertEquals($code, 0);
     }
 }
