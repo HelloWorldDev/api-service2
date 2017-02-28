@@ -9,24 +9,19 @@ use Being\Services\App\AppService;
 
 class ApnsMessage extends Message
 {
-    /**
-     * @var ApnsPHP_Push
-     */
-    protected $push;
     protected $certificateFile;
+    protected $env;
     /**
      * @var ApnsPHP_Message
      */
     protected $message;
-    protected $env;
 
     public function __construct($to, $title)
     {
         parent::__construct($to, $title);
-        $this->buildMessage();
     }
 
-    protected function buildMessage()
+    public function buildMessage()
     {
         $message = new ApnsPHP_Message($this->to);
         // $message->setCustomIdentifier("Message-Badge-3");
@@ -37,12 +32,13 @@ class ApnsMessage extends Message
         // $message->setCustomProperty('acme3', array('bing', 'bong'));
         $message->setExpiry(7 * 86400);
         $this->message = $message;
+
+        return $this;
     }
 
     public function setCertificateFile($certificateFile)
     {
         $this->certificateFile = $certificateFile;
-        $this->push = new ApnsPHP_Push($this->env, $certificateFile);
 
         return $this;
     }
@@ -78,17 +74,17 @@ class ApnsMessage extends Message
 
     public function send()
     {
-        if (is_null($this->push)) {
-            throw new \Exception('call ApnsMessage::setCertificateFile($file) to build a ApnsPHP_Push object');
+        if (is_null($this->message)) {
+            $this->buildMessage();
         }
-
+        $push = new ApnsPHP_Push($this->env, $this->certificateFile);
         // Instantiate a new ApnsPHP_Push object
         // $this->push->setRootCertificationAuthority('entrust_root_certification_authority.pem');
-        $this->push->connect();
-        $this->push->add($this->message);
-        $this->push->send();
-        $this->push->disconnect();
-        $errors = $this->push->getErrors();
+        $push->connect();
+        $push->add($this->message);
+        $push->send();
+        $push->disconnect();
+        $errors = $push->getErrors();
         $ret = count($errors) == 0;
 
         // log
