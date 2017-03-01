@@ -9,7 +9,7 @@ class ThirdpartyAuth
     public $unionid;
     public $tpname;
 
-    const TYPE_WETHAT = 1;
+    const TYPE_WECHAT = 1;
     const TYPE_FACEBOOK = 2;
     const TYPE_WEIBO = 3;
     const TYPE_QQ = 4;
@@ -24,7 +24,7 @@ class ThirdpartyAuth
 
     public static function CheckType($type)
     {
-        return ($type == self::TYPE_WETHAT
+        return ($type == self::TYPE_WECHAT
             || $type == self::TYPE_FACEBOOK
             || $type == self::TYPE_WEIBO
             || $type == self::TYPE_QQ);
