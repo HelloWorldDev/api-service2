@@ -45,7 +45,6 @@ class AuthWechat extends Auth
             'code' => $code,
             'grant_type' => 'authorization_code',
         ];
-        $url = sprintf($url, $this->appId, $this->secret, $code);
         $req = HttpClient::getRequest(HttpClient::GET, $url, $query, [], null);
         list($code, $body, $header) = $this->httpClient->send($req);
         $data = json_decode($body, true);
