@@ -7,15 +7,19 @@ use Being\WeiboOpenApi\WeiboClient;
 
 class AuthWeibo extends Auth
 {
+    private $appKey;
+    private $appSecret;
+
     public function setConfig($config)
     {
+        $this->appKey = $config['weibo']['app_key'];
+        $this->appSecret = $config['weibo']['app_secret'];
         return $this;
     }
 
     public function login($unionid, $code)
     {
-        $client = app(WeiboClient::class);
-        $client->setAccessToken($code);
+        $client = new WeiboClient($this->appKey, $this->appSecret, $code);
         $userInfo = $client->show_user_by_id($unionid);
         AppService::debug('weibo response:' . json_encode($userInfo), __FILE__, __LINE__);
         $nickname = empty($userInfo['name']) ? '' : $userInfo['name'];
