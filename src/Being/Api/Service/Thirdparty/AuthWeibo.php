@@ -22,6 +22,9 @@ class AuthWeibo extends Auth
         $client = new WeiboClient($this->appKey, $this->appSecret, $code);
         $userInfo = $client->show_user_by_id($unionid);
         AppService::debug('weibo response:' . json_encode($userInfo), __FILE__, __LINE__);
+        if (isset($userInfo['error_code'])) {
+            return null;
+        }
         $nickname = empty($userInfo['name']) ? '' : $userInfo['name'];
         $avatar = empty($userInfo['avatar_large']) ? '' : $userInfo['avatar_large'];
 
