@@ -151,17 +151,6 @@ class MobileService
      */
     public static function hiddenMobile($mobile)
     {
-        for ($l = 5, $r = strlen($mobile) - 3; $l <= $r; $l++, $r--) {
-            $mobile[$l] = '*';
-            $mobile[$r] = '*';
-        }
-        if ($l <= 5 && $r > 0) {
-            $l = 2;
-            while ($l < 4) {
-                $mobile[$l++] = '*';
-            }
-        }
-
-        return $mobile;
+        return substr($mobile, 0, 3) . '****' . substr($mobile, -4);
     }
 }
