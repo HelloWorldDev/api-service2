@@ -164,10 +164,16 @@ class AppService
             && !isset($response['error_code'])
         ) {
             $eTag = $request->header('If-None-Match');
-            if (self::checkETag($eTag, $responseBody)) {
-                $headers['Etag'] = sprintf('"%s"', $eTag);
+            $eTagNew = md5($responseBody);
+            $headers['Etag'] = sprintf('"%s"', $eTagNew);
 
-                return response('', 304, $headers);
+            if (strlen($eTag) > 0) {
+                $left = strpos($eTag, '"');
+                $right = strrpos($eTag, '"');
+                $eTag = substr($eTag, $left + 1, $right - $left - 1);
+                if ($eTag == $eTagNew) {
+                    return response('', 304, $headers);
+                }
             }
         }
 
@@ -175,22 +181,6 @@ class AppService
         $headers['Cache-Control'] = 'public';
 
         return response()->json($response, $status, $headers);
-    }
-
-    /**
-     * Check whether eTag is changed
-     * @param $eTag
-     * @param $responseBody
-     * @return bool
-     */
-    protected static function checkETag($eTag, $responseBody)
-    {
-        $left = strpos($eTag, '"');
-        $right = strrpos($eTag, '"');
-        $eTag = (substr($eTag, $left + 1, $right - $left - 1));
-        $newETag = md5($responseBody);
-
-        return $eTag == $newETag;
     }
 
     /**

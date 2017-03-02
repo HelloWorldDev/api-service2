@@ -20,7 +20,6 @@
 
 namespace Being\QQOpenApi;
 
-use Being\Services\App\AppService;
 use Exception;
 
 require_once __DIR__ . '/lib/SnsNetwork.php';
