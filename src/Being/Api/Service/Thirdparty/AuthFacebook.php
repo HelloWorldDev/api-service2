@@ -12,6 +12,6 @@ class AuthFacebook extends Auth
     public function login($unionid, $code)
     {
         // todo
-        return ['unionid' => $unionid, 'code' => $code];
+        return null;
     }
 }

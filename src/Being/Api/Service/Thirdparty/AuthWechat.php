@@ -4,6 +4,7 @@ namespace Being\Api\Service\Thirdparty;
 
 use Being\Api\Service\HttpClient;
 use Being\Api\Service\Sender;
+use Being\Services\App\AppService;
 
 class AuthWechat extends Auth
 {
@@ -25,10 +26,13 @@ class AuthWechat extends Auth
 
     public function login($unionid, $code)
     {
-        $wechatData = $this->fetchUserInfo($code);
-        if (empty($wechatData)) {
+        $data = $this->fetchUserInfo($code);
+        AppService::debug('wechat response:' . json_encode($data), __FILE__, __LINE__);
+        $wechatData = json_decode($data, true);
+        if (isset($wechatData['errcode']) && $wechatData['errcode'] != 0) {
             return null;
         }
+
         $unionid = $wechatData['openid'];
         $avatar = isset($wechatData['headimgurl']) ? $wechatData['headimgurl'] : '';
         $nickname = isset($wechatData['nickname']) ? $wechatData['nickname'] : '';
@@ -69,10 +73,6 @@ class AuthWechat extends Auth
 
         $req = HttpClient::getRequest(HttpClient::GET, $url, $query, [], null);
         list($code, $body, $header) = $this->httpClient->send($req);
-        $data = json_decode($body, true);
-        if (isset($data['openid'])) {
-            return $data;
-        }
-        return null;
+        return $body;
     }
 }

@@ -26,9 +26,9 @@ class AuthQQ extends Auth
         $client = new QQClient($this->appId, $this->appKey);
         $client->setServerName($this->serverName);
         $userInfo = $client->getUserInfo($unionId, $code, $this->pf);
-        AppService::debug('qq response:'.json_encode($userInfo), __FILE__, __LINE__);
-        if (isset($userInfo['ret']) && $userInfo['ret'] == -1) {
-               return null;
+        AppService::debug('qq response:' . json_encode($userInfo), __FILE__, __LINE__);
+        if ($userInfo['ret'] != 0) {
+            return null;
         }
         $nickname = empty($userInfo['nickname']) ? '' : $userInfo['nickname'];
         $avatar = empty($userInfo['figureurl']) ? '' : $userInfo['figureurl'];
