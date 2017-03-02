@@ -20,7 +20,6 @@
 
 namespace Being\QQOpenApi;
 
-use Being\Services\App\AppService;
 use Exception;
 
 require_once __DIR__ . '/lib/SnsNetwork.php';
@@ -132,9 +131,6 @@ class OpenApiV3
         
         //通过调用以下方法，可以打印出最终发送到openapi服务器的请求参数以及url，默认为注释
         //self::printRequest($url,$params,$method);
-
-        // todo 
-        AppService::debug('QQ open api params: '. json_encode($params), __FILE__, __LINE__);
         
         // 发起请求
         $ret = SnsNetwork::makeRequest($url, $params, $cookie, $method, $protocol);
