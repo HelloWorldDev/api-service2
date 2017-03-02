@@ -164,9 +164,9 @@ class AppService
             && !isset($response['error_code'])
         ) {
             $eTag = $request->header('If-None-Match');
-            if (self::checkETag($eTag, $responseBody)) {
-                $headers['Etag'] = sprintf('"%s"', $eTag);
+            $headers['Etag'] = sprintf('"%s"', $eTag);
 
+            if (self::checkETag($eTag, $responseBody)) {
                 return response('', 304, $headers);
             }
         }
