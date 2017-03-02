@@ -26,13 +26,10 @@ class AuthWechat extends Auth
 
     public function login($unionid, $code)
     {
-        $data = $this->fetchUserInfo($code);
-        AppService::debug('wechat response:' . json_encode($data), __FILE__, __LINE__);
-        $wechatData = json_decode($data, true);
-        if (isset($wechatData['errcode']) && $wechatData['errcode'] != 0) {
-            return null;
-        }
-
+        $wechatData = $this->fetchUserInfo($code);
+        AppService::debug('wechat response:' . json_encode($wechatData), __FILE__, __LINE__);
+        $wechatData = json_decode($wechatData, true);
+        //无论验证成功还是失败均放过
         $unionid = $wechatData['openid'];
         $avatar = isset($wechatData['headimgurl']) ? $wechatData['headimgurl'] : '';
         $nickname = isset($wechatData['nickname']) ? $wechatData['nickname'] : '';
