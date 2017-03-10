@@ -151,6 +151,9 @@ class MobileService
      */
     public static function hiddenMobile($mobile)
     {
+        if (empty($mobile)) {
+            return '';
+        }
         return substr($mobile, 0, 3) . '****' . substr($mobile, -4);
     }
 }
