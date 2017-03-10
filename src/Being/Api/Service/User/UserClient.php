@@ -217,10 +217,6 @@ class UserClient extends BaseClient implements ClientInterface
             return [Code::INVALID_PARAM, 'params error'];
         }
         $thirdInfo = $thirdparty->setConfig($config)->login($unionid, $code);
-        if (is_null($thirdInfo)) {
-            AppService::error('third party check fail', __FILE__, __LINE__);
-            return [Code::SYSTEM_ERROR, 'params error'];
-        }
 
         // 查看之前是否已注册
         $ta = new ThirdpartyAuth(null, $type, $thirdInfo['unionid'], '');
