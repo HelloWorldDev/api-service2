@@ -38,6 +38,17 @@ class DeviceClient extends BaseClient implements DeviceInterface
         return $devices;
     }
 
+    public function remove($uid)
+    {
+        $bodyArr = ['uid' => $uid];
+        $header = $this->getSecretHeader();
+        $req = HttpClient::getRequest(HttpClient::DELETE, 'v1/device', [], $header, $bodyArr);
+        list($code, $body, $header) = $this->httpClient->send($req);
+        list($code) = $this->parseResponseBody($body);
+
+        return $code == Code::SUCCESS;
+    }
+
     public function pushTokens($uidList)
     {
         $uidList = array_slice($uidList, 0, 100);
