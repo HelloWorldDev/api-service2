@@ -2,6 +2,7 @@
 
 namespace Omnipay\JDFastPay;
 
+use Being\Services\App\AppService;
 use DES;
 
 class PayService
@@ -15,6 +16,9 @@ class PayService
         //使用方法
         $param = 'charset=UTF-8&req=' . urlencode(base64_encode($xml));
         $resp = $this->post($param);
+
+        // add app debug info
+        AppService::debug(sprintf('jdfastpay request chinabank response %s', $resp), __FILE__, __LINE__);
 
         return $resp;
     }
