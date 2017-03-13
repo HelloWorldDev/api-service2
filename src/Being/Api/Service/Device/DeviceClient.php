@@ -42,7 +42,7 @@ class DeviceClient extends BaseClient implements DeviceInterface
     {
         $bodyArr = ['uid' => $uid];
         $header = $this->getSecretHeader();
-        $req = HttpClient::getRequest(HttpClient::DELETE, 'v1/device', [], $header, $bodyArr);
+        $req = HttpClient::getRequest(HttpClient::DELETE, 'v1/device', $bodyArr, $header, null);
         list($code, $body, $header) = $this->httpClient->send($req);
         list($code) = $this->parseResponseBody($body);
 
