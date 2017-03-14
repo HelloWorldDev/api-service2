@@ -148,7 +148,7 @@ class MobileGateway extends AbstractGateway
         return $this->operateCommitPurchase($resp);
     }
 
-    protected function operateCommitPurchase($resp)
+    public function operateCommitPurchase($resp)
     {
         $temResp = base64_decode(substr($resp, 5));
         $xml = simplexml_load_string($temResp);
