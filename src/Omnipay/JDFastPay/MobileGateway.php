@@ -103,15 +103,15 @@ class MobileGateway extends AbstractGateway
 
         return [
             'success' => ((string)$dataXml->RETURN->CODE) === '0000',
-            'version' => $xml->VERSION,
-            'merchant' => $xml->MERCHANT,
-            'terminal' => $xml->TERMINAL,
-            'trade_type' => $dataXml->TRADE->TYPE,
-            'trade_id' => $dataXml->TRADE->ID,
-            'trade_amount' => $dataXml->TRADE->AMOUNT,
-            'trade_currency' => $dataXml->TRADE->CURRENCY,
-            'return_code' => $dataXml->RETURN->CODE,
-            'return_desc' => $dataXml->RETURN->DESC,
+            'version' => (string)$xml->VERSION,
+            'merchant' => (string)$xml->MERCHANT,
+            'terminal' => (string)$xml->TERMINAL,
+            'trade_type' => (string)$dataXml->TRADE->TYPE,
+            'trade_id' => (string)$dataXml->TRADE->ID,
+            'trade_amount' => (string)$dataXml->TRADE->AMOUNT,
+            'trade_currency' => (string)$dataXml->TRADE->CURRENCY,
+            'return_code' => (string)$dataXml->RETURN->CODE,
+            'return_desc' => (string)$dataXml->RETURN->DESC,
         ];
     }
 
@@ -184,18 +184,18 @@ class MobileGateway extends AbstractGateway
 
         return [
             'success' => ((string)$dataXml->RETURN->CODE) === '0000' && ((string)$dataXml->TRADE->STATUS) === '0',
-            'version' => $xml->VERSION,
-            'merchant' => $xml->MERCHANT,
-            'trade_type' => $dataXml->TRADE->TYPE,
-            'trade_id' => $dataXml->TRADE->ID,
-            'trade_amount' => $dataXml->TRADE->AMOUNT,
-            'trade_currency' => $dataXml->TRADE->CURRENCY,
-            'trade_date' => $dataXml->TRADE->DATE,
-            'trade_time' => $dataXml->TRADE->TIME,
-            'trade_note' => $dataXml->TRADE->NOTE,
-            'trade_status' => $dataXml->TRADE->STATUS,
-            'return_code' => $dataXml->RETURN->CODE,
-            'return_desc' => $dataXml->RETURN->DESC,
+            'version' => (string)$xml->VERSION,
+            'merchant' => (string)$xml->MERCHANT,
+            'trade_type' => (string)$dataXml->TRADE->TYPE,
+            'trade_id' => (string)$dataXml->TRADE->ID,
+            'trade_amount' => (string)$dataXml->TRADE->AMOUNT,
+            'trade_currency' => (string)$dataXml->TRADE->CURRENCY,
+            'trade_date' => (string)$dataXml->TRADE->DATE,
+            'trade_time' => (string)$dataXml->TRADE->TIME,
+            'trade_note' => (string)$dataXml->TRADE->NOTE,
+            'trade_status' => (string)$dataXml->TRADE->STATUS,
+            'return_code' => (string)$dataXml->RETURN->CODE,
+            'return_desc' => (string)$dataXml->RETURN->DESC,
         ];
 
     }
