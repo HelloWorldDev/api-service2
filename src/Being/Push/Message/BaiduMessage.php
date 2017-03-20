@@ -49,8 +49,8 @@ class BaiduMessage extends Message
             'uri' => ''
         ];
         if (is_array($this->options)) {
-            if (isset($this->options['data'])) {
-                $data = array_merge($data, $this->options['data']);
+            if (isset($this->options['custom'])) {
+                $data = array_merge($data, $this->options['custom']);
             }
         }
         if ($this->description) {
