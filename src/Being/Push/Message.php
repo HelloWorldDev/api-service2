@@ -11,12 +11,14 @@ abstract class Message
     protected $to;
     protected $title;
     protected $description;
+    protected $options;
 
-    public function __construct($to, $title, $description = null)
+    public function __construct($to, $title, $description = null, $options = null)
     {
         $this->to = $to;
         $this->title = $title;
         $this->description = $description;
+        $this->options = $options;
     }
 
     public function setEnv($env)

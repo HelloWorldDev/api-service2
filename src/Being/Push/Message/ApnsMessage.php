@@ -14,12 +14,6 @@ use Sly\NotificationPusher\PushManager,
 class ApnsMessage extends BaseMessage
 {
     protected $certificateFile;
-    protected $env;
-
-    public function __construct($to, $title)
-    {
-        parent::__construct($to, $title);
-    }
 
     public function setCertificateFile($certificateFile)
     {
@@ -39,6 +33,9 @@ class ApnsMessage extends BaseMessage
             new Device($this->to),
         ));
         $message = new Message($this->title);
+        if (is_array($this->options)) {
+            $message->setOptions($this->options);
+        }
         $push = new Push($apnsAdapter, $devices, $message);
         $pushManager->add($push);
 
