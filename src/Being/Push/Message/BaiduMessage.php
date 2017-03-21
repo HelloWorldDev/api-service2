@@ -71,19 +71,22 @@ class BaiduMessage extends Message
         $client = new Client();
         $request = new Request($method, $uri, $headers, $body);
 
-        $response = $client->send($request);
-        $ret = $response->getStatusCode() == 200;
+        $ret = false;
+        $error = null;
+        try {
+            $response = $client->send($request);
+            $ret = $response->getStatusCode() == 200;
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+        }
 
         // log
         if (class_exists('\Being\Services\App\AppService')) {
             $message = json_encode([
-                'request_uri' => $request->getUri()->__toString(),
-                'request_method' => $request->getMethod(),
-                'request_header' => $request->getHeaders(),
-                'request_body' => $request->getBody()->__toString(),
-                'response_body' => $response->getBody()->__toString(),
-                'response_code' => $response->getStatusCode(),
-                'response_reason_phrase' => $response->getReasonPhrase(),
+                'env' => $this->env == self::ENVIRONMENT_SANDBOX ? 'dev' : 'prod',
+                'to' => $this->to,
+                'ret' => $ret,
+                'error' => $error,
             ]);
             if ($ret) {
                 \Being\Services\App\AppService::debug($message, __FILE__, __LINE__);
