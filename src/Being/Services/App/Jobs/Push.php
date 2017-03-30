@@ -6,13 +6,14 @@ use Being\Push\Message;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Being\Api\Service\Push\PushClient;
 
 class Push extends Job implements SelfHandling, ShouldQueue
 {
     use SerializesModels;
 
     /**
-     * @var Message[]
+     * @var array
      */
     protected $messages;
 
@@ -23,8 +24,6 @@ class Push extends Job implements SelfHandling, ShouldQueue
 
     public function handle()
     {
-        foreach ($this->messages as $message) {
-            $message->send();
-        }
+        app(PushClient::class)->push($this->messages);
     }
 }
