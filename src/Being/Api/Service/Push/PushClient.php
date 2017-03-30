@@ -21,8 +21,9 @@ class PushClient extends BaseClient implements PushInterface
      */
     public function push(array $messages)
     {
+        $bodyArr = ['messages' => json_encode($messages)];
         $header = $this->getSecretHeader();
-        $req = HttpClient::getRequest(HttpClient::POST, 'v1/send', [], $header, json_encode($messages));
+        $req = HttpClient::getRequest(HttpClient::POST, 'v1/send', [], $header, $bodyArr);
         list($code, $body, $header) = $this->httpClient->send($req);
         list($code) = $this->parseResponseBody($body);
 
