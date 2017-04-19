@@ -105,7 +105,7 @@ class MobileService
         ];
 
         $job = new Http('POST', $smsApiUrl, $data);
-        app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($job->onQueue('being'));
+        app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($job);
 
         return true;
     }

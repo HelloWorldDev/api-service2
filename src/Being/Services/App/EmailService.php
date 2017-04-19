@@ -20,7 +20,7 @@ class EmailService
     public static function sendHtmlMail($email, $subject, $view, $data, $config)
     {
         $job = new SendMail($email, $subject, $view, $data, $config);
-        app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($job->onQueue('being'));
+        app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($job);
 
         return true;
     }

@@ -19,7 +19,7 @@ class PushService
     public static function push(array $messages, $async = false)
     {
         if ($async) {
-            app('Illuminate\Contracts\Bus\Dispatcher')->dispatch((new Push($messages))->onQueue('being'));
+            app('Illuminate\Contracts\Bus\Dispatcher')->dispatch(new Push($messages));
         } else {
             app(PushClient::class)->push($messages);
         }
