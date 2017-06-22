@@ -217,23 +217,23 @@ class UserClient extends BaseClient implements ClientInterface
             return [Code::INVALID_PARAM, 'params error'];
         }
         $thirdInfo = $thirdparty->setConfig($config)->login($unionid, $code);
-        if (is_null($thirdInfo)) {
-            AppService::error('third party check fail', __FILE__, __LINE__);
-            return [Code::SYSTEM_ERROR, 'params error'];
-        }
 
         // 查看之前是否已注册
         $ta = new ThirdpartyAuth(null, $type, $thirdInfo['unionid'], '');
         list($code, $data) = $this->find3user($ta);
         if ($code == Code::SUCCESS || $code != Code::USER_NOT_EXISTS) {
+            if(is_array($data) && $data['fullname'] == ''){
+                $data['fullname'] = isset($thirdInfo['nickname']) ? $thirdInfo['nickname'] : '';
+            }
             return [$code, $data];
         }
 
         // 用户不存在，进行注册
         $username = $this->randUserName($type);
         $tpname = isset($thirdInfo['nickname']) ? $thirdInfo['nickname'] : '';
+        $fullName = isset($thirdInfo['nickname']) ? $thirdInfo['nickname'] : '';
         $ta->tpname = $tpname;
-        $user = new User(0, $username, '', '', '', '');
+        $user = new User(0, $username, $fullName, '', '', '');
         list($code, $data) = $this->register3user($ta, $user);
         if ($code != Code::SUCCESS) {
             return [$code, $data];

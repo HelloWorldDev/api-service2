@@ -102,7 +102,7 @@ class UserCenterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($code, 0);
 
         //第三方登录用户-注册
-        $type = ThirdpartyAuth::TYPE_WETHAT;
+        $type = ThirdpartyAuth::TYPE_WECHAT;
         $username = 'u' . $type . substr(md5(uniqid()), 0, 9) . rand(1000, 9999);
         $unionid = uniqid();
         $newTa = new ThirdpartyAuth(0, 1, $unionid, 'third_party_name');

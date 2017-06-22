@@ -6,7 +6,7 @@
     "homepage": "http://www.being.com",
     "license": "Apache License",
     "require": {
-        "php": ">=5.6",
+        "php": ">=5.5.9",
         "guzzlehttp/guzzle": "^6.2",
         "monolog/monolog": "^1.22",
         "sly/notification-pusher": "2.*",

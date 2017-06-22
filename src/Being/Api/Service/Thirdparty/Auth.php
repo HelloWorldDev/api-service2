@@ -10,7 +10,7 @@ abstract class Auth
     public static function factory($type, $httpClient)
     {
         switch ($type) {
-            case ThirdpartyAuth::TYPE_WETHAT:
+            case ThirdpartyAuth::TYPE_WECHAT:
                 return new AuthWechat($httpClient);
             case ThirdpartyAuth::TYPE_FACEBOOK:
                 return new AuthFacebook();

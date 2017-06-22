@@ -117,7 +117,7 @@ class OpenApiV3
         // 添加一些参数
         $params['appid'] = $this->appid;
         $params['format'] = $this->format;
-        
+
         // 生成签名
         $secret = $this->appkey . '&';
         $sig = SnsSigCheck::makeSig($method, $script_name, $params, $secret);
@@ -131,7 +131,6 @@ class OpenApiV3
         
         //通过调用以下方法，可以打印出最终发送到openapi服务器的请求参数以及url，默认为注释
         //self::printRequest($url,$params,$method);
-        
         
         // 发起请求
         $ret = SnsNetwork::makeRequest($url, $params, $cookie, $method, $protocol);

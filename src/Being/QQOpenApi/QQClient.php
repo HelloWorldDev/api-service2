@@ -9,7 +9,7 @@ class QQClient extends OpenApiV3
         $params = array(
             'openid' => $openid,
             'openkey' => $openkey,
-            'pf' => !is_null($pf) ? $pf : config('qq_open_api.pf'),
+            'pf' => $pf,
         );
 
         $script_name = '/v3/user/get_info';

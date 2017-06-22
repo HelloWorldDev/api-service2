@@ -8,12 +8,12 @@
 		$xml->addChild('terminal',$terminal);
 		$xml->addChild('data',$data);
 		$xml->addChild('sign',$sign);
-		
-		echo "xml.php====version======".$version."<br>";
+
+		/*echo "xml.php====version======".$version."<br>";
 		echo "xml.php====merchant======".$merchant."<br>";
 		echo "xml.php====terminal======".$terminal."<br>";
 		echo "xml.php====data======".$data."<br>";
-		echo "xml.php====sign======".$sign."<br>";
+		echo "xml.php====sign======".$sign."<br>";*/
 
 
 		return $xml->asXML();

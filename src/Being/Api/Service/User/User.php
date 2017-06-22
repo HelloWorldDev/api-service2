@@ -20,7 +20,7 @@ class User
     public $gender;
     public $age;
 
-    const UPDATE_ATTRIBUTES = ['fullname', 'password', 'email', 'avatar', 'mobile', 'gender', 'age'];
+    const UPDATE_ATTRIBUTES = ['username', 'fullname', 'password', 'email', 'avatar', 'mobile', 'gender', 'age'];
 
     /**
      * @deprecated use User::create() instead

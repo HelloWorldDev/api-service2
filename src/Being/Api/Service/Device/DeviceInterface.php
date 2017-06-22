@@ -17,6 +17,12 @@ interface DeviceInterface
     public function find($uid);
 
     /**
+     * @param $uid
+     * @return bool
+     */
+    public function remove($uid);
+
+    /**
      * @param $uidList
      * @return Device[]|null
      */

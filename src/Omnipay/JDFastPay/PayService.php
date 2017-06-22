@@ -2,6 +2,7 @@
 
 namespace Omnipay\JDFastPay;
 
+use Being\Services\App\AppService;
 use DES;
 
 class PayService
@@ -16,6 +17,9 @@ class PayService
         $param = 'charset=UTF-8&req=' . urlencode(base64_encode($xml));
         $resp = $this->post($param);
 
+        // add app debug info
+        AppService::debug(sprintf('jdfastpay request chinabank response %s', $resp), __FILE__, __LINE__);
+
         return $resp;
     }
 
@@ -25,7 +29,8 @@ class PayService
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_PORT, 443);
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+        // fix prod server ssl error
+        // curl_setopt($ch, CURLOPT_SSLVERSION, 3);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
