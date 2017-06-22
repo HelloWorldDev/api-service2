@@ -23,7 +23,6 @@ class AuthFacebook extends Auth
 
     public function login($unionid, $code=0)
     {
-<<<<<<< HEAD
         $fb = new Facebook([
             'app_id' => $this->appId,
             'app_secret' => $this->secret,
@@ -43,9 +42,5 @@ class AuthFacebook extends Auth
         $nickname = $me->getName();
         $code = 0;
         return ['unionid' => $unionid, 'code' => $code, 'avatar' => $avatar, 'nickname' => $nickname];
-=======
-        // todo
-        return ['unionid' => $unionid, 'code' => $code];
->>>>>>> origin/master
     }
 }

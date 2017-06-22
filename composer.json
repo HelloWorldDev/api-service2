@@ -11,7 +11,8 @@
         "monolog/monolog": "^1.22",
         "sly/notification-pusher": "2.*",
         "omnipay/common": "~2.0",
-        "giggsey/libphonenumber-for-php": "~7.0"
+        "giggsey/libphonenumber-for-php": "~7.0",
+        "facebook/graph-sdk": "^5.5"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
