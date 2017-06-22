@@ -31,7 +31,7 @@ class AuthFacebook extends Auth
 
         try {
             //$response = $fb->get('/me?fields=id,name,first_name,last_name,picture,email', $unionid);
-            $response = $fb->get('/me?fields=id,name,picture', $unionid);
+            $response = $fb->get('/me?fields=id,name,picture.width(300)', $unionid);
         } catch(FacebookResponseException $e) {
             AppService::error('Graph returned an error: ' . $e->getMessage(), __FILE__, __FILE__);
             return [$e->getCode(), $e->getMessage()];
