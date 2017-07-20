@@ -29,12 +29,23 @@ class AuthWechat extends Auth
         $wechatData = $this->fetchUserInfo($code);
         AppService::debug('wechat response:' . json_encode($wechatData), __FILE__, __LINE__);
         $wechatData = json_decode($wechatData, true);
-        //无论验证成功还是失败均放过
+        if (!isset($wechatData['openid'])) {
+            return null;
+        }
+        //同一个公司下用户的unionid相同, 同一个公司下不同应用的openid不同
         $unionid = $wechatData['openid'];
         $avatar = isset($wechatData['headimgurl']) ? $wechatData['headimgurl'] : '';
         $nickname = isset($wechatData['nickname']) ? $wechatData['nickname'] : '';
+        $realUnionid = isset($wechatData['unionid']) ? $wechatData['unionid'] : '';
 
-        return ['unionid' => $unionid, 'code' => $code, 'avatar' => $avatar, 'nickname' => $nickname];
+        return [
+            'unionid' => $unionid,
+            'real_unionid' => $realUnionid,
+            'openid' => $wechatData['openid'],
+            'code' => $code,
+            'avatar' => $avatar,
+            'nickname' => $nickname,
+        ];
     }
 
     private function fetchAccessTokenData($code)

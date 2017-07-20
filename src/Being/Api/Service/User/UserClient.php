@@ -217,6 +217,9 @@ class UserClient extends BaseClient implements ClientInterface
             return [Code::INVALID_PARAM, 'params error'];
         }
         $thirdInfo = $thirdparty->setConfig($config)->login($unionid, $code);
+        if (!$thirdInfo) {
+            return [Code::INVALID_PARAM, null];
+        }
 
         // 查看之前是否已注册
         $ta = new ThirdpartyAuth(null, $type, $thirdInfo['unionid'], '');
@@ -244,7 +247,7 @@ class UserClient extends BaseClient implements ClientInterface
         return [$code, $data];
     }
 
-    private function randUserName($type)
+    public function randUserName($type)
     {
         //生成以u+type为前缀的15位长度用户名
         return 'u' . $type . substr(md5(uniqid()), 0, 9) . rand(1000, 9999);
