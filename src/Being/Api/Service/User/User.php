@@ -19,8 +19,16 @@ class User
     public $mobile;
     public $gender;
     public $age;
+    public $name;
+    public $country;
+    public $id_type;
+    public $id_number;
+    public $id_card_pic1;
+    public $id_card_pic2;
+    public $id_card_pic3;
+    public $auth_status;
 
-    const UPDATE_ATTRIBUTES = ['username', 'fullname', 'password', 'email', 'avatar', 'mobile', 'gender', 'age'];
+    const UPDATE_ATTRIBUTES = ['username', 'fullname', 'password', 'email', 'avatar', 'mobile', 'gender', 'age', 'name', 'country', 'id_type', 'id_number', 'id_card_pic1', 'id_card_pic2', 'id_card_pic3', 'auth_status'];
 
     /**
      * @deprecated use User::create() instead
