@@ -63,7 +63,7 @@ class HttpClient implements Sender
             $code = $resp->getStatusCode();
             $body = $resp->getBody()->__toString();
             $headers = $resp->getHeaders();
-            $this->logResponse(Logger::DEBUG, $request, $resp);
+            //$this->logResponse(Logger::DEBUG, $request, $resp);
             return [$code, $body, $headers];
         } catch (BadResponseException $e) {
             $this->log(Logger::ERROR, $e->getMessage());
