@@ -118,7 +118,10 @@ class AppService
         } else {
             $lang = LocalizationService::getLang();
             $langPack = 'v1:server:' . $lang;
-            $message = Redis::hget($langPack, $key);
+            $messageRedis = Redis::hget($langPack, $key);
+            if (!is_null($messageRedis)) {
+                $message = $messageRedis;
+            }
         }
 
         return self::responseCore(['error_code' => $code, 'message' => $message]);
