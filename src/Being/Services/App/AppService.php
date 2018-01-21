@@ -103,21 +103,22 @@ class AppService
      */
     public static function responseError($code, $message = null, $key = null)
     {
-        if (is_null($message)) {
-            $lang = LocalizationService::getLang();
-            $message = Message::getMessage($code, $lang);
+        if (is_null($key)) {
             if (is_null($message)) {
-                if (is_null($key)) {
+                $lang = LocalizationService::getLang();
+                $message = Message::getMessage($code, $lang);
+                if (is_null($message)) {
                     $key = 'message.error_code.' . $code;
                     $message = self::trans($key, [], '', $lang);
                     if ($message == $key) {
                         $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
                     }
-                } else {
-                    $langPack = 'v1:server:' . $lang;
-                    $message = Redis::hget($langPack, $key);
                 }
             }
+        } else {
+            $lang = LocalizationService::getLang();
+            $langPack = 'v1:server:' . $lang;
+            $message = Redis::hget($langPack, $key);
         }
 
         return self::responseCore(['error_code' => $code, 'message' => $message]);
