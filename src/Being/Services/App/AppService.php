@@ -101,16 +101,21 @@ class AppService
      * @param string $message
      * @return mixed
      */
-    public static function responseError($code, $message = null)
+    public static function responseError($code, $message = null, $key = null)
     {
         if (is_null($message)) {
             $lang = LocalizationService::getLang();
             $message = Message::getMessage($code, $lang);
             if (is_null($message)) {
-                $key = 'message.error_code.' . $code;
-                $message = self::trans($key, [], '', $lang);
-                if ($message == $key) {
-                    $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
+                if (is_null($key)) {
+                    $key = 'message.error_code.' . $code;
+                    $message = self::trans($key, [], '', $lang);
+                    if ($message == $key) {
+                        $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
+                    }
+                } else {
+                    $langPack = 'v1:server:' . $lang;
+                    $message = Redis::hget($langPack, $key);
                 }
             }
         }

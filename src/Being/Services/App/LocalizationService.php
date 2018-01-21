@@ -14,6 +14,7 @@ class LocalizationService
         'en' => ['en'],
         'ja' => ['ja'],
         'ru' => ['ru'],
+        'ko' => ['ko']
     ];
 
     public static function getLang()
