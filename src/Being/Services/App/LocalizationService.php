@@ -21,7 +21,7 @@ class LocalizationService
     {
         $lang = Request::get('lang');
         if (empty($lang)) {
-            $lang = 'en';
+            $lang = 'zh-cn';
         }
 
         $lang = strtolower($lang);
