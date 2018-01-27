@@ -164,7 +164,9 @@ class AppService
         $queryParamStr = json_encode($queries, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         $log = sprintf('Request:%s Response:%s', $queryParamStr, $responseBody);
-        Log::debug($log);
+        if (config('app.request_response_log')) {
+            Log::debug($log);
+        }
 
         $enableETag = intval($request->get('etag', 1));
         if ($requestMethod == 'GET'
