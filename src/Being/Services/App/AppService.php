@@ -101,26 +101,17 @@ class AppService
      * @param string $message
      * @return mixed
      */
-    public static function responseError($code, $message = null, $key = null)
+    public static function responseError($code, $message = null)
     {
-        if (is_null($key)) {
-            if (is_null($message)) {
-                $lang = LocalizationService::getLang();
-                $message = Message::getMessage($code, $lang);
-                if (is_null($message)) {
-                    $key = 'message.error_code.' . $code;
-                    $message = self::trans($key, [], '', $lang);
-                    if ($message == $key) {
-                        $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
-                    }
-                }
-            }
-        } else {
+        if (is_null($message)) {
             $lang = LocalizationService::getLang();
-            $langPack = 'v1:server:' . $lang;
-            $messageRedis = Redis::hget($langPack, $key);
-            if (!is_null($messageRedis)) {
-                $message = $messageRedis;
+            $message = Message::getMessage($code, $lang);
+            if (is_null($message)) {
+                $key = 'message.error_code.' . $code;
+                $message = self::trans($key, [], '', $lang);
+                if ($message == $key) {
+                    $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
+                }
             }
         }
 
@@ -164,9 +155,7 @@ class AppService
         $queryParamStr = json_encode($queries, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         $log = sprintf('Request:%s Response:%s', $queryParamStr, $responseBody);
-        if (config('app.request_response_log')) {
-            Log::debug($log);
-        }
+        Log::debug($log);
 
         $enableETag = intval($request->get('etag', 1));
         if ($requestMethod == 'GET'
@@ -325,6 +314,12 @@ class AppService
         Redis::hset($usersKey, $uid, $token);
         Redis::hset($tokensKey, $token, json_encode($tokenData));
 
+        $memcached = app("memcached");
+        $tokenMemcachedKey = sprintf('sign:memcached:data:%s:tokens:%s', $prefix,$token);
+        $usersMemcachedKey = sprintf('sign:memcached:data:%s:users:%d', $prefix, $uid);
+        $memcached->set($tokenMemcachedKey, json_encode($tokenData));
+        $memcached->set($usersMemcachedKey, $token);
+
         return ['token' => $token, 'secret' => $secret];
     }
 
@@ -340,29 +335,43 @@ class AppService
     public static function verifySignData($accessToken, $sign, $timestamp, $appSecret, $prefix = 'being')
     {
         $uid = null;
-
+        $tokensKey = sprintf('sign:data:%s:tokens', $prefix);
+        $usersKey = sprintf('sign:data:%s:users', $prefix);
+        $tokenMemcachedKey = sprintf('sign:memcached:data:%s:tokens:%s', $prefix,$accessToken);
+        $memcached = app("memcached");
         if ($accessToken) {
-            $tokensKey = sprintf('sign:data:%s:tokens', $prefix);
-            $usersKey = sprintf('sign:data:%s:users', $prefix);
-            if ($tokenData = Redis::hget($tokensKey, $accessToken)) {
-                $tokenData = json_decode($tokenData);
-                $uid = $tokenData->uid;
+            $tokenInfo = $memcached->get($tokenMemcachedKey);
+            if(empty($tokenInfo)) {
+                $tokenData = Redis::hget($tokensKey, $accessToken);
+                if(empty($tokenData)){
+                    return [false, null, ['message' => 'invalid access token.'], 401];
+                }
+                $memcached->set($tokenMemcachedKey, $tokenData);
+            }
 
-                if ($currentToken = Redis::hget($usersKey, $uid)) {
-                    if ($currentToken != $accessToken) {
-                        Redis::hdel($tokensKey, $currentToken);
-                        Redis::hdel($usersKey, $uid);
-                        return [false, null, ['message' => 'access token expire.'], 402];
-                    }
-                } else {
+            $tokenData = json_decode($tokenData);
+            $uid = $tokenData->uid;
+
+            $usersMemcachedKey = sprintf('sign:memcached:data:%s:users:%d', $prefix, $uid);
+            $currentToken = $memcached->get($usersMemcachedKey);
+            if(empty($currentToken)){
+                $currentToken = Redis::hget($usersKey, $uid);
+                if(!empty($currentToken)){
+                    $memcached->set($usersMemcachedKey, $currentToken);
+                }else{
                     return [false, null, ['message' => 'user token not exists.'], 401];
                 }
-
-                $accessSecret = $tokenData->secret;
-                $checkSign = md5($timestamp . $appSecret . $accessSecret);
-            } else {
-                return [false, null, ['message' => 'invalid access token.'], 401];
             }
+            if ($currentToken != $accessToken) {
+                $memcached->delete($usersMemcachedKey);
+                $memcached->delete($tokenMemcachedKey);
+                Redis::hdel($tokensKey, $currentToken);
+                Redis::hdel($usersKey, $uid);
+                return [false, null, ['message' => 'access token expire.'], 402];
+            }
+
+            $accessSecret = $tokenData->secret;
+            $checkSign = md5($timestamp . $appSecret . $accessSecret);
         } else {
             $checkSign = md5($timestamp . $appSecret);
         }
