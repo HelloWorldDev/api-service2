@@ -340,8 +340,8 @@ class AppService
         $tokenMemcachedKey = sprintf('sign:memcached:data:%s:tokens:%s', $prefix,$accessToken);
         $memcached = app("memcached");
         if ($accessToken) {
-            $tokenInfo = $memcached->get($tokenMemcachedKey);
-            if(empty($tokenInfo)) {
+            $tokenData = $memcached->get($tokenMemcachedKey);
+            if(empty($tokenData)) {
                 $tokenData = Redis::hget($tokensKey, $accessToken);
                 if(empty($tokenData)){
                     return [false, null, ['message' => 'invalid access token.'], 401];
