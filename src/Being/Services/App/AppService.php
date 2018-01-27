@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redis;
+use App\Services\GameCom\LangService;
 
 class AppService
 {
@@ -101,20 +102,33 @@ class AppService
      * @param string $message
      * @return mixed
      */
-    public static function responseError($code, $message = null)
+    public static function responseError($code, $message = null, $key = null)
     {
-        if (is_null($message)) {
-            $lang = LocalizationService::getLang();
-            $message = Message::getMessage($code, $lang);
+        if (is_null($key)) {
             if (is_null($message)) {
-                $key = 'message.error_code.' . $code;
-                $message = self::trans($key, [], '', $lang);
-                if ($message == $key) {
-                    $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
+                $lang = LocalizationService::getLang();
+                $message = Message::getMessage($code, $lang);
+                if (is_null($message)) {
+                    $key = 'message.error_code.' . $code;
+                    $message = self::trans($key, [], '', $lang);
+                    if ($message == $key) {
+                        $message = Message::getMessage(Code::ERROR_CODE_NOT_EXISTS, $lang);
+                    }
                 }
             }
+        } else {
+            $lang = LocalizationService::getLang();
+            $langConfig = LangService::getLang($lang);
+            $messageConfig = $langConfig[$key];
+            if (!empty($messageConfig)) {
+                $message = $messageConfig;
+            }
+//            $langPack = 'v1:server:' . $lang;
+//            $messageRedis = Redis::hget($langPack, $key);
+//            if (!is_null($messageRedis)) {
+//                $message = $messageRedis;
+//            }
         }
-
         return self::responseCore(['error_code' => $code, 'message' => $message]);
     }
 
@@ -155,7 +169,9 @@ class AppService
         $queryParamStr = json_encode($queries, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         $log = sprintf('Request:%s Response:%s', $queryParamStr, $responseBody);
-        Log::debug($log);
+        if (config('app.request_response_log')) {
+            Log::debug($log);
+        }
 
         $enableETag = intval($request->get('etag', 1));
         if ($requestMethod == 'GET'
