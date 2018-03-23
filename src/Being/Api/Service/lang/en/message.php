@@ -46,5 +46,6 @@ return [
     20106 => 'Clan does not exist',
     20200 => 'Game is already being followed',
     20201 => 'Game is not being followed',
+    20107 => 'Clan already exists',
   0 => '',
 ];
