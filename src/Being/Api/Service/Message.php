@@ -11,7 +11,13 @@ class Message
      */
     public static function getMessage($code, $lang)
     {
-        $langData = require __DIR__ . '/lang/' . $lang . '/message.php';
+        $path = __DIR__ . '/lang/' . $lang . '/message.php';
+        if (file_exists($path)) {
+            $langData = require __DIR__ . '/lang/' . $lang . '/message.php';
+        } else {
+            $langData = require __DIR__ . '/lang/en/message.php';
+        }
+
         if (isset($langData[$code])) {
             return $langData[$code];
         } else {
