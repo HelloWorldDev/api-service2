@@ -70,5 +70,6 @@ return [
     30006 => 'User info does not match',
     30007 => 'Candy has been collected',
     30008 => 'Cannot be collected yet',
+    20110 => 'The frozen funds in the candy scheme are temporarily unable to exit.',
    0 => '',
 ];
