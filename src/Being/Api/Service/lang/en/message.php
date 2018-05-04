@@ -61,6 +61,8 @@ return [
     20312 => 'You cannot invite yourself',
     20313 => 'User invite does not exist',
     20314 => 'You don\'t have enough reward to collect',
+    20315 => 'Inviter has not linked phone yet',
+    20316 => 'The same device is locked for 10 seconds',
     30000 => 'Candy event ID is missing',
     30001 => 'Candy collection value is missing',
     30002 => 'Event is not in progress',
