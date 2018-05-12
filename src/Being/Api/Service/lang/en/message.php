@@ -92,5 +92,6 @@ return [
     40016 => 'Withdrawn in Advance',
     40017 => 'Participant history has expired and cannot be canceled, please collect your reward',
     40018 => 'Participation history is still active, cannot collect reward',
+    40019 => 'Insufficient holding balance',
    0 => '',
 ];
