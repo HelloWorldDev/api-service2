@@ -93,5 +93,13 @@ return [
     40017 => 'Participant history has expired and cannot be canceled, please collect your reward',
     40018 => 'Participation history is still active, cannot collect reward',
     40019 => 'Insufficient holding balance',
+    50000 => 'Reward mode error',
+    50001 => 'Reward currency cannot be empty',
+    50002 => 'Reward currency not supported',
+    50003 => 'Reward amount cannot be negative',
+    50004 => 'Registration hasn\'t opened yet',
+    50005 => 'Registration has ended',
+    50009 => 'Already registered',
+    50006 => 'All places are full',
    0 => '',
 ];
