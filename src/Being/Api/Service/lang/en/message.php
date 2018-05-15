@@ -85,7 +85,7 @@ return [
     40009 => 'Cannot be less than minimum participant limit',
     40010 => 'Total participant limit is too low',
     40011 => 'Processing, please wait',
-    40012 => 'Not enough participants',
+    40012 => 'Max participation limit has been reached',
     40013 => 'Participant limit reached',
     40014 => 'Participant history does not exist',
     40015 => 'Reward Collected',
