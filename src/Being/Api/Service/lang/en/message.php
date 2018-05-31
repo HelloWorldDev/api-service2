@@ -62,6 +62,7 @@ return [
     20205 => 'Cannot move group owner',
     20206 => 'Admins cannot move admins',
     20207 => 'Joining this clan is restricted',
+    20208 => 'You are not a group owner, you don\'t have permission',
     20300 => 'Invite event doesn\'t exist',
     20301 => 'Corresponding invite event hasn\'t started yet',
     20302 => 'Corresponding invite event has already ended',
