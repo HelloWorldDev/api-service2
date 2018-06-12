@@ -134,5 +134,6 @@ return [
     50024 => 'This voting record has been canceled',
     50025 => 'Vote can no longer be canceled',
     50026 => 'Search keywords cannot be empty',
+    60000 => 'The award has expired',
    0 => '',
 ];
