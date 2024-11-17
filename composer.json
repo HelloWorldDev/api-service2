@@ -1,5 +1,5 @@
 {
-    "name": "hihao/api-service",
+    "name": "nihao/api-service",
     "type": "library",
     "keywords": ["api", "services", "famely"],
     "description": "API services of famely application server",
@@ -8,10 +8,10 @@
     "require": {
         "php": ">=5.5.9",
         "guzzlehttp/guzzle": "^6.2|^7.9",
-        "monolog/monolog": "^1.22",
+        "monolog/monolog": "3.8.0",
         "sly/notification-pusher": "2.*",
         "omnipay/common": "~2.0",
-        "giggsey/libphonenumber-for-php": "~7.0",
+        "giggsey/libphonenumber-for-php": "8.13.49",
         "facebook/graph-sdk": "^5.5"
     },
     "require-dev": {
