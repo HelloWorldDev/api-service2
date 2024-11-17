@@ -1,5 +1,5 @@
 {
-    "name": "nihao/api-service",
+    "name": "gamecom/api-service",
     "type": "library",
     "keywords": ["api", "services", "famely"],
     "description": "API services of famely application server",
