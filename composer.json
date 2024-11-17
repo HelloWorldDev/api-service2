@@ -21,7 +21,7 @@
             "Omnipay\\": "src/Omnipay",
             "Angejia\\Pea\\": "src/Pea/src"
         },
-        "files": ["src/Libweibo/saetv2.ex.class.php"]
+        "files": []
     },
     "autoload-dev": {
         "psr-4": {
