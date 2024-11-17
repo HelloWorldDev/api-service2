@@ -7,7 +7,7 @@
     "license": "Apache License",
     "require": {
         "php": ">=5.5.9",
-        "guzzlehttp/guzzle": "^6.2",
+        "guzzlehttp/guzzle": "^6.2|^7.9",
         "monolog/monolog": "^1.22",
         "sly/notification-pusher": "2.*",
         "omnipay/common": "~2.0",
