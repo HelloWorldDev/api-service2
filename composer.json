@@ -1,5 +1,5 @@
 {
-    "name": "being/api-service2",
+    "name": "hihao/api-service",
     "type": "library",
     "keywords": ["api", "services", "famely"],
     "description": "API services of famely application server",
